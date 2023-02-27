@@ -5,9 +5,7 @@
         <group>
             <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/model/UserDAO.java</file>
             <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/views/AdminPanel.java</file>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/ConfigController.java</file>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/LoginController.java</file>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/views/LoginFrame.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/UserController.java</file>
         </group>
     </open-files>
 </project-private>
