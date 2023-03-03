@@ -32,6 +32,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         this.adminView.btnUpdateUser.addActionListener(this);
         this.adminView.jMenuItemDelete.addActionListener(this);
         this.adminView.jMenuReenterUser.addActionListener(this);
+        this.adminView.btnNewUser.addActionListener(this);
         this.adminView.inputUserSearch.addKeyListener(this);
         this.adminView.usersTable.addMouseListener(this);
         listUsers();
@@ -50,6 +51,9 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         }
         else if(e.getSource() == adminView.jMenuReenterUser){            
             recoverUser();
+        }
+        else{
+            clearUsersInput();
         }
     }
     
@@ -78,8 +82,9 @@ public class UserController implements ActionListener, MouseListener, KeyListene
                 user.setRole(adminView.cbxUserRole.getSelectedItem().toString());
                 
                 if(userDAO.register(user)){
-                    cleanUsers();
+                    clearUsersTable();
                     listUsers();
+                    clearUsersInput();
                     JOptionPane.showMessageDialog(null, "¡Usuario registrado con éxito!");
                 }else{
                     JOptionPane.showMessageDialog(null, "Error al registrar el usuario.");
@@ -101,8 +106,9 @@ public class UserController implements ActionListener, MouseListener, KeyListene
                 user.setId(Integer.parseInt((adminView.inputUserId.getText())));
                 
                 if(userDAO.update(user)){
-                    cleanUsers();
+                    clearUsersTable();
                     listUsers();
+                    clearUsersInput();
                     JOptionPane.showMessageDialog(null, "¡Usuario modificado con éxito!");
                 }else{
                     JOptionPane.showMessageDialog(null, "Error al modificar el usuario.");
@@ -115,7 +121,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         if(!adminView.inputUserId.getText().equals("")){
                 int id = Integer.parseInt(adminView.inputUserId.getText());
                 if (userDAO.changeStatus("Inactivo", id)){
-                    cleanUsers();
+                    clearUsersTable();
                     listUsers();
                     JOptionPane.showMessageDialog(null, "Usuario dado de baja exitosamente.");
                 }
@@ -133,8 +139,9 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         if(!adminView.inputUserId.getText().equals("")){
                 int id = Integer.parseInt(adminView.inputUserId.getText());
                 if (userDAO.changeStatus("Activo", id)){
-                    cleanUsers();
+                    clearUsersTable();
                     listUsers();
+                    clearUsersInput();
                     JOptionPane.showMessageDialog(null, "Usuario dado de alta exitosamente.");
                 }
                 else{
@@ -176,7 +183,15 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         header.setForeground(Color.white);
     }
     
-    public void cleanUsers(){
+     private void clearUsersInput(){
+         adminView.inputUserId.setText("");
+        adminView.inputUserName.setText("");
+        adminView.inputUserFirstName.setText("");
+        adminView.inputUserLastName.setText("");
+        adminView.inputUserPass.setText("");
+    }
+    
+    public void clearUsersTable(){
         for (int i = 0; i < usersTable.getRowCount(); i++){
             usersTable.removeRow(i);
             i = i - 1;
@@ -228,9 +243,9 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == adminView.inputUserSearch){
-            cleanUsers();
+            clearUsersTable();
             listUsers();
         }
     }
-    
+   
 }
