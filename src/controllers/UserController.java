@@ -30,7 +30,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         this.adminView = adminView;
         this.adminView.btnRegisterUser.addActionListener(this);
         this.adminView.btnUpdateUser.addActionListener(this);
-        this.adminView.jMenuItemDelete.addActionListener(this);
+        this.adminView.jMenuItemDeleteUser.addActionListener(this);
         this.adminView.jMenuReenterUser.addActionListener(this);
         this.adminView.btnNewUser.addActionListener(this);
         this.adminView.inputUserSearch.addKeyListener(this);
@@ -46,7 +46,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         else if(e.getSource() == adminView.btnUpdateUser){
             updateUser();
         }
-        else if(e.getSource() == adminView.jMenuItemDelete){            
+        else if(e.getSource() == adminView.jMenuItemDeleteUser){            
             deleteUser();
         }
         else if(e.getSource() == adminView.jMenuReenterUser){            
