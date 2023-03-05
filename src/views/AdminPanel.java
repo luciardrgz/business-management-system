@@ -5,7 +5,10 @@
 package views;
 
 import controllers.ConfigController;
+import controllers.CustomerController;
 import controllers.UserController;
+import model.Customer;
+import model.CustomerDAO;
 import model.User;
 import model.UserDAO;
 
@@ -16,6 +19,8 @@ import model.UserDAO;
 public class AdminPanel extends javax.swing.JFrame {
     User user = new User();
     UserDAO userDAO = new UserDAO();
+    Customer customer = new Customer();
+    CustomerDAO customerDAO = new CustomerDAO();
 
     /**
      * Creates new form AdminPanel
@@ -24,6 +29,7 @@ public class AdminPanel extends javax.swing.JFrame {
         initComponents();
         ConfigController configController = new ConfigController(this);
         UserController userController = new UserController(user, userDAO, this);
+        CustomerController customerController = new CustomerController(customer, customerDAO, this);
     }
 
     /**
@@ -36,8 +42,11 @@ public class AdminPanel extends javax.swing.JFrame {
     private void initComponents() {
 
         jPopupUsers = new javax.swing.JPopupMenu();
-        jMenuItemDelete = new javax.swing.JMenuItem();
+        jMenuItemDeleteUser = new javax.swing.JMenuItem();
         jMenuReenterUser = new javax.swing.JMenuItem();
+        jPopupCustomers = new javax.swing.JPopupMenu();
+        jMenuItemDeleteCustomer = new javax.swing.JMenuItem();
+        jMenuItemReenterCustomer = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanelNewSale = new javax.swing.JPanel();
         lblNewSale = new javax.swing.JLabel();
@@ -98,17 +107,20 @@ public class AdminPanel extends javax.swing.JFrame {
         categoriesPagination = new javax.swing.JPanel();
         jTabAddCustomer = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
-        lblCustomerName = new javax.swing.JLabel();
+        lblCustomerFirstName = new javax.swing.JLabel();
         lblCustomerLastName = new javax.swing.JLabel();
         lblCustomerPhone = new javax.swing.JLabel();
         lblCustomerAddress = new javax.swing.JLabel();
-        inputCustomerName = new javax.swing.JTextField();
+        inputCustomerFirstName = new javax.swing.JTextField();
         inputCustomerLastName = new javax.swing.JTextField();
         inputCustomerPhone = new javax.swing.JTextField();
         inputCustomerAddress = new javax.swing.JTextField();
         btnNewCustomer = new javax.swing.JButton();
         btnRegisterCustomer = new javax.swing.JButton();
         btnUpdateCustomer = new javax.swing.JButton();
+        inputCustomerSearch = new javax.swing.JTextField();
+        inputCustomerId = new javax.swing.JTextField();
+        iconCustomerSearch = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         customersTable = new javax.swing.JTable();
         customersPagination = new javax.swing.JPanel();
@@ -217,13 +229,31 @@ public class AdminPanel extends javax.swing.JFrame {
         lblInstructions = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
 
-        jMenuItemDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
-        jMenuItemDelete.setText("Eliminar");
-        jPopupUsers.add(jMenuItemDelete);
+        jMenuItemDeleteUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
+        jMenuItemDeleteUser.setText("Eliminar");
+        jPopupUsers.add(jMenuItemDeleteUser);
 
         jMenuReenterUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
         jMenuReenterUser.setText("Reingresar");
+        jMenuReenterUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuReenterUserActionPerformed(evt);
+            }
+        });
         jPopupUsers.add(jMenuReenterUser);
+
+        jMenuItemDeleteCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
+        jMenuItemDeleteCustomer.setText("Eliminar");
+        jMenuItemDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDeleteCustomerActionPerformed(evt);
+            }
+        });
+        jPopupCustomers.add(jMenuItemDeleteCustomer);
+
+        jMenuItemReenterCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
+        jMenuItemReenterCustomer.setText("Reingresar");
+        jPopupCustomers.add(jMenuItemReenterCustomer);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -698,8 +728,8 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nuevo Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
 
-        lblCustomerName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblCustomerName.setText("Nombre");
+        lblCustomerFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblCustomerFirstName.setText("Nombre");
 
         lblCustomerLastName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblCustomerLastName.setText("Apellido");
@@ -724,6 +754,11 @@ public class AdminPanel extends javax.swing.JFrame {
         btnUpdateCustomer.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnUpdateCustomer.setText("Modificar");
 
+        inputCustomerId.setEnabled(false);
+
+        iconCustomerSearch.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        iconCustomerSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/magnifying-glass.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
         jPanel17Layout.setHorizontalGroup(
@@ -736,11 +771,11 @@ public class AdminPanel extends javax.swing.JFrame {
                             .addGroup(jPanel17Layout.createSequentialGroup()
                                 .addComponent(lblCustomerLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(15, 15, 15))
-                            .addComponent(lblCustomerName)
+                            .addComponent(lblCustomerFirstName)
                             .addComponent(lblCustomerPhone)
                             .addComponent(lblCustomerAddress))
                         .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputCustomerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputCustomerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -749,16 +784,27 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addComponent(btnRegisterCustomer)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                        .addComponent(btnUpdateCustomer)))
+                        .addComponent(btnUpdateCustomer))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(inputCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                        .addComponent(iconCustomerSearch)
+                        .addGap(18, 18, 18)
+                        .addComponent(inputCustomerSearch)))
                 .addContainerGap())
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(21, 21, 21)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(inputCustomerSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(iconCustomerSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -776,28 +822,28 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addComponent(btnNewCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegisterCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(inputCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
 
-        jTabAddCustomer.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 19, -1, -1));
+        jTabAddCustomer.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 19, -1, 450));
 
         customersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Apellido", "Teléfono", "Dirección"
+                "Id", "Nombre", "Apellido", "Teléfono", "Dirección", "Estado"
             }
         ));
+        customersTable.setComponentPopupMenu(jPopupCustomers);
         jScrollPane2.setViewportView(customersTable);
-        if (customersTable.getColumnModel().getColumnCount() > 0) {
-            customersTable.getColumnModel().getColumn(3).setHeaderValue("Contraseña");
-        }
 
-        jTabAddCustomer.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 19, 710, 370));
+        jTabAddCustomer.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 19, 690, 370));
 
         javax.swing.GroupLayout customersPaginationLayout = new javax.swing.GroupLayout(customersPagination);
         customersPagination.setLayout(customersPaginationLayout);
@@ -1554,6 +1600,14 @@ public class AdminPanel extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNewUserActionPerformed
 
+    private void jMenuItemDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteCustomerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemDeleteCustomerActionPerformed
+
+    private void jMenuReenterUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuReenterUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuReenterUserActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1594,20 +1648,20 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JButton btnNewBusiness;
     private javax.swing.JButton btnNewBuyAdd;
     private javax.swing.JButton btnNewCategory;
-    private javax.swing.JButton btnNewCustomer;
+    public javax.swing.JButton btnNewCustomer;
     private javax.swing.JButton btnNewProduct;
     private javax.swing.JButton btnNewSaleAddProduct;
     private javax.swing.JButton btnNewSupplier;
     public javax.swing.JButton btnNewUser;
     private javax.swing.JButton btnRegisterBusiness;
     private javax.swing.JButton btnRegisterCategory;
-    private javax.swing.JButton btnRegisterCustomer;
+    public javax.swing.JButton btnRegisterCustomer;
     private javax.swing.JButton btnRegisterProduct;
     private javax.swing.JButton btnRegisterSupplier;
     public javax.swing.JButton btnRegisterUser;
     private javax.swing.JButton btnUpdateBusiness;
     private javax.swing.JButton btnUpdateCategory;
-    private javax.swing.JButton btnUpdateCustomer;
+    public javax.swing.JButton btnUpdateCustomer;
     private javax.swing.JButton btnUpdateProduct;
     private javax.swing.JButton btnUpdateSupplier;
     public javax.swing.JButton btnUpdateUser;
@@ -1627,7 +1681,8 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> cbxUserBox;
     public javax.swing.JComboBox<String> cbxUserRole;
     private javax.swing.JPanel customersPagination;
-    private javax.swing.JTable customersTable;
+    public javax.swing.JTable customersTable;
+    private javax.swing.JLabel iconCustomerSearch;
     private javax.swing.JLabel iconUserSearch;
     private javax.swing.JTextField inputBusinessAddress;
     private javax.swing.JTextField inputBusinessCUIT;
@@ -1637,11 +1692,13 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JTextField inputBusinessOwnerName;
     private javax.swing.JTextField inputBuyPrice;
     private javax.swing.JTextField inputCategoryName;
-    private javax.swing.JTextField inputCustomerAddress;
-    private javax.swing.JTextField inputCustomerLastName;
-    private javax.swing.JTextField inputCustomerName;
-    private javax.swing.JTextField inputCustomerPhone;
+    public javax.swing.JTextField inputCustomerAddress;
+    public javax.swing.JTextField inputCustomerFirstName;
+    public javax.swing.JTextField inputCustomerId;
+    public javax.swing.JTextField inputCustomerLastName;
+    public javax.swing.JTextField inputCustomerPhone;
     private javax.swing.JTextField inputCustomerPhone1;
+    public javax.swing.JTextField inputCustomerSearch;
     private javax.swing.JTextField inputDescription;
     private javax.swing.JTextField inputProductCode;
     private javax.swing.JTextField inputSellPrice;
@@ -1660,7 +1717,9 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel9;
-    public javax.swing.JMenuItem jMenuItemDelete;
+    public javax.swing.JMenuItem jMenuItemDeleteCustomer;
+    public javax.swing.JMenuItem jMenuItemDeleteUser;
+    public javax.swing.JMenuItem jMenuItemReenterCustomer;
     public javax.swing.JMenuItem jMenuReenterUser;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
@@ -1683,6 +1742,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JPanel jPanelProducts;
     public javax.swing.JPanel jPanelSuppliers;
     public javax.swing.JPanel jPanelUsers;
+    private javax.swing.JPopupMenu jPopupCustomers;
     private javax.swing.JPopupMenu jPopupUsers;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
@@ -1714,8 +1774,8 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel lblCategoryName;
     public javax.swing.JLabel lblConfiguration;
     private javax.swing.JLabel lblCustomerAddress;
+    private javax.swing.JLabel lblCustomerFirstName;
     private javax.swing.JLabel lblCustomerLastName;
-    private javax.swing.JLabel lblCustomerName;
     private javax.swing.JLabel lblCustomerPhone;
     public javax.swing.JLabel lblCustomers;
     private javax.swing.JLabel lblDescription;
