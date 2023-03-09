@@ -8,6 +8,7 @@ import controllers.CategoryController;
 import controllers.ConfigController;
 import controllers.CustomerController;
 import controllers.ProductController;
+import controllers.SupplierController;
 import controllers.UserController;
 import javax.swing.JComboBox;
 import model.Category;
@@ -16,6 +17,8 @@ import model.Customer;
 import model.CustomerDAO;
 import model.Product;
 import model.ProductDAO;
+import model.Supplier;
+import model.SupplierDAO;
 import model.User;
 import model.UserDAO;
 
@@ -32,6 +35,8 @@ public class AdminPanel extends javax.swing.JFrame {
     ProductDAO productDAO = new ProductDAO();
     Category category = new Category();
     CategoryDAO categoryDAO = new CategoryDAO();
+    Supplier supplier = new Supplier();
+    SupplierDAO supplierDAO = new SupplierDAO();
 
     /**
      * Creates new form AdminPanel
@@ -43,6 +48,7 @@ public class AdminPanel extends javax.swing.JFrame {
         CustomerController customerController = new CustomerController(customer, customerDAO, this);
         ProductController productController = new ProductController(product, productDAO, this);
         CategoryController categoryController = new CategoryController(category, categoryDAO, this);
+        SupplierController supplierController = new SupplierController(supplier, supplierDAO, this);
     }
 
     /**
@@ -66,6 +72,9 @@ public class AdminPanel extends javax.swing.JFrame {
         jPopupCategories = new javax.swing.JPopupMenu();
         jMenuItemDeleteCategory = new javax.swing.JMenuItem();
         jMenuItemReenterCategory = new javax.swing.JMenuItem();
+        jPopupSuppliers = new javax.swing.JPopupMenu();
+        jMenuItemDeleteSupplier = new javax.swing.JMenuItem();
+        jMenuItemReenterSupplier = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanelNewSale = new javax.swing.JPanel();
         lblNewSale = new javax.swing.JLabel();
@@ -150,11 +159,11 @@ public class AdminPanel extends javax.swing.JFrame {
         customersPagination = new javax.swing.JPanel();
         jTabAddSupplier = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
-        lblSupplierName = new javax.swing.JLabel();
+        lblSupplierFirstName = new javax.swing.JLabel();
         lblSupplierLastName = new javax.swing.JLabel();
         lblSupplierCUIT = new javax.swing.JLabel();
         lblSupplierAddress = new javax.swing.JLabel();
-        inputSupplierName = new javax.swing.JTextField();
+        inputSupplierFirstName = new javax.swing.JTextField();
         inputSupplierLastName = new javax.swing.JTextField();
         inputSupplierCUIT = new javax.swing.JTextField();
         inputSupplierAddress = new javax.swing.JTextField();
@@ -165,6 +174,10 @@ public class AdminPanel extends javax.swing.JFrame {
         inputSupplierSocial = new javax.swing.JTextField();
         lblSupplierPhone = new javax.swing.JLabel();
         inputSupplierPhone = new javax.swing.JTextField();
+        iconSupplierSearch = new javax.swing.JLabel();
+        inputSupplierSearch = new javax.swing.JTextField();
+        inputSupplierId = new javax.swing.JTextField();
+        lblSupplierId = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         suppliersTable = new javax.swing.JTable();
         suppliersPagination = new javax.swing.JPanel();
@@ -300,6 +313,14 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jMenuItemReenterCategory.setText("jMenuItem2");
         jPopupCategories.add(jMenuItemReenterCategory);
+
+        jMenuItemDeleteSupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
+        jMenuItemDeleteSupplier.setText("Eliminar");
+        jPopupSuppliers.add(jMenuItemDeleteSupplier);
+
+        jMenuItemReenterSupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
+        jMenuItemReenterSupplier.setText("Reingresar");
+        jPopupSuppliers.add(jMenuItemReenterSupplier);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -972,8 +993,8 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nuevo Proovedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
 
-        lblSupplierName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblSupplierName.setText("Nombre");
+        lblSupplierFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierFirstName.setText("Nombre");
 
         lblSupplierLastName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblSupplierLastName.setText("Apellido");
@@ -1004,6 +1025,14 @@ public class AdminPanel extends javax.swing.JFrame {
         lblSupplierPhone.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblSupplierPhone.setText("Teléfono");
 
+        iconSupplierSearch.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        iconSupplierSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/magnifying-glass.png"))); // NOI18N
+
+        inputSupplierId.setEnabled(false);
+
+        lblSupplierId.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierId.setText("#");
+
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
         jPanel18Layout.setHorizontalGroup(
@@ -1016,11 +1045,11 @@ public class AdminPanel extends javax.swing.JFrame {
                             .addGroup(jPanel18Layout.createSequentialGroup()
                                 .addComponent(lblSupplierLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(15, 15, 15))
-                            .addComponent(lblSupplierName)
+                            .addComponent(lblSupplierFirstName)
                             .addComponent(lblSupplierCUIT)
                             .addComponent(lblSupplierAddress))
                         .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputSupplierFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputSupplierLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputSupplierAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputSupplierCUIT, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1037,16 +1066,33 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(lblSupplierPhone)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(inputSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(inputSupplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(iconSupplierSearch)
+                            .addComponent(lblSupplierId, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputSupplierId, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputSupplierSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(inputSupplierSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(iconSupplierSearch, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputSupplierId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSupplierId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSupplierFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputSupplierFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSupplierLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1067,7 +1113,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSupplierAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(inputSupplierAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(92, 92, 92)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegisterSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1088,13 +1134,12 @@ public class AdminPanel extends javax.swing.JFrame {
                 "Id", "Nombre", "Apellido", "Razón Social", "CUIT", "Teléfono", "Dirección"
             }
         ));
+        suppliersTable.setComponentPopupMenu(jPopupSuppliers);
         jScrollPane3.setViewportView(suppliersTable);
         if (suppliersTable.getColumnModel().getColumnCount() > 0) {
-            suppliersTable.getColumnModel().getColumn(2).setHeaderValue("Apellido");
-            suppliersTable.getColumnModel().getColumn(3).setHeaderValue("Razón Social");
-            suppliersTable.getColumnModel().getColumn(4).setHeaderValue("CUIT");
-            suppliersTable.getColumnModel().getColumn(5).setHeaderValue("Teléfono");
-            suppliersTable.getColumnModel().getColumn(6).setHeaderValue("Dirección");
+            suppliersTable.getColumnModel().getColumn(0).setMinWidth(30);
+            suppliersTable.getColumnModel().getColumn(0).setPreferredWidth(45);
+            suppliersTable.getColumnModel().getColumn(0).setMaxWidth(45);
         }
 
         jTabAddSupplier.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 19, 710, 370));
@@ -1765,19 +1810,19 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JButton btnNewCustomer;
     public javax.swing.JButton btnNewProduct;
     private javax.swing.JButton btnNewSaleAddProduct;
-    private javax.swing.JButton btnNewSupplier;
+    public javax.swing.JButton btnNewSupplier;
     public javax.swing.JButton btnNewUser;
     private javax.swing.JButton btnRegisterBusiness;
     public javax.swing.JButton btnRegisterCategory;
     public javax.swing.JButton btnRegisterCustomer;
     public javax.swing.JButton btnRegisterProduct;
-    private javax.swing.JButton btnRegisterSupplier;
+    public javax.swing.JButton btnRegisterSupplier;
     public javax.swing.JButton btnRegisterUser;
     private javax.swing.JButton btnUpdateBusiness;
     public javax.swing.JButton btnUpdateCategory;
     public javax.swing.JButton btnUpdateCustomer;
     public javax.swing.JButton btnUpdateProduct;
-    private javax.swing.JButton btnUpdateSupplier;
+    public javax.swing.JButton btnUpdateSupplier;
     public javax.swing.JButton btnUpdateUser;
     private javax.swing.JButton btnUsers;
     private javax.swing.JPanel buysPagination;
@@ -1797,6 +1842,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel iconCategorySearch;
     private javax.swing.JLabel iconCustomerSearch;
     private javax.swing.JLabel iconProductSearch;
+    private javax.swing.JLabel iconSupplierSearch;
     private javax.swing.JLabel iconUserSearch;
     private javax.swing.JTextField inputBusinessAddress;
     private javax.swing.JTextField inputBusinessCUIT;
@@ -1821,12 +1867,14 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JTextField inputProductSellPrice;
     public javax.swing.JTextField inputProductStock;
     public javax.swing.JTextField inputProductionCost;
-    private javax.swing.JTextField inputSupplierAddress;
-    private javax.swing.JTextField inputSupplierCUIT;
-    private javax.swing.JTextField inputSupplierLastName;
-    private javax.swing.JTextField inputSupplierName;
-    private javax.swing.JTextField inputSupplierPhone;
-    private javax.swing.JTextField inputSupplierSocial;
+    public javax.swing.JTextField inputSupplierAddress;
+    public javax.swing.JTextField inputSupplierCUIT;
+    public javax.swing.JTextField inputSupplierFirstName;
+    public javax.swing.JTextField inputSupplierId;
+    public javax.swing.JTextField inputSupplierLastName;
+    public javax.swing.JTextField inputSupplierPhone;
+    public javax.swing.JTextField inputSupplierSearch;
+    public javax.swing.JTextField inputSupplierSocial;
     public javax.swing.JTextField inputUserFirstName;
     public javax.swing.JTextField inputUserId;
     public javax.swing.JTextField inputUserLastName;
@@ -1839,10 +1887,12 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItemDeleteCategory;
     public javax.swing.JMenuItem jMenuItemDeleteCustomer;
     public javax.swing.JMenuItem jMenuItemDeleteProduct;
+    public javax.swing.JMenuItem jMenuItemDeleteSupplier;
     public javax.swing.JMenuItem jMenuItemDeleteUser;
     public javax.swing.JMenuItem jMenuItemReenterCategory;
     public javax.swing.JMenuItem jMenuItemReenterCustomer;
     public javax.swing.JMenuItem jMenuItemReenterProduct;
+    public javax.swing.JMenuItem jMenuItemReenterSupplier;
     public javax.swing.JMenuItem jMenuReenterUser;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
@@ -1867,6 +1917,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupCategories;
     private javax.swing.JPopupMenu jPopupCustomers;
     private javax.swing.JPopupMenu jPopupProducts;
+    private javax.swing.JPopupMenu jPopupSuppliers;
     private javax.swing.JPopupMenu jPopupUsers;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
@@ -1926,8 +1977,9 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel lblQtyNewSaleProduct;
     private javax.swing.JLabel lblSupplierAddress;
     private javax.swing.JLabel lblSupplierCUIT;
+    private javax.swing.JLabel lblSupplierFirstName;
+    private javax.swing.JLabel lblSupplierId;
     private javax.swing.JLabel lblSupplierLastName;
-    private javax.swing.JLabel lblSupplierName;
     private javax.swing.JLabel lblSupplierPhone;
     private javax.swing.JLabel lblSupplierSocial;
     public javax.swing.JLabel lblSuppliers;
@@ -1944,7 +1996,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel salesPagination;
     private javax.swing.JTable salesTable;
     private javax.swing.JPanel suppliersPagination;
-    private javax.swing.JTable suppliersTable;
+    public javax.swing.JTable suppliersTable;
     private javax.swing.JTable tableNewBuy;
     private javax.swing.JTable tableNewSale;
     private javax.swing.JTextField txtFieldSearchProduct;
