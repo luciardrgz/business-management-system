@@ -18,7 +18,6 @@ public class ConfigController implements MouseListener{
        this.adminView.lblSuppliers.addMouseListener(this);
        this.adminView.lblCategories.addMouseListener(this);
        this.adminView.lblConfiguration.addMouseListener(this);
-       this.adminView.lblLayout.addMouseListener(this);
        this.adminView.lblUsers.addMouseListener(this);
        this.adminView.lblCustomers.addMouseListener(this);  
     }
@@ -49,9 +48,6 @@ public class ConfigController implements MouseListener{
             else if(e.getSource() == adminView.lblConfiguration){
             setBg(adminView.lblConfiguration, hoverColor);
             }
-            else if(e.getSource() == adminView.lblLayout){
-            setBg(adminView.lblLayout, hoverColor);
-            }
             else if(e.getSource() == adminView.lblNewBuy){
             setBg(adminView.lblNewBuy, hoverColor);
             }
@@ -78,9 +74,6 @@ public class ConfigController implements MouseListener{
             }
             else if(e.getSource() == adminView.lblConfiguration){
             setBg(adminView.lblConfiguration, noHoverColor);
-            }
-            else if(e.getSource() == adminView.lblLayout){
-            setBg(adminView.lblLayout, noHoverColor);
             }
             else if(e.getSource() == adminView.lblNewBuy){
             setBg(adminView.lblNewBuy, noHoverColor);
