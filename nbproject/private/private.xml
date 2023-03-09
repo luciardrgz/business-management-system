@@ -3,13 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/model/Customer.java</file>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/CustomerController.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/ProductController.java</file>
             <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/views/AdminPanel.java</file>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/model/UserDAO.java</file>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/model/Table.java</file>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/model/CustomerDAO.java</file>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/UserController.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/model/CategoryDAO.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/CategoryController.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/model/Product.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/model/ProductDAO.java</file>
         </group>
     </open-files>
 </project-private>
