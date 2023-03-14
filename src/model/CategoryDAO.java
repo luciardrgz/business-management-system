@@ -1,12 +1,13 @@
 package model;
 
+import controllers.ProductController;
+import exceptions.DBException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class CategoryDAO {
 
@@ -14,11 +15,17 @@ public class CategoryDAO {
     Connection conn;
     PreparedStatement ps;
     ResultSet rs;
+    private ProductController productController;
 
-    
-    public boolean register(Category category) {
-        boolean check = true;
-        String sql = "INSERT INTO categories name VALUES ?";
+    public CategoryDAO() {
+    }
+
+    public CategoryDAO(ProductController productController) {
+        this.productController = productController;
+    }
+
+    public void register(Category category) throws DBException {
+        String sql = "INSERT INTO categories (name) VALUES (?)";
 
         try {
             conn = connector.getConn();
@@ -28,14 +35,11 @@ public class CategoryDAO {
             ps.execute();
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
-            check = false;
-        } finally {
-            return check;
+            throw new DBException();
         }
     }
 
-    public List getCategoriesList(String value) {
+    public List getCategoriesList(String value) throws DBException {
         List<Category> categoriesList = new ArrayList();
 
         String sql = "SELECT * FROM categories ORDER BY id ASC";
@@ -48,7 +52,7 @@ public class CategoryDAO {
                 ps = conn.prepareStatement(sql);
                 rs = ps.executeQuery();
             } else {
-                ps = conn.prepareStatement(valueToSearch); 
+                ps = conn.prepareStatement(valueToSearch);
                 rs = ps.executeQuery();
             }
 
@@ -60,13 +64,13 @@ public class CategoryDAO {
                 categoriesList.add(currentCategory);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
+            throw new DBException();
         }
 
         return categoriesList;
     }
 
-    public int retrieveCategoryIdByName(String categoryName) {
+    public int retrieveCategoryIdByName(String categoryName) throws DBException {
         int foundCategoryId = -1;
 
         String sql = "SELECT id FROM categories WHERE name LIKE '%" + categoryName + "%'";
@@ -83,13 +87,13 @@ public class CategoryDAO {
                 }
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
+            throw new DBException();
         }
 
         return foundCategoryId;
     }
 
-    public String retrieveCategoryNameById(int categoryId) {
+    public String retrieveCategoryNameById(int categoryId) throws DBException {
         String foundCategoryName = null;
         String sql = "SELECT name FROM categories WHERE id = ?";
 
@@ -103,13 +107,13 @@ public class CategoryDAO {
                 foundCategoryName = rs.getString("name");
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
+            throw new DBException();
         }
 
         return foundCategoryName;
     }
-    
-    public Category retrieveCategoryByName(String categoryName) {
+
+    public Category retrieveCategoryByName(String categoryName) throws DBException {
         Category foundCategory = new Category();
 
         String sql = "SELECT * FROM categories WHERE name LIKE ?";
@@ -128,14 +132,28 @@ public class CategoryDAO {
                 }
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
+            throw new DBException();
         }
 
         return foundCategory;
     }
 
-    public boolean update(Category category) {
-        boolean check = true;
+    public List<String> getCategoryNames() throws DBException {
+        List<Category> categories;
+        List<String> categoryNames = new ArrayList<>();
+        try {
+            categories = getCategoriesList("");
+            for (Category category : categories) {
+                categoryNames.add(category.getName());
+            }
+        } catch (DBException ex) {
+            throw new DBException();
+        }
+
+        return categoryNames;
+    }
+
+    public void update(Category category) throws DBException {
         String sql = "UPDATE categories SET name = ? WHERE id = ?";
 
         try {
@@ -148,15 +166,11 @@ public class CategoryDAO {
             ps.execute();
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
-            check = false;
-        } finally {
-            return check;
+            throw new DBException();
         }
     }
 
-    public boolean changeStatus(String status, int id) {
-        boolean check = true;
+    public void changeStatus(String status, int id) throws DBException {
         String sql = "UPDATE categories SET status = ? WHERE id = ?";
 
         try {
@@ -168,12 +182,8 @@ public class CategoryDAO {
 
             ps.execute();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
-            check = false;
-        } finally {
-            return check;
+            throw new DBException();
         }
-
     }
 
 }

@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.DBException;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,28 +8,29 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import model.Category;
 import model.CategoryDAO;
 import model.Combo;
 import model.Product;
 import model.ProductDAO;
 import model.Table;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import views.AdminPanel;
 
 public class ProductController implements ActionListener, MouseListener, KeyListener {
 
     private Product product;
     private ProductDAO productDAO;
-    private AdminPanel adminView;
-    private CategoryController categoryController = new CategoryController();
-
+    public AdminPanel adminView;
+    private final Table color = new Table();
+    CategoryDAO categoryDAO = new CategoryDAO(this);
     DefaultTableModel productsTable = new DefaultTableModel();
+
+    public ProductController() {
+    }
 
     public ProductController(Product product, ProductDAO productDAO, AdminPanel adminView) {
         this.product = product;
@@ -41,7 +43,9 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         this.adminView.jMenuItemReenterProduct.addActionListener(this);
         this.adminView.inputProductSearch.addKeyListener(this);
         this.adminView.productsTable.addMouseListener(this);
-        loadCategories();
+        AutoCompleteDecorator.decorate(adminView.cbxProductCategories);
+
+        loadCategoriesComboBox();
         listProducts();
     }
 
@@ -68,11 +72,16 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         product.setProductionCost(Double.parseDouble(adminView.inputProductionCost.getText()));
         product.setSellingPrice(Double.parseDouble(adminView.inputProductSellPrice.getText()));
 
-        int productCategoryId = categoryController.findCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
-
-        if (productCategoryId != -1) {
-            product.setCategoryId(productCategoryId);
+        int productCategoryId;
+        try {
+            productCategoryId = categoryDAO.retrieveCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
+            if (productCategoryId != -1) {
+                product.setCategoryId(productCategoryId);
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+
     }
 
     public void resetView() {
@@ -86,14 +95,13 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             JOptionPane.showMessageDialog(null, "Nombre y categoría son campos obligatorios.");
         } else {
             setupProduct();
-
-            if (productDAO.add(product)) {
+            try {
+                productDAO.add(product);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Producto registrado con éxito!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al registrar el producto.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         }
     }
 
@@ -101,40 +109,30 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         if (adminView.inputProductName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
-            product.setName(adminView.inputProductName.getText());
-            product.setDescription(adminView.inputProductDescription.getText());
-            product.setStock(Integer.parseInt(adminView.inputProductStock.getText()));
-            product.setProductionCost(Double.parseDouble(adminView.inputProductionCost.getText()));
-            product.setSellingPrice(Double.parseDouble(adminView.inputProductSellPrice.getText()));
-
-            int productCategoryId = categoryController.findCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
-
-            if (productCategoryId != -1) {
-                product.setCategoryId(productCategoryId);
-            }
-
+            setupProduct();
             product.setId(Integer.parseInt((adminView.inputProductId.getText())));
 
-            if (productDAO.update(product)) {
+            try {
+                productDAO.update(product);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Producto modificado con éxito!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al modificar el producto.");
-            }
 
+            } catch (DBException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
         }
     }
 
     public void deleteProduct() {
         if (!adminView.inputProductId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputProductId.getText());
-            if (productDAO.changeStatus("Discontinuado", id)) {
+            try {
+                productDAO.changeStatus("Discontinuado", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Producto dado de baja exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al intentar dar de baja el producto.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un producto para darlo de baja.");
         }
@@ -143,46 +141,50 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     public void recoverProduct() {
         if (!adminView.inputProductId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputProductId.getText());
-            if (productDAO.changeStatus("Disponible", id)) {
+            try {
+                productDAO.changeStatus("Disponible", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Producto dado de alta exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al intentar dar de alta el producto.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un producto para darlo de alta.");
         }
     }
 
     public void listProducts() {
-        Table color = new Table();
         adminView.productsTable.setDefaultRenderer(adminView.productsTable.getColumnClass(0), color);
 
-        List<Product> productsList = productDAO.getProductsList(adminView.inputProductSearch.getText());
-        productsTable = (DefaultTableModel) adminView.productsTable.getModel();
+        try {
+            List<Product> productsList = productDAO.getProductsList(adminView.inputProductSearch.getText());
+            productsTable = (DefaultTableModel) adminView.productsTable.getModel();
 
-        productsTable.setRowCount(0);
+            productsTable.setRowCount(0);
 
-        Object[] currentProduct = new Object[8];
-        for (int i = 0; i < productsList.size(); i++) {
-            currentProduct[0] = productsList.get(i).getId();
-            currentProduct[1] = productsList.get(i).getName();
-            currentProduct[2] = productsList.get(i).getDescription();
-            currentProduct[3] = productsList.get(i).getStock();
-            currentProduct[4] = productsList.get(i).getProductionCost();
-            currentProduct[5] = productsList.get(i).getSellingPrice();
-            currentProduct[6] = categoryController.findCategoryNameById(productsList.get(i).getCategoryId());
-            currentProduct[7] = productsList.get(i).getStatus();
+            Object[] currentProduct = new Object[8];
+            for (int i = 0; i < productsList.size(); i++) {
+                currentProduct[0] = productsList.get(i).getId();
+                currentProduct[1] = productsList.get(i).getName();
+                currentProduct[2] = productsList.get(i).getDescription();
+                currentProduct[3] = productsList.get(i).getStock();
+                currentProduct[4] = productsList.get(i).getProductionCost();
+                currentProduct[5] = productsList.get(i).getSellingPrice();
+                currentProduct[6] = categoryDAO.retrieveCategoryNameById(productsList.get(i).getCategoryId());
+                currentProduct[7] = productsList.get(i).getStatus();
 
-            productsTable.addRow(currentProduct);
+                productsTable.addRow(currentProduct);
+            }
+
+            adminView.productsTable.setModel(productsTable);
+            JTableHeader header = adminView.productsTable.getTableHeader();
+            header.setOpaque(false);
+            header.setBackground(Color.blue);
+            header.setForeground(Color.white);
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
 
-        adminView.productsTable.setModel(productsTable);
-        JTableHeader header = adminView.productsTable.getTableHeader();
-        header.setOpaque(false);
-        header.setBackground(Color.blue);
-        header.setForeground(Color.white);
     }
 
     private void clearProductsInput() {
@@ -213,9 +215,38 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             adminView.inputProductStock.setText(adminView.productsTable.getValueAt(row, 3).toString());
             adminView.inputProductionCost.setText(adminView.productsTable.getValueAt(row, 4).toString());
             adminView.inputProductSellPrice.setText(adminView.productsTable.getValueAt(row, 5).toString());
-            
-            int index = categoryController.findCategoryIdByName(adminView.productsTable.getValueAt(row, 6).toString());
-            adminView.cbxProductCategories.setSelectedIndex(index - 1);
+
+            int index;
+            try {
+                index = categoryDAO.retrieveCategoryIdByName(adminView.productsTable.getValueAt(row, 6).toString());
+                if ((index - 1) < adminView.cbxProductCategories.getItemCount()) {
+                    adminView.cbxProductCategories.setSelectedIndex(index - 1);
+                }
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getSource() == adminView.inputProductSearch) {
+            clearProductsTable();
+            listProducts();
+        }
+    }
+
+    public void loadCategoriesComboBox() {
+        List<String> categories;
+        try {
+            categories = categoryDAO.getCategoryNames();
+            adminView.cbxProductCategories.removeAllItems();
+            for (String category : categories) {
+                adminView.cbxProductCategories.addItem(new Combo(category));
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
@@ -242,24 +273,4 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     @Override
     public void keyPressed(KeyEvent e) {
     }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getSource() == adminView.inputProductSearch) {
-            clearProductsTable();
-            listProducts();
-        }
-    }
-
-    public void loadCategories() {
-        CategoryDAO categoryDAO = new CategoryDAO();
-        List<Category> categories = categoryDAO.getCategoriesList("");
-
-        for (int i = 0; i < categories.size(); i++) {
-            int id = categories.get(i).getId();
-            String name = categories.get(i).getName();
-            adminView.cbxProductCategories.addItem(new Combo(id, name));
-        }
-    }
-
 }
