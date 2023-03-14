@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.DBException;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +14,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import model.Category;
 import model.CategoryDAO;
-import model.Combo;
 import model.Table;
 import views.AdminPanel;
 
@@ -22,15 +22,17 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     private Category category;
     private CategoryDAO categoryDAO;
     private AdminPanel adminView;
-
+    private Table color = new Table();
+    private ProductController productController;
     DefaultTableModel categoriesTable = new DefaultTableModel();
 
     public CategoryController() {
     }
 
-    public CategoryController(Category category, CategoryDAO categoryDAO, AdminPanel adminView) {
+    public CategoryController(Category category, CategoryDAO categoryDAO, ProductController productController, AdminPanel adminView) {
         this.category = category;
         this.categoryDAO = categoryDAO;
+        this.productController = productController;
         this.adminView = adminView;
         this.adminView.btnRegisterCategory.addActionListener(this);
         this.adminView.btnUpdateCategory.addActionListener(this);
@@ -65,16 +67,16 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
 
     public void registerCategory() {
         if (adminView.inputCategoryName.getText().equals("")) {
-            System.out.println("NO HAY NADAAAAAAAAAAAA");
             JOptionPane.showMessageDialog(null, "No ingresaste ninguna categoría.");
         } else {
             category.setName(adminView.inputCategoryName.getText());
-
-            if (categoryDAO.register(category)) {
+            try {
+                categoryDAO.register(category);
                 updateView();
+                productController.loadCategoriesComboBox();
                 JOptionPane.showMessageDialog(null, "¡Categoría registrada con éxito!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al registrar la categoría.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
     }
@@ -85,30 +87,26 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         } else {
             category.setName(adminView.inputCategoryName.getText());
             category.setId(Integer.parseInt((adminView.inputCategoryId.getText())));
-
-            if (categoryDAO.update(category)) {
-                clearCategoriesTable();
-                listCategories();
-                clearCategoriesInput();
+            try {
+                categoryDAO.update(category);
+                updateView();
                 JOptionPane.showMessageDialog(null, "¡Categoría modificada con éxito!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al modificar la categoría.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         }
     }
 
     public void deleteCategory() {
         if (!adminView.inputCategoryId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCategoryId.getText());
-            if (categoryDAO.changeStatus("Inactivo", id)) {
-                clearCategoriesTable();
-                listCategories();
+            try {
+                categoryDAO.changeStatus("Inactivo", id);
+                updateView();
                 JOptionPane.showMessageDialog(null, "Categoría dada de baja exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al intentar dar de baja la categoría.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una categoría para darla de baja.");
         }
@@ -117,42 +115,45 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     public void recoverCategory() {
         if (!adminView.inputCategoryId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCategoryId.getText());
-            if (categoryDAO.changeStatus("Activo", id)) {
+            try {
+                categoryDAO.changeStatus("Activo", id);
                 updateView();
                 JOptionPane.showMessageDialog(null, "Categoría dada de alta exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al intentar dar de alta la categoría.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una categoría para darlo de alta.");
         }
     }
 
     public void listCategories() {
-        Table color = new Table();
         adminView.categoriesTable.setDefaultRenderer(adminView.categoriesTable.getColumnClass(0), color);
 
-        List<Category> categoriesList = categoryDAO.getCategoriesList(adminView.inputCategorySearch.getText());
-        categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
+        try {
+            List<Category> categoriesList = categoryDAO.getCategoriesList(adminView.inputCategorySearch.getText());
+            categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
 
-        categoriesTable.setRowCount(0);
+            categoriesTable.setRowCount(0);
 
-        Object[] currentCategory = new Object[2];
-        for (int i = 0; i < categoriesList.size(); i++) {
-            currentCategory[0] = categoriesList.get(i).getId();
-            currentCategory[1] = categoriesList.get(i).getName();
+            Object[] currentCategory = new Object[2];
+            for (int i = 0; i < categoriesList.size(); i++) {
+                currentCategory[0] = categoriesList.get(i).getId();
+                currentCategory[1] = categoriesList.get(i).getName();
 
-            categoriesTable.addRow(currentCategory);
+                categoriesTable.addRow(currentCategory);
+            }
+
+            adminView.categoriesTable.setModel(categoriesTable);
+            JTableHeader header = adminView.categoriesTable.getTableHeader();
+            header.setOpaque(false);
+            header.setBackground(Color.blue);
+            header.setForeground(Color.white);
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-
-        adminView.categoriesTable.setModel(categoriesTable);
-        JTableHeader header = adminView.categoriesTable.getTableHeader();
-        header.setOpaque(false);
-        header.setBackground(Color.blue);
-        header.setForeground(Color.white);
     }
-
+    
     private void clearCategoriesInput() {
         adminView.inputCategoryId.setText("");
         adminView.inputCategoryName.setText("");
@@ -176,6 +177,14 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     }
 
     @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getSource() == adminView.inputCategorySearch) {
+            clearCategoriesTable();
+            listCategories();
+        }
+    }
+    
+    @Override
     public void mousePressed(MouseEvent e) {
     }
 
@@ -197,27 +206,5 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
 
     @Override
     public void keyPressed(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getSource() == adminView.inputCategorySearch) {
-            clearCategoriesTable();
-            listCategories();
-        }
-    }
-
-    public int findCategoryIdByName(String categoryName) {
-        CategoryDAO finder = new CategoryDAO();
-        int id = finder.retrieveCategoryIdByName(categoryName);
-
-        return id;
-    }
-    
-    public String findCategoryNameById(int categoryId) {
-        CategoryDAO finder = new CategoryDAO();
-        String name = finder.retrieveCategoryNameById(categoryId);
-
-        return name;
     }
 }
