@@ -1,14 +1,17 @@
 package model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Combo {
     private int id;
     private String name;
 
-    public Combo() {
-    }
-    
-    public Combo(int id, String name) {
-        this.id = id;
+    public Combo(String name) {
         this.name = name;
     }
 

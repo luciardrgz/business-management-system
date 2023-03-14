@@ -1,14 +1,12 @@
 package model;
 
+import exceptions.DBException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 public class ProductDAO {
 
@@ -17,8 +15,8 @@ public class ProductDAO {
     PreparedStatement ps;
     ResultSet rs;
 
-    public boolean add(Product product) {
-        boolean check = true;
+    public void add(Product product) throws DBException {
+
         String sql = "INSERT INTO products (name, description, production_cost, stock, selling_price, id_category) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
@@ -35,15 +33,11 @@ public class ProductDAO {
             ps.execute();
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
-            System.out.println("SQL EXCEPTION EN ADD DE PRODUCT DAO");
-            check = false;
-        } finally {
-            return check;
-        }
+            throw new DBException();
+        } 
     }
 
-    public List getProductsList(String value) {
+    public List getProductsList(String value) throws DBException {
         List<Product> productsList = new ArrayList();
         CategoryDAO categoryDAO = new CategoryDAO();
 
@@ -78,14 +72,13 @@ public class ProductDAO {
                 productsList.add(currentProduct);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
+            throw new DBException();
         }
 
         return productsList;
     }
 
-    public boolean update(Product product) {
-        boolean check = true;
+    public void update(Product product) throws DBException {
         String sql = "UPDATE products SET name = ?, description = ?, stock = ?, production_cost = ?, selling_price = ?, id_category = ? WHERE id = ?";
 
         try {
@@ -102,16 +95,12 @@ public class ProductDAO {
 
             ps.execute();
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
-            check = false;
-        } finally {
-            return check;
-        }
+        } catch (SQLException ex) {
+            throw new DBException(ex);
+        } 
     }
 
-    public boolean changeStatus(String status, int id) {
-        boolean check = true;
+    public void changeStatus(String status, int id) throws DBException {
         String sql = "UPDATE products SET status = ? WHERE id = ?";
 
         try {
@@ -122,13 +111,9 @@ public class ProductDAO {
             ps.setInt(2, id);
 
             ps.execute();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
-            check = false;
-        } finally {
-            return check;
-        }
-
+        } catch (SQLException ex) {
+            throw new DBException(ex);
+        } 
     }
 
 }
