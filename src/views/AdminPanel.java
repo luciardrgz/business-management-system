@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package views;
 
 import controllers.CategoryController;
@@ -10,7 +6,6 @@ import controllers.CustomerController;
 import controllers.ProductController;
 import controllers.SupplierController;
 import controllers.UserController;
-import javax.swing.JComboBox;
 import model.Category;
 import model.CategoryDAO;
 import model.Customer;
@@ -47,7 +42,7 @@ public class AdminPanel extends javax.swing.JFrame {
         UserController userController = new UserController(user, userDAO, this);
         CustomerController customerController = new CustomerController(customer, customerDAO, this);
         ProductController productController = new ProductController(product, productDAO, this);
-        CategoryController categoryController = new CategoryController(category, categoryDAO, this);
+         CategoryController categoryController = new CategoryController(category, categoryDAO, productController, this);
         SupplierController supplierController = new SupplierController(supplier, supplierDAO, this);
     }
 
@@ -548,7 +543,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabAddProduct.setBackground(new java.awt.Color(204, 204, 204));
         jTabAddProduct.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nuevo Producto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Producto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
 
         lblProductDescription.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblProductDescription.setText("Descripción");
@@ -687,7 +682,15 @@ public class AdminPanel extends javax.swing.JFrame {
             new String [] {
                 "Id", "Producto", "Descripción", "Stock", "Costo", "Precio", "Categoría", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         productsTable.setComponentPopupMenu(jPopupProducts);
         jScrollPane1.setViewportView(productsTable);
         if (productsTable.getColumnModel().getColumnCount() > 0) {
@@ -718,7 +721,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabAddCategory.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nueva Categoría", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nueva Categoría", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
 
         lblCategoryName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblCategoryName.setText("Nombre");
@@ -844,7 +847,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabAddCustomer.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nuevo Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
 
         lblCustomerFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblCustomerFirstName.setText("Nombre");
@@ -991,7 +994,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabAddSupplier.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nuevo Proovedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Proovedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
 
         lblSupplierFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblSupplierFirstName.setText("Nombre");
@@ -1057,7 +1060,7 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addComponent(btnNewSupplier)
                         .addGap(12, 12, 12)
                         .addComponent(btnRegisterSupplier)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnUpdateSupplier))
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(lblSupplierSocial)
@@ -1362,7 +1365,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel20.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de la Empresa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel20.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Datos de la Empresa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
 
         lblBusinessOwnerName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblBusinessOwnerName.setText("Nombre");
@@ -1511,7 +1514,7 @@ public class AdminPanel extends javax.swing.JFrame {
             .addGap(0, 69, Short.MAX_VALUE)
         );
 
-        jPanel22.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nuevo Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel22.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
 
         lblUserName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblUserName.setText("Nombre de usuario");
@@ -1568,7 +1571,7 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addComponent(btnNewUser)
                         .addGap(12, 12, 12)
                         .addComponent(btnRegisterUser)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnUpdateUser))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel22Layout.createSequentialGroup()
                         .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
