@@ -1,4 +1,4 @@
-package model;
+package dao;
 
 import exceptions.DBException;
 import java.sql.Connection;
@@ -7,16 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Connector;
+import model.Product;
 
 public class ProductDAO {
 
-    Connector connector = new Connector();
-    Connection conn;
-    PreparedStatement ps;
-    ResultSet rs;
+    private final Connector connector = new Connector();
+    private Connection conn;
+    private PreparedStatement ps;
+    private ResultSet rs;
 
     public void add(Product product) throws DBException {
-
         String sql = "INSERT INTO products (name, description, production_cost, stock, selling_price, id_category) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
@@ -42,7 +43,7 @@ public class ProductDAO {
         CategoryDAO categoryDAO = new CategoryDAO();
 
         String sql = "SELECT * FROM products ORDER BY status DESC";
-        String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR id_category = ?"; //+ categoryDAO.retrieveCategoryIdByName(value);
+        String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR id_category = ?"; 
 
         try {
             conn = connector.getConn();

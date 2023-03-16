@@ -1,7 +1,6 @@
 package controllers;
 
 import exceptions.DBException;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,11 +11,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import lombok.NoArgsConstructor;
 import model.Category;
-import model.CategoryDAO;
-import model.Table;
+import dao.CategoryDAO;
+import views.Table;
 import views.AdminPanel;
 
+@NoArgsConstructor
 public class CategoryController implements ActionListener, MouseListener, KeyListener {
 
     private Category category;
@@ -24,10 +25,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     private AdminPanel adminView;
     private Table color = new Table();
     private ProductController productController;
-    DefaultTableModel categoriesTable = new DefaultTableModel();
-
-    public CategoryController() {
-    }
+    private DefaultTableModel categoriesTable = new DefaultTableModel();
 
     public CategoryController(Category category, CategoryDAO categoryDAO, ProductController productController, AdminPanel adminView) {
         this.category = category;
@@ -90,6 +88,9 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
             try {
                 categoryDAO.update(category);
                 updateView();
+                productController.loadCategoriesComboBox();
+                productController.clearProductsTable();
+                productController.listProducts();
                 JOptionPane.showMessageDialog(null, "¡Categoría modificada con éxito!");
             } catch (DBException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -146,9 +147,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
 
             adminView.categoriesTable.setModel(categoriesTable);
             JTableHeader header = adminView.categoriesTable.getTableHeader();
-            header.setOpaque(false);
-            header.setBackground(Color.blue);
-            header.setForeground(Color.white);
+ color.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

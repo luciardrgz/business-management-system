@@ -1,6 +1,5 @@
 package controllers;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,8 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import model.Customer;
-import model.CustomerDAO;
-import model.Table;
+import dao.CustomerDAO;
+import exceptions.DBException;
+import views.Table;
 import views.AdminPanel;
 
 public class CustomerController implements ActionListener, MouseListener, KeyListener {
@@ -21,8 +21,9 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
     private Customer customer;
     private CustomerDAO customerDAO;
     private AdminPanel adminView;
+    private Table color = new Table();
 
-    DefaultTableModel customersTable = new DefaultTableModel();
+    private DefaultTableModel customersTable = new DefaultTableModel();
 
     public CustomerController(Customer customer, CustomerDAO customerDAO, AdminPanel adminView) {
         this.customer = customer;
@@ -47,12 +48,24 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             updateCustomer();
         } else if (e.getSource() == adminView.jMenuItemDeleteCustomer) {
             deleteCustomer();
-        }else if(e.getSource() == adminView.jMenuItemReenterCustomer){            
+        } else if (e.getSource() == adminView.jMenuItemReenterCustomer) {
             recoverCustomer();
-        }
-        else{
+        } else {
             clearCustomersInput();
         }
+    }
+
+    public void setupCustomer() {
+        customer.setFirstName(adminView.inputCustomerFirstName.getText());
+        customer.setLastName(adminView.inputCustomerLastName.getText());
+        customer.setPhone(adminView.inputCustomerPhone.getText());
+        customer.setAddress(adminView.inputCustomerAddress.getText());
+    }
+
+    public void resetView() {
+        clearCustomersTable();
+        listCustomers();
+        clearCustomersInput();
     }
 
     public boolean checkNullFields() {
@@ -71,18 +84,14 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         if (checkNullFields() == false) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
-            customer.setFirstName(adminView.inputCustomerFirstName.getText());
-            customer.setLastName(adminView.inputCustomerLastName.getText());
-            customer.setPhone(adminView.inputCustomerPhone.getText());
-            customer.setAddress(adminView.inputCustomerAddress.getText());
+            setupCustomer();
 
-            if (customerDAO.register(customer)) {
-                clearCustomersTable();
-                listCustomers();
-                clearCustomersInput();
+            try {
+                customerDAO.register(customer);
+                resetView();
                 JOptionPane.showMessageDialog(null, "Cliente registrado exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al registrar el cliente.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
     }
@@ -92,19 +101,15 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             if (checkNullFields() == false) {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
             } else {
-                customer.setFirstName(adminView.inputCustomerFirstName.getText());
-                customer.setLastName(adminView.inputCustomerLastName.getText());
-                customer.setPhone(adminView.inputCustomerPhone.getText());
-                customer.setAddress(adminView.inputCustomerAddress.getText());
+                setupCustomer();
                 customer.setId(Integer.parseInt(adminView.inputCustomerId.getText()));
 
-                if (customerDAO.update(customer)) {
-                    clearCustomersTable();
-                    listCustomers();
-                    clearCustomersInput();
+                try {
+                    customerDAO.update(customer);
+                    resetView();
                     JOptionPane.showMessageDialog(null, "Cliente modificado exitosamente.");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al modificar el cliente.");
+                } catch (DBException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
             }
         } else {
@@ -113,31 +118,34 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
     }
 
     public void listCustomers() {
-        Table color = new Table();
+        
         adminView.customersTable.setDefaultRenderer(adminView.customersTable.getColumnClass(0), color);
 
-        List<Customer> customersList = customerDAO.getCustomersList(adminView.inputCustomerSearch.getText());
-        customersTable = (DefaultTableModel) adminView.customersTable.getModel();
+        try {
+            List<Customer> customersList = customerDAO.getCustomersList(adminView.inputCustomerSearch.getText());
+            customersTable = (DefaultTableModel) adminView.customersTable.getModel();
 
-        customersTable.setRowCount(0);
+            customersTable.setRowCount(0);
 
-        Object[] currentCustomer = new Object[6];
-        for (int i = 0; i < customersList.size(); i++) {
-            currentCustomer[0] = customersList.get(i).getId();
-            currentCustomer[1] = customersList.get(i).getFirstName();
-            currentCustomer[2] = customersList.get(i).getLastName();
-            currentCustomer[3] = customersList.get(i).getPhone();
-            currentCustomer[4] = customersList.get(i).getAddress();
-            currentCustomer[5] = customersList.get(i).getStatus();
+            Object[] currentCustomer = new Object[6];
+            for (int i = 0; i < customersList.size(); i++) {
+                currentCustomer[0] = customersList.get(i).getId();
+                currentCustomer[1] = customersList.get(i).getFirstName();
+                currentCustomer[2] = customersList.get(i).getLastName();
+                currentCustomer[3] = customersList.get(i).getPhone();
+                currentCustomer[4] = customersList.get(i).getAddress();
+                currentCustomer[5] = customersList.get(i).getStatus();
 
-            customersTable.addRow(currentCustomer);
+                customersTable.addRow(currentCustomer);
+            }
+
+            adminView.customersTable.setModel(customersTable);
+            JTableHeader header = adminView.customersTable.getTableHeader();
+             color.changeHeaderColors(header);
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
 
-        adminView.customersTable.setModel(customersTable);
-        JTableHeader header = adminView.customersTable.getTableHeader();
-        header.setOpaque(false);
-        header.setBackground(Color.blue);
-        header.setForeground(Color.white);
     }
 
     private void clearCustomersInput() {
@@ -159,37 +167,32 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         if (!adminView.inputCustomerId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCustomerId.getText());
 
-            if (customerDAO.changeStatus("Inactivo", id)) {
-                clearCustomersTable();
-                listCustomers();
-                clearCustomersInput();
+            try {
+                customerDAO.changeStatus("Inactivo", id);
+                resetView();
                 JOptionPane.showMessageDialog(null, "Cliente dado de baja exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al intentar dar de baja al cliente.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un cliente para darlo de baja.");
         }
     }
-    
-    public void recoverCustomer(){
-        if(!adminView.inputCustomerId.getText().equals("")){
-                int id = Integer.parseInt(adminView.inputCustomerId.getText());
-                if (customerDAO.changeStatus("Activo", id)){
-                    clearCustomersTable();
-                    listCustomers();
-                    clearCustomersInput();
-                    JOptionPane.showMessageDialog(null, "Cliente dado de alta exitosamente.");
-                }
-                else{
-                     JOptionPane.showMessageDialog(null, "Error al intentar dar de alta al cliente.");
-                }
-                
-                
-            }else{
-                 JOptionPane.showMessageDialog(null, "Seleccione un cliente para darlo de alta.");
+
+    public void recoverCustomer() {
+        if (!adminView.inputCustomerId.getText().equals("")) {
+            int id = Integer.parseInt(adminView.inputCustomerId.getText());
+
+            try {
+                customerDAO.changeStatus("Activo", id);
+                resetView();
+                JOptionPane.showMessageDialog(null, "Cliente dado de alta exitosamente.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un cliente para darlo de alta.");
+        }
     }
 
     @Override
@@ -202,6 +205,14 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             adminView.inputCustomerLastName.setText(adminView.customersTable.getValueAt(row, 2).toString());
             adminView.inputCustomerPhone.setText(adminView.customersTable.getValueAt(row, 3).toString());
             adminView.inputCustomerAddress.setText(adminView.customersTable.getValueAt(row, 4).toString());
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getSource() == adminView.inputCustomerSearch) {
+            clearCustomersTable();
+            listCustomers();
         }
     }
 
@@ -228,13 +239,4 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
     @Override
     public void keyPressed(KeyEvent e) {
     }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if(e.getSource() == adminView.inputCustomerSearch){
-            clearCustomersTable();
-            listCustomers();
-        }
-    }
-
 }
