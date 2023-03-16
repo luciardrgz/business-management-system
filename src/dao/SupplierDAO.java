@@ -1,28 +1,29 @@
-package model;
+package dao;
 
+import exceptions.DBException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
+import model.Connector;
+import model.Supplier;
 
 public class SupplierDAO {
-    
-    Connector connector = new Connector();
-    Connection conn;
-    PreparedStatement ps;
-    ResultSet rs;
-    
-        public boolean register(Supplier supplier){
-        boolean check = true;
+
+    private final Connector connector = new Connector();
+    private Connection conn;
+    private PreparedStatement ps;
+    private ResultSet rs;
+
+    public void register(Supplier supplier) throws DBException {
         String sql = "INSERT INTO suppliers (first_name, last_name, social_name, cuit, phone, address) VALUES (?, ?, ?, ?, ?, ?)";
-        
-        try{
+
+        try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
-            
+
             ps.setString(1, supplier.getFirstName());
             ps.setString(2, supplier.getLastName());
             ps.setString(3, supplier.getSocialName());
@@ -30,34 +31,32 @@ public class SupplierDAO {
             ps.setString(5, supplier.getPhone());
             ps.setString(6, supplier.getAddress());
             ps.execute();
-            
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e.toString());
-            check = false;
+
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
-        finally{
-           return check; 
-        }  
     }
 
-        public List getSuppliersList(String value){
+    public List getSuppliersList(String value) throws DBException {
         List<Supplier> suppliersList = new ArrayList();
-        
+
         String sql = "SELECT * FROM suppliers ORDER BY status ASC";
         String valueToSearch = "SELECT * FROM suppliers WHERE first_name LIKE '%" + value + "%' OR last_name LIKE '%" + value + "%' OR social_name LIKE '%" + value + "%'";
-        
-        try{
+
+        try {
             conn = connector.getConn();
-            
-            if(value.equalsIgnoreCase("")){
-             ps = conn.prepareStatement(sql);
-             rs = ps.executeQuery(); 
+
+            if (value.equalsIgnoreCase("")) {
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
             } else {
-             ps = conn.prepareStatement(valueToSearch);
-             rs = ps.executeQuery();
+                ps = conn.prepareStatement(valueToSearch);
+                rs = ps.executeQuery();
             }
- 
-            while(rs.next()){
+
+            while (rs.next()) {
                 Supplier currentSupplier = new Supplier();
                 currentSupplier.setId(rs.getInt("id"));
                 currentSupplier.setFirstName(rs.getString("first_name"));
@@ -67,24 +66,25 @@ public class SupplierDAO {
                 currentSupplier.setPhone(rs.getString("phone"));
                 currentSupplier.setAddress(rs.getString("address"));
                 currentSupplier.setStatus(rs.getString("status"));
-                
+
                 suppliersList.add(currentSupplier);
             }
-        } catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e.toString());
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
-        
+
         return suppliersList;
-    } 
-    
-    public boolean update(Supplier supplier){
-        boolean check = true;
+    }
+
+    public void update(Supplier supplier) throws DBException {
         String sql = "UPDATE suppliers SET first_name = ?, last_name = ?, social_name = ?, cuit = ?, phone = ?, address = ? WHERE id = ?";
-        
-        try{
+
+        try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
-            
+
             ps.setString(1, supplier.getFirstName());
             ps.setString(2, supplier.getLastName());
             ps.setString(3, supplier.getSocialName());
@@ -92,38 +92,33 @@ public class SupplierDAO {
             ps.setString(5, supplier.getPhone());
             ps.setString(6, supplier.getAddress());
             ps.setInt(7, supplier.getId());
-            
+
             ps.execute();
-            
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e.toString());
-            check = false;
+
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+           connector.closeConn(conn);
         }
-        finally{
-           return check; 
-        }  
     }
-    
-    public boolean changeStatus(String status, int id){
-         boolean check = true;
+
+    public void changeStatus(String status, int id) throws DBException {
         String sql = "UPDATE suppliers SET status = ? WHERE id = ?";
-        
-        try{
-          conn = connector.getConn();
+
+        try {
+            conn = connector.getConn();
             ps = conn.prepareStatement(sql);
-            
+
             ps.setString(1, status);
             ps.setInt(2, id);
-            
-            ps.execute();  
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e.toString());
-            check = false;
-        } finally{
-           return check; 
-        }  
-        
-            
+
+            ps.execute();
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+           connector.closeConn(conn);
+        }
+
     }
-    
+
 }

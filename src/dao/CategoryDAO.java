@@ -1,4 +1,4 @@
-package model;
+package dao;
 
 import controllers.ProductController;
 import exceptions.DBException;
@@ -8,13 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Category;
+import model.Connector;
 
 public class CategoryDAO {
 
-    Connector connector = new Connector();
-    Connection conn;
-    PreparedStatement ps;
-    ResultSet rs;
+    private final Connector connector = new Connector();
+    private Connection conn;
+    private PreparedStatement ps;
+    private ResultSet rs;
     private ProductController productController;
 
     public CategoryDAO() {
@@ -65,6 +67,8 @@ public class CategoryDAO {
             }
         } catch (SQLException e) {
             throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
 
         return categoriesList;
@@ -88,6 +92,8 @@ public class CategoryDAO {
             }
         } catch (SQLException e) {
             throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
 
         return foundCategoryId;
@@ -108,6 +114,8 @@ public class CategoryDAO {
             }
         } catch (SQLException e) {
             throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
 
         return foundCategoryName;
@@ -133,6 +141,8 @@ public class CategoryDAO {
             }
         } catch (SQLException e) {
             throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
 
         return foundCategory;
@@ -148,6 +158,8 @@ public class CategoryDAO {
             }
         } catch (DBException ex) {
             throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
 
         return categoryNames;
@@ -167,6 +179,8 @@ public class CategoryDAO {
 
         } catch (SQLException e) {
             throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
     }
 
@@ -183,6 +197,8 @@ public class CategoryDAO {
             ps.execute();
         } catch (SQLException e) {
             throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
     }
 
