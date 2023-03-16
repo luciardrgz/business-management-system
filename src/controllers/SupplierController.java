@@ -1,6 +1,5 @@
 package controllers;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,9 +10,10 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import model.Table;
+import views.Table;
 import model.Supplier;
-import model.SupplierDAO;
+import dao.SupplierDAO;
+import exceptions.DBException;
 import views.AdminPanel;
 
 public class SupplierController implements ActionListener, MouseListener, KeyListener {
@@ -21,8 +21,9 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     private Supplier supplier;
     private SupplierDAO supplierDAO;
     private AdminPanel adminView;
+     private Table color = new Table();
 
-    DefaultTableModel suppliersTable = new DefaultTableModel();
+    private DefaultTableModel suppliersTable = new DefaultTableModel();
 
     public SupplierController(Supplier supplier, SupplierDAO supplierDAO, AdminPanel adminView) {
         this.supplier = supplier;
@@ -74,13 +75,13 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         } else {
             setupSupplier();
 
-            if (supplierDAO.register(supplier)) {
+            try {
+                supplierDAO.register(supplier);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Proveedor registrado con éxito!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al registrar el proveedor.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         }
     }
 
@@ -91,27 +92,27 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             setupSupplier();
             supplier.setId(Integer.parseInt(adminView.inputSupplierId.getText()));
 
-            if (supplierDAO.update(supplier)) {
+            try {
+                supplierDAO.update(supplier);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Proveedor modificado con éxito!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al modificar el proveedor.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         }
     }
 
     public void deleteSupplier() {
         if (!adminView.inputSupplierId.getText().equals("")) {
-            int id = Integer.parseInt(adminView.inputProductId.getText());
+            int id = Integer.parseInt(adminView.inputSupplierId.getText());
 
-            if (supplierDAO.changeStatus("Inactivo", id)) {
+            try {
+                supplierDAO.changeStatus("Inactivo", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Proveedor dado de baja exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al intentar dar de baja al proveedor.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un proveedor para darlo de baja.");
         }
@@ -119,52 +120,53 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
 
     public void recoverSupplier() {
         if (!adminView.inputSupplierId.getText().equals("")) {
-            int id = Integer.parseInt(adminView.inputProductId.getText());
+            int id = Integer.parseInt(adminView.inputSupplierId.getText());
 
-            if (supplierDAO.changeStatus("Activo", id)) {
+            try {
+                supplierDAO.changeStatus("Activo", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Proveedor dado de alta exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al intentar dar de alta al proveedor.");
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un proveedor para darlo de alta.");
         }
     }
 
     public void listSuppliers() {
-        Table color = new Table();
         adminView.suppliersTable.setDefaultRenderer(adminView.suppliersTable.getColumnClass(0), color);
 
-        List<Supplier> suppliersList = supplierDAO.getSuppliersList(adminView.inputSupplierSearch.getText());
-        suppliersTable = (DefaultTableModel) adminView.suppliersTable.getModel();
+        try {
+            List<Supplier> suppliersList = supplierDAO.getSuppliersList(adminView.inputSupplierSearch.getText());
+            suppliersTable = (DefaultTableModel) adminView.suppliersTable.getModel();
 
-        suppliersTable.setRowCount(0);
+            suppliersTable.setRowCount(0);
 
-        Object[] currentSupplier = new Object[8];
-        for (int i = 0; i < suppliersList.size(); i++) {
-            currentSupplier[0] = suppliersList.get(i).getId();
-            currentSupplier[1] = suppliersList.get(i).getFirstName();
-            currentSupplier[2] = suppliersList.get(i).getLastName();
-            currentSupplier[3] = suppliersList.get(i).getSocialName();
-            currentSupplier[4] = suppliersList.get(i).getCuit();
-            currentSupplier[5] = suppliersList.get(i).getPhone();
-            currentSupplier[6] = suppliersList.get(i).getAddress();
-            currentSupplier[7] = suppliersList.get(i).getStatus();
+            Object[] currentSupplier = new Object[8];
+            for (int i = 0; i < suppliersList.size(); i++) {
+                currentSupplier[0] = suppliersList.get(i).getId();
+                currentSupplier[1] = suppliersList.get(i).getFirstName();
+                currentSupplier[2] = suppliersList.get(i).getLastName();
+                currentSupplier[3] = suppliersList.get(i).getSocialName();
+                currentSupplier[4] = suppliersList.get(i).getCuit();
+                currentSupplier[5] = suppliersList.get(i).getPhone();
+                currentSupplier[6] = suppliersList.get(i).getAddress();
+                currentSupplier[7] = suppliersList.get(i).getStatus();
 
-            suppliersTable.addRow(currentSupplier);
+                suppliersTable.addRow(currentSupplier);
+            }
+
+            adminView.suppliersTable.setModel(suppliersTable);
+            JTableHeader header = adminView.suppliersTable.getTableHeader();
+            color.changeHeaderColors(header);
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-
-        adminView.suppliersTable.setModel(suppliersTable);
-        JTableHeader header = adminView.suppliersTable.getTableHeader();
-        header.setOpaque(false);
-        header.setBackground(Color.blue);
-        header.setForeground(Color.white);
     }
 
     private void clearSuppliersInput() {
-        adminView.inputProductId.setText("");
+        adminView.inputSupplierId.setText("");
         adminView.inputSupplierFirstName.setText("");
         adminView.inputSupplierLastName.setText("");
         adminView.inputSupplierSocial.setText("");
@@ -196,6 +198,14 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     }
 
     @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getSource() == adminView.inputSupplierSearch) {
+            clearSuppliersTable();
+            listSuppliers();
+        }
+    }
+
+    @Override
     public void mousePressed(MouseEvent e) {
     }
 
@@ -217,14 +227,6 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
 
     @Override
     public void keyPressed(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getSource() == adminView.inputSupplierSearch) {
-            clearSuppliersTable();
-            listSuppliers();
-        }
     }
 
 }

@@ -1,7 +1,6 @@
 package controllers;
 
 import exceptions.DBException;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,11 +11,10 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import model.CategoryDAO;
-import model.Combo;
+import dao.CategoryDAO;
 import model.Product;
-import model.ProductDAO;
-import model.Table;
+import dao.ProductDAO;
+import views.Table;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import views.AdminPanel;
 
@@ -26,8 +24,8 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     private ProductDAO productDAO;
     public AdminPanel adminView;
     private final Table color = new Table();
-    CategoryDAO categoryDAO = new CategoryDAO(this);
-    DefaultTableModel productsTable = new DefaultTableModel();
+    private CategoryDAO categoryDAO = new CategoryDAO(this);
+    private DefaultTableModel productsTable = new DefaultTableModel();
 
     public ProductController() {
     }
@@ -81,7 +79,6 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-
     }
 
     public void resetView() {
@@ -178,13 +175,10 @@ public class ProductController implements ActionListener, MouseListener, KeyList
 
             adminView.productsTable.setModel(productsTable);
             JTableHeader header = adminView.productsTable.getTableHeader();
-            header.setOpaque(false);
-            header.setBackground(Color.blue);
-            header.setForeground(Color.white);
+            color.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-
     }
 
     private void clearProductsInput() {
@@ -225,7 +219,6 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             } catch (DBException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         }
     }
 
@@ -243,7 +236,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             categories = categoryDAO.getCategoryNames();
             adminView.cbxProductCategories.removeAllItems();
             for (String category : categories) {
-                adminView.cbxProductCategories.addItem(new Combo(category));
+                adminView.cbxProductCategories.addItem(category);
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
