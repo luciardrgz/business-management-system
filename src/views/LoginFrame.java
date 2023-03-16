@@ -1,7 +1,7 @@
 package views;
 
 import model.User;
-import model.UserDAO;
+import dao.UserDAO;
 import controllers.LoginController;
 
 public class LoginFrame extends javax.swing.JFrame {
