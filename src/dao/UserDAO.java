@@ -35,7 +35,7 @@ public class UserDAO {
                 user.setUsername(rs.getString("username"));
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
-                user.setRole(rs.getString("role"));
+                user.setRole(rs.getInt("role"));
                 user.setStatus(rs.getString("status"));
             }
         } catch (SQLException e) {
@@ -58,7 +58,7 @@ public class UserDAO {
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastName());
             ps.setString(4, user.getPassword());
-            ps.setString(5, user.getRole());
+            ps.setInt(5, user.getRole());
 
             ps.execute();
 
@@ -92,7 +92,7 @@ public class UserDAO {
                 currentUser.setUsername(rs.getString("username"));
                 currentUser.setFirstName(rs.getString("first_name"));
                 currentUser.setLastName(rs.getString("last_name"));
-                currentUser.setRole(rs.getString("role"));
+                currentUser.setRole(rs.getInt("role"));
                 currentUser.setStatus(rs.getString("status"));
 
                 usersList.add(currentUser);
@@ -116,7 +116,7 @@ public class UserDAO {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastName());
-            ps.setString(4, user.getRole());
+            ps.setInt(4, user.getRole());
             ps.setInt(5, user.getId());
 
             ps.execute();

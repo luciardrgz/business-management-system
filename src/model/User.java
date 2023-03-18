@@ -7,13 +7,13 @@ public class User {
     private String lastName;
     private String password;
     private String box;
-    private String role;
+    private int role;
     private String status;
     
     public User(){
     }
 
-    public User(int id, String username, String firstName, String lastName, String password, String box, String role, String status) {
+    public User(int id, String username, String firstName, String lastName, String password, String box, int role, String status) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -72,11 +72,11 @@ public class User {
         this.box = box;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
     }
 

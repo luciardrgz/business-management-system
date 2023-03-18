@@ -70,7 +70,9 @@ public class AdminPanel extends javax.swing.JFrame {
         jPopupSuppliers = new javax.swing.JPopupMenu();
         jMenuItemDeleteSupplier = new javax.swing.JMenuItem();
         jMenuItemReenterSupplier = new javax.swing.JMenuItem();
-        jPanel1 = new javax.swing.JPanel();
+        appTitle = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        sideMenu = new javax.swing.JPanel();
         jPanelNewSale = new javax.swing.JPanel();
         lblNewSale = new javax.swing.JLabel();
         jPanelNewBuy = new javax.swing.JPanel();
@@ -87,9 +89,7 @@ public class AdminPanel extends javax.swing.JFrame {
         lblConfiguration = new javax.swing.JLabel();
         jPanelUsers = new javax.swing.JPanel();
         lblUsers = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        header = new javax.swing.JPanel();
         txtFieldSearchProduct = new javax.swing.JTextField();
         btnUsers = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -129,9 +129,9 @@ public class AdminPanel extends javax.swing.JFrame {
         iconCategorySearch = new javax.swing.JLabel();
         btnNewCategory = new javax.swing.JButton();
         btnRegisterCategory = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        categoriesTable = new javax.swing.JTable();
         lblInstructions1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        categoriesTable = new javax.swing.JTable();
         jTabCustomers = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         lblCustomerFirstName = new javax.swing.JLabel();
@@ -149,9 +149,9 @@ public class AdminPanel extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnNewCustomer = new javax.swing.JButton();
         btnRegisterCustomer = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        customersTable = new javax.swing.JTable();
         lblInstructions2 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        customersTable = new javax.swing.JTable();
         jTabSuppliers = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         lblSupplierFirstName = new javax.swing.JLabel();
@@ -173,12 +173,10 @@ public class AdminPanel extends javax.swing.JFrame {
         lblSupplierId = new javax.swing.JLabel();
         btnRegisterSupplier = new javax.swing.JButton();
         btnNewSupplier = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        suppliersTable = new javax.swing.JTable();
         lblInstructions3 = new javax.swing.JLabel();
-        jTabUsers = new javax.swing.JPanel();
         jScrollPane10 = new javax.swing.JScrollPane();
-        usersTable = new javax.swing.JTable();
+        suppliersTable = new javax.swing.JTable();
+        jTabUsers = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         lblUserLastName = new javax.swing.JLabel();
         inputUserLastName = new javax.swing.JTextField();
@@ -198,6 +196,8 @@ public class AdminPanel extends javax.swing.JFrame {
         inputUserName = new javax.swing.JTextField();
         inputUserPass = new javax.swing.JPasswordField();
         lblInstructions4 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        usersTable = new javax.swing.JTable();
         jTabNewSale = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tableNewSale = new javax.swing.JTable();
@@ -316,11 +316,22 @@ public class AdminPanel extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1520, 800));
         getContentPane().setLayout(null);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        appTitle.setBackground(new java.awt.Color(153, 153, 153));
+        appTitle.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Montserrat Medium", 1, 16)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("OsoPanda ByM");
+        appTitle.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 55, 130, -1));
+
+        getContentPane().add(appTitle);
+        appTitle.setBounds(0, 0, 180, 130);
+
+        sideMenu.setBackground(new java.awt.Color(204, 204, 204));
+        sideMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanelNewSale.setBackground(new java.awt.Color(102, 255, 153));
         jPanelNewSale.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -342,7 +353,7 @@ public class AdminPanel extends javax.swing.JFrame {
             .addComponent(lblNewSale, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanelNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 40));
+        sideMenu.add(jPanelNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 40));
 
         jPanelNewBuy.setBackground(new java.awt.Color(102, 255, 153));
 
@@ -364,7 +375,7 @@ public class AdminPanel extends javax.swing.JFrame {
             .addComponent(lblNewBuy, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanelNewBuy, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 180, 40));
+        sideMenu.add(jPanelNewBuy, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 180, 40));
 
         jPanelProducts.setBackground(new java.awt.Color(102, 255, 153));
 
@@ -388,7 +399,7 @@ public class AdminPanel extends javax.swing.JFrame {
             .addComponent(lblProducts, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanelProducts, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 180, 40));
+        sideMenu.add(jPanelProducts, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 180, 40));
 
         jPanelCustomers.setBackground(new java.awt.Color(102, 255, 153));
 
@@ -410,7 +421,7 @@ public class AdminPanel extends javax.swing.JFrame {
             .addComponent(lblCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanelCustomers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 180, 40));
+        sideMenu.add(jPanelCustomers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 180, 40));
 
         jPanelSuppliers.setBackground(new java.awt.Color(102, 255, 153));
 
@@ -432,7 +443,7 @@ public class AdminPanel extends javax.swing.JFrame {
             .addComponent(lblSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanelSuppliers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 180, 40));
+        sideMenu.add(jPanelSuppliers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 180, 40));
 
         jPanelCategories.setBackground(new java.awt.Color(102, 255, 153));
 
@@ -458,7 +469,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addComponent(lblCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.add(jPanelCategories, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 180, 40));
+        sideMenu.add(jPanelCategories, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 180, 40));
 
         jPanelConfiguration.setBackground(new java.awt.Color(102, 255, 153));
 
@@ -484,7 +495,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addComponent(lblConfiguration, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.add(jPanelConfiguration, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 180, 40));
+        sideMenu.add(jPanelConfiguration, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 180, 40));
 
         jPanelUsers.setBackground(new java.awt.Color(102, 255, 153));
 
@@ -510,37 +521,25 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addComponent(lblUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.add(jPanelUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 180, 40));
+        sideMenu.add(jPanelUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 180, 40));
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 130, 180, 660);
+        getContentPane().add(sideMenu);
+        sideMenu.setBounds(0, 130, 180, 660);
 
-        jPanel2.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setFont(new java.awt.Font("Montserrat Medium", 1, 16)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("OsoPanda ByM");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 55, 130, -1));
-
-        getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 0, 180, 130);
-
-        jPanel3.setBackground(new java.awt.Color(102, 255, 153));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel3.add(txtFieldSearchProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 10, 230, 35));
+        header.setBackground(new java.awt.Color(102, 255, 153));
+        header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        header.add(txtFieldSearchProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 10, 230, 35));
 
         btnUsers.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnUsers.setText("Users");
-        jPanel3.add(btnUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 10, -1, 35));
+        header.add(btnUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 10, -1, 35));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/queries.png"))); // NOI18N
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 10, 40, 35));
+        header.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 10, 40, 35));
 
-        getContentPane().add(jPanel3);
-        jPanel3.setBounds(180, 0, 1350, 130);
+        getContentPane().add(header);
+        header.setBounds(180, 0, 1350, 130);
 
         jTabs.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         jTabs.setMinimumSize(new java.awt.Dimension(1300, 1080));
@@ -689,9 +688,12 @@ public class AdminPanel extends javax.swing.JFrame {
             productsTable.getColumnModel().getColumn(4).setMinWidth(70);
             productsTable.getColumnModel().getColumn(4).setPreferredWidth(70);
             productsTable.getColumnModel().getColumn(4).setMaxWidth(70);
+            productsTable.getColumnModel().getColumn(4).setHeaderValue("Costo");
             productsTable.getColumnModel().getColumn(5).setMinWidth(70);
             productsTable.getColumnModel().getColumn(5).setPreferredWidth(70);
             productsTable.getColumnModel().getColumn(5).setMaxWidth(70);
+            productsTable.getColumnModel().getColumn(5).setHeaderValue("Precio");
+            productsTable.getColumnModel().getColumn(6).setHeaderValue("Categoría");
             productsTable.getColumnModel().getColumn(7).setMinWidth(110);
             productsTable.getColumnModel().getColumn(7).setPreferredWidth(110);
             productsTable.getColumnModel().getColumn(7).setMaxWidth(110);
@@ -762,11 +764,15 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabCategories.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
+        lblInstructions1.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions1.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
+        jTabCategories.add(lblInstructions1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+
         categoriesTable.setRowHeight(30);
 
         JTableHeader categoriesHeader = categoriesTable.getTableHeader();
         categoriesHeader.setFont(headerFont);
-        categoriesTable.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        categoriesTable.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
         categoriesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -786,20 +792,15 @@ public class AdminPanel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        categoriesTable.setMinimumSize(new java.awt.Dimension(230, 64));
-        categoriesTable.setPreferredSize(new java.awt.Dimension(505, 64));
-        jScrollPane4.setViewportView(categoriesTable);
+        categoriesTable.setComponentPopupMenu(jPopupProducts);
+        jScrollPane2.setViewportView(categoriesTable);
         if (categoriesTable.getColumnModel().getColumnCount() > 0) {
             categoriesTable.getColumnModel().getColumn(0).setMinWidth(30);
             categoriesTable.getColumnModel().getColumn(0).setPreferredWidth(30);
             categoriesTable.getColumnModel().getColumn(0).setMaxWidth(30);
         }
 
-        jTabCategories.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
-
-        lblInstructions1.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        lblInstructions1.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
-        jTabCategories.add(lblInstructions1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+        jTabCategories.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
 
         jTabs.addTab("Categorías", jTabCategories);
 
@@ -887,11 +888,15 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabCustomers.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
+        lblInstructions2.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions2.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
+        jTabCustomers.add(lblInstructions2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+
         customersTable.setRowHeight(30);
 
         JTableHeader customersHeader = customersTable.getTableHeader();
         customersHeader.setFont(headerFont);
-        customersTable.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        customersTable.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
         customersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -911,24 +916,18 @@ public class AdminPanel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        customersTable.setComponentPopupMenu(jPopupCustomers);
-        customersTable.setMinimumSize(new java.awt.Dimension(230, 64));
-        customersTable.setPreferredSize(new java.awt.Dimension(505, 64));
-        jScrollPane2.setViewportView(customersTable);
+        customersTable.setComponentPopupMenu(jPopupProducts);
+        jScrollPane3.setViewportView(customersTable);
         if (customersTable.getColumnModel().getColumnCount() > 0) {
             customersTable.getColumnModel().getColumn(0).setMinWidth(30);
             customersTable.getColumnModel().getColumn(0).setPreferredWidth(30);
             customersTable.getColumnModel().getColumn(0).setMaxWidth(30);
-            customersTable.getColumnModel().getColumn(5).setMinWidth(80);
+            customersTable.getColumnModel().getColumn(5).setMinWidth(110);
             customersTable.getColumnModel().getColumn(5).setPreferredWidth(110);
             customersTable.getColumnModel().getColumn(5).setMaxWidth(110);
         }
 
-        jTabCustomers.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
-
-        lblInstructions2.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        lblInstructions2.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
-        jTabCustomers.add(lblInstructions2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+        jTabCustomers.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
 
         jTabs.addTab("Clientes", jTabCustomers);
 
@@ -1033,11 +1032,15 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabSuppliers.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
+        lblInstructions3.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions3.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
+        jTabSuppliers.add(lblInstructions3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+
         suppliersTable.setRowHeight(30);
 
         JTableHeader suppliersHeader = suppliersTable.getTableHeader();
         suppliersHeader.setFont(headerFont);
-        suppliersTable.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        suppliersTable.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
         suppliersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -1057,25 +1060,25 @@ public class AdminPanel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        suppliersTable.setComponentPopupMenu(jPopupSuppliers);
-        suppliersTable.setMinimumSize(new java.awt.Dimension(230, 64));
-        suppliersTable.setName(""); // NOI18N
-        suppliersTable.setPreferredSize(new java.awt.Dimension(505, 64));
-        jScrollPane3.setViewportView(suppliersTable);
+        suppliersTable.setComponentPopupMenu(jPopupProducts);
+        jScrollPane10.setViewportView(suppliersTable);
         if (suppliersTable.getColumnModel().getColumnCount() > 0) {
             suppliersTable.getColumnModel().getColumn(0).setMinWidth(30);
             suppliersTable.getColumnModel().getColumn(0).setPreferredWidth(30);
             suppliersTable.getColumnModel().getColumn(0).setMaxWidth(30);
-            suppliersTable.getColumnModel().getColumn(4).setMinWidth(100);
-            suppliersTable.getColumnModel().getColumn(4).setPreferredWidth(100);
-            suppliersTable.getColumnModel().getColumn(4).setMaxWidth(100);
+            suppliersTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+            suppliersTable.getColumnModel().getColumn(3).setMinWidth(110);
+            suppliersTable.getColumnModel().getColumn(3).setPreferredWidth(110);
+            suppliersTable.getColumnModel().getColumn(3).setMaxWidth(110);
+            suppliersTable.getColumnModel().getColumn(4).setMinWidth(110);
+            suppliersTable.getColumnModel().getColumn(4).setPreferredWidth(110);
+            suppliersTable.getColumnModel().getColumn(4).setMaxWidth(110);
+            suppliersTable.getColumnModel().getColumn(5).setMinWidth(110);
+            suppliersTable.getColumnModel().getColumn(5).setPreferredWidth(110);
+            suppliersTable.getColumnModel().getColumn(5).setMaxWidth(110);
         }
 
-        jTabSuppliers.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
-
-        lblInstructions3.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        lblInstructions3.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
-        jTabSuppliers.add(lblInstructions3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+        jTabSuppliers.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
 
         jTabs.addTab("Proveedores", jTabSuppliers);
 
@@ -1083,46 +1086,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabUsers.setPreferredSize(new java.awt.Dimension(1500, 514));
         jTabUsers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        usersTable.setRowHeight(30);
-
-        JTableHeader usersHeader = usersTable.getTableHeader();
-        usersHeader.setFont(headerFont);
-        usersTable.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        usersTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Id", "Usuario", "Nombre", "Apellido", "Rol", "Estado"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        usersTable.setComponentPopupMenu(jPopupUsers);
-        usersTable.setMinimumSize(new java.awt.Dimension(230, 64));
-        usersTable.setPreferredSize(new java.awt.Dimension(505, 64));
-        jScrollPane10.setViewportView(usersTable);
-        if (usersTable.getColumnModel().getColumnCount() > 0) {
-            usersTable.getColumnModel().getColumn(0).setMinWidth(30);
-            usersTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-            usersTable.getColumnModel().getColumn(0).setMaxWidth(30);
-            usersTable.getColumnModel().getColumn(5).setMinWidth(80);
-            usersTable.getColumnModel().getColumn(5).setPreferredWidth(110);
-            usersTable.getColumnModel().getColumn(5).setMaxWidth(110);
-        }
-
-        jTabUsers.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
-
-        jPanel22.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Producto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel22.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
         jPanel22.setPreferredSize(new java.awt.Dimension(410, 550));
         jPanel22.setLayout(null);
 
@@ -1211,11 +1175,51 @@ public class AdminPanel extends javax.swing.JFrame {
         inputUserPass.setBounds(158, 300, 225, 30);
 
         jTabUsers.add(jPanel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
-        jPanel22.getAccessibleContext().setAccessibleName("Nuevo Usuario");
 
         lblInstructions4.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         lblInstructions4.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
         jTabUsers.add(lblInstructions4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+
+        usersTable.setRowHeight(30);
+
+        JTableHeader usersHeader = usersTable.getTableHeader();
+        usersHeader.setFont(headerFont);
+        usersTable.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
+        usersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Usuario", "Apellido", "Rol", "Estado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        usersTable.setComponentPopupMenu(jPopupProducts);
+        jScrollPane9.setViewportView(usersTable);
+        if (usersTable.getColumnModel().getColumnCount() > 0) {
+            usersTable.getColumnModel().getColumn(0).setMinWidth(30);
+            usersTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+            usersTable.getColumnModel().getColumn(0).setMaxWidth(30);
+            usersTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+            usersTable.getColumnModel().getColumn(3).setMinWidth(60);
+            usersTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+            usersTable.getColumnModel().getColumn(3).setMaxWidth(60);
+            usersTable.getColumnModel().getColumn(4).setMinWidth(110);
+            usersTable.getColumnModel().getColumn(4).setPreferredWidth(110);
+            usersTable.getColumnModel().getColumn(4).setMaxWidth(110);
+        }
+
+        jTabUsers.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 830, 550));
 
         jTabs.addTab("Usuarios", jTabUsers);
 
@@ -1660,6 +1664,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel appTitle;
     private javax.swing.JButton btnGenerateNewSale;
     private javax.swing.JButton btnNewBusiness;
     private javax.swing.JButton btnNewBuyAdd;
@@ -1693,6 +1698,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JComboBox<Object> cbxProductCategories;
     public javax.swing.JComboBox<Object> cbxUserRole;
     public javax.swing.JTable customersTable;
+    private javax.swing.JPanel header;
     private javax.swing.JLabel iconCategorySearch;
     private javax.swing.JLabel iconCustomerSearch;
     private javax.swing.JLabel iconProductSearch;
@@ -1748,17 +1754,14 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItemReenterProduct;
     public javax.swing.JMenuItem jMenuItemReenterSupplier;
     public javax.swing.JMenuItem jMenuReenterUser;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel3;
     public javax.swing.JPanel jPanelCategories;
     public javax.swing.JPanel jPanelConfiguration;
     public javax.swing.JPanel jPanelCustomers;
@@ -1776,11 +1779,11 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JPanel jTabBuys;
     private javax.swing.JPanel jTabCategories;
     private javax.swing.JPanel jTabCustomers;
@@ -1851,6 +1854,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JTable productsTable;
     private javax.swing.JPanel salesPagination;
     private javax.swing.JTable salesTable;
+    private javax.swing.JPanel sideMenu;
     public javax.swing.JTable suppliersTable;
     private javax.swing.JTable tableNewBuy;
     private javax.swing.JTable tableNewSale;
