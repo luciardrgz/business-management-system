@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.RoleDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,6 +23,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     private final UserDAO userDAO;
     private final AdminPanel adminView;
     private DefaultTableModel usersTable = new DefaultTableModel();
+    private final RoleDAO roleDAO = new RoleDAO();
 
     public UserController(User user, UserDAO userDAO, AdminPanel adminView) {
         this.user = user;
@@ -32,8 +34,11 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         this.adminView.jMenuItemDeleteUser.addActionListener(this);
         this.adminView.jMenuReenterUser.addActionListener(this);
         this.adminView.btnNewUser.addActionListener(this);
+        this.adminView.btnNewUser.addMouseListener(this);
         this.adminView.inputUserSearch.addKeyListener(this);
         this.adminView.usersTable.addMouseListener(this);
+
+        loadRolesComboBox();
         listUsers();
     }
 
@@ -56,7 +61,14 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         user.setUsername(adminView.inputUserName.getText());
         user.setFirstName(adminView.inputUserFirstName.getText());
         user.setLastName(adminView.inputUserLastName.getText());
-        user.setRole(adminView.cbxUserRole.getSelectedItem().toString());
+
+        String roleName = adminView.cbxUserRole.getSelectedItem().toString();
+        try {
+            int roleId = roleDAO.retrieveRoleIdByName(roleName);
+            user.setRole(roleId);
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }
 
     public void resetView() {
@@ -160,7 +172,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
                 currentUser[1] = usersList.get(i).getUsername();
                 currentUser[2] = usersList.get(i).getFirstName();
                 currentUser[3] = usersList.get(i).getLastName();
-                currentUser[4] = usersList.get(i).getRole();
+                currentUser[4] = roleDAO.retrieveRoleNameById(usersList.get(i).getRole());
                 currentUser[5] = usersList.get(i).getStatus();
 
                 usersTable.addRow(currentUser);
@@ -168,7 +180,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
 
             adminView.usersTable.setModel(usersTable);
             JTableHeader header = adminView.usersTable.getTableHeader();
-             color.changeHeaderColors(header);
+            color.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -198,11 +210,27 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             adminView.inputUserName.setText(adminView.usersTable.getValueAt(row, 1).toString());
             adminView.inputUserFirstName.setText(adminView.usersTable.getValueAt(row, 2).toString());
             adminView.inputUserLastName.setText(adminView.usersTable.getValueAt(row, 3).toString());
-            adminView.cbxUserRole.setSelectedItem(adminView.usersTable.getValueAt(row, 4).toString());
+            setCboxRole(row);
 
             adminView.inputUserPass.setEnabled(false);
             adminView.btnRegisterUser.setEnabled(false);
+        }
+        if (e.getSource() == adminView.btnNewUser) {
+            adminView.inputUserPass.setEnabled(true);
+            adminView.btnRegisterUser.setEnabled(true);
+        }
+    }
 
+    private void setCboxRole(int row) {
+        int index;
+        try {
+            index = roleDAO.retrieveRoleIdByName(adminView.usersTable.getValueAt(row, 4).toString());
+            
+            if ((index - 1) < adminView.cbxUserRole.getItemCount()) {
+                adminView.cbxUserRole.setSelectedIndex(index - 1);
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
@@ -211,6 +239,19 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         if (e.getSource() == adminView.inputUserSearch) {
             clearUsersTable();
             listUsers();
+        }
+    }
+
+    public void loadRolesComboBox() {
+        List<String> roles;
+        try {
+            roles = roleDAO.getRolesNamesList();
+            adminView.cbxUserRole.removeAllItems();
+            for (String role : roles) {
+                adminView.cbxUserRole.addItem(role);
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
