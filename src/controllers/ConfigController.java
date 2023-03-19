@@ -75,6 +75,21 @@ public class ConfigController implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if(e.getSource() == adminView.lblProducts){
+            adminView.jTabs.setSelectedIndex(0);
+        }
+        else if (e.getSource() == adminView.lblCategories){
+            adminView.jTabs.setSelectedIndex(1);
+        }
+         else if (e.getSource() == adminView.lblCustomers){
+            adminView.jTabs.setSelectedIndex(2);
+        }
+        else if (e.getSource() == adminView.lblSuppliers){
+            adminView.jTabs.setSelectedIndex(3);
+        }
+        else if (e.getSource() == adminView.lblUsers){
+            adminView.jTabs.setSelectedIndex(4);
+        }
     }
 
     @Override
