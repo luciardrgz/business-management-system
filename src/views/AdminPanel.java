@@ -4,6 +4,7 @@ import controllers.CategoryController;
 import controllers.ConfigController;
 import controllers.CustomerController;
 import controllers.ProductController;
+import controllers.PurchaseController;
 import controllers.SupplierController;
 import controllers.UserController;
 import model.Category;
@@ -12,12 +13,14 @@ import model.Customer;
 import dao.CustomerDAO;
 import model.Product;
 import dao.ProductDAO;
+import dao.PurchaseDAO;
 import model.Supplier;
 import dao.SupplierDAO;
 import model.User;
 import dao.UserDAO;
 import java.awt.Font;
 import javax.swing.table.JTableHeader;
+import model.Purchase;
 
 /**
  *
@@ -35,6 +38,8 @@ public class AdminPanel extends javax.swing.JFrame {
     CategoryDAO categoryDAO = new CategoryDAO();
     Supplier supplier = new Supplier();
     SupplierDAO supplierDAO = new SupplierDAO();
+    Purchase purchase = new Purchase();
+    PurchaseDAO purchaseDAO = new PurchaseDAO();
 
     public AdminPanel() {
         initComponents();
@@ -44,6 +49,7 @@ public class AdminPanel extends javax.swing.JFrame {
         ProductController productController = new ProductController(product, productDAO, this);
         CategoryController categoryController = new CategoryController(category, categoryDAO, productController, this);
         SupplierController supplierController = new SupplierController(supplier, supplierDAO, this);
+        PurchaseController purchaseController = new PurchaseController(purchase, purchaseDAO, this);
     }
 
     /**
@@ -115,9 +121,9 @@ public class AdminPanel extends javax.swing.JFrame {
         iconProductSearch = new javax.swing.JLabel();
         lblProductStock = new javax.swing.JLabel();
         inputProductStock = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        productsTable = new javax.swing.JTable();
         lblInstructions = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        productsTable = new javax.swing.JTable();
         jTabCategories = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         lblCategoryName = new javax.swing.JLabel();
@@ -213,22 +219,24 @@ public class AdminPanel extends javax.swing.JFrame {
         txtQtyNewSaleProduct = new javax.swing.JTextField();
         btnNewSaleAddProduct = new javax.swing.JButton();
         btnGenerateNewSale = new javax.swing.JButton();
-        jTabNewBuy = new javax.swing.JPanel();
+        jTabNewPurchase = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        tableNewBuy = new javax.swing.JTable();
-        lblNewBuyProduct = new javax.swing.JLabel();
-        txtNewBuyProduct = new javax.swing.JTextField();
-        lblNewBuyPrice = new javax.swing.JLabel();
-        txtNewBuyPrice = new javax.swing.JTextField();
-        lblQtyNewBuyProduct = new javax.swing.JLabel();
-        txtQtyNewBuyProduct = new javax.swing.JTextField();
-        lblNewBuySupplier = new javax.swing.JLabel();
-        cbxNewBuySupplier = new javax.swing.JComboBox<>();
-        lblNewBuyPaymentMethod = new javax.swing.JLabel();
-        cbxNewBuyPaymentMethod = new javax.swing.JComboBox<>();
-        btnNewBuyAdd = new javax.swing.JButton();
-        lblNewBuyDate = new javax.swing.JLabel();
-        txtNewBuyDate = new javax.swing.JTextField();
+        purchasesTable = new javax.swing.JTable();
+        lblNewPurchaseProduct = new javax.swing.JLabel();
+        inputPurchaseName = new javax.swing.JTextField();
+        lblNewPurchasePrice = new javax.swing.JLabel();
+        inputPurchasePrice = new javax.swing.JTextField();
+        lblQtyNewPurchaseProduct = new javax.swing.JLabel();
+        inputPurchaseQty = new javax.swing.JTextField();
+        lblNewPurchaseSupplier = new javax.swing.JLabel();
+        cbxPurchaseSupplier = new javax.swing.JComboBox<>();
+        lblNewPurchasePaymentMethod = new javax.swing.JLabel();
+        cbxPurchasePaymentMethod = new javax.swing.JComboBox<>();
+        btnRegisterPurchase = new javax.swing.JButton();
+        lblNewPurchaseDate = new javax.swing.JLabel();
+        inputPurchaseDate = new javax.swing.JTextField();
+        lblPurchaseId = new javax.swing.JLabel();
+        inputPurchaseId = new javax.swing.JTextField();
         jTabSales = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         salesTable = new javax.swing.JTable();
@@ -316,6 +324,8 @@ public class AdminPanel extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        setMinimumSize(new java.awt.Dimension(1550, 800));
+        setPreferredSize(new java.awt.Dimension(1550, 800));
         getContentPane().setLayout(null);
 
         appTitle.setBackground(new java.awt.Color(153, 153, 153));
@@ -650,6 +660,10 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabProducts.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
+        lblInstructions.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
+        jTabProducts.add(lblInstructions, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+
         productsTable.setRowHeight(30);
 
         JTableHeader productsHeader = productsTable.getTableHeader();
@@ -676,34 +690,26 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
         productsTable.setComponentPopupMenu(jPopupProducts);
-        jScrollPane1.setViewportView(productsTable);
+        jScrollPane4.setViewportView(productsTable);
         if (productsTable.getColumnModel().getColumnCount() > 0) {
             productsTable.getColumnModel().getColumn(0).setMinWidth(30);
             productsTable.getColumnModel().getColumn(0).setPreferredWidth(30);
             productsTable.getColumnModel().getColumn(0).setMaxWidth(30);
-            productsTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-            productsTable.getColumnModel().getColumn(3).setMinWidth(60);
-            productsTable.getColumnModel().getColumn(3).setPreferredWidth(60);
-            productsTable.getColumnModel().getColumn(3).setMaxWidth(60);
-            productsTable.getColumnModel().getColumn(4).setMinWidth(70);
-            productsTable.getColumnModel().getColumn(4).setPreferredWidth(70);
-            productsTable.getColumnModel().getColumn(4).setMaxWidth(70);
-            productsTable.getColumnModel().getColumn(4).setHeaderValue("Costo");
-            productsTable.getColumnModel().getColumn(5).setMinWidth(70);
-            productsTable.getColumnModel().getColumn(5).setPreferredWidth(70);
-            productsTable.getColumnModel().getColumn(5).setMaxWidth(70);
-            productsTable.getColumnModel().getColumn(5).setHeaderValue("Precio");
-            productsTable.getColumnModel().getColumn(6).setHeaderValue("Categoría");
+            productsTable.getColumnModel().getColumn(3).setMinWidth(90);
+            productsTable.getColumnModel().getColumn(3).setPreferredWidth(90);
+            productsTable.getColumnModel().getColumn(3).setMaxWidth(90);
+            productsTable.getColumnModel().getColumn(4).setMinWidth(90);
+            productsTable.getColumnModel().getColumn(4).setPreferredWidth(90);
+            productsTable.getColumnModel().getColumn(4).setMaxWidth(90);
+            productsTable.getColumnModel().getColumn(5).setMinWidth(90);
+            productsTable.getColumnModel().getColumn(5).setPreferredWidth(90);
+            productsTable.getColumnModel().getColumn(5).setMaxWidth(90);
             productsTable.getColumnModel().getColumn(7).setMinWidth(110);
             productsTable.getColumnModel().getColumn(7).setPreferredWidth(110);
             productsTable.getColumnModel().getColumn(7).setMaxWidth(110);
         }
 
-        jTabProducts.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
-
-        lblInstructions.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        lblInstructions.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
-        jTabProducts.add(lblInstructions, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+        jTabProducts.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
 
         jTabs.addTab("Productos", jTabProducts);
 
@@ -922,9 +928,15 @@ public class AdminPanel extends javax.swing.JFrame {
             customersTable.getColumnModel().getColumn(0).setMinWidth(30);
             customersTable.getColumnModel().getColumn(0).setPreferredWidth(30);
             customersTable.getColumnModel().getColumn(0).setMaxWidth(30);
-            customersTable.getColumnModel().getColumn(5).setMinWidth(110);
-            customersTable.getColumnModel().getColumn(5).setPreferredWidth(110);
-            customersTable.getColumnModel().getColumn(5).setMaxWidth(110);
+            customersTable.getColumnModel().getColumn(3).setMinWidth(90);
+            customersTable.getColumnModel().getColumn(3).setPreferredWidth(90);
+            customersTable.getColumnModel().getColumn(3).setMaxWidth(90);
+            customersTable.getColumnModel().getColumn(4).setMinWidth(90);
+            customersTable.getColumnModel().getColumn(4).setPreferredWidth(90);
+            customersTable.getColumnModel().getColumn(4).setMaxWidth(90);
+            customersTable.getColumnModel().getColumn(5).setMinWidth(90);
+            customersTable.getColumnModel().getColumn(5).setPreferredWidth(90);
+            customersTable.getColumnModel().getColumn(5).setMaxWidth(90);
         }
 
         jTabCustomers.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 840, 550));
@@ -1286,9 +1298,9 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabs.addTab("Vender", jTabNewSale);
 
-        jTabNewBuy.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jTabNewPurchase.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tableNewBuy.setModel(new javax.swing.table.DefaultTableModel(
+        purchasesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -1299,66 +1311,77 @@ public class AdminPanel extends javax.swing.JFrame {
                 "Id", "Producto", "Cant", "Precio", "Fecha", "Proveedor", "Método de pago"
             }
         ));
-        jScrollPane6.setViewportView(tableNewBuy);
+        jScrollPane6.setViewportView(purchasesTable);
 
-        jTabNewBuy.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 78, 1006, 352));
+        jTabNewPurchase.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 78, 1006, 352));
 
-        lblNewBuyProduct.setText("Producto");
-        jTabNewBuy.add(lblNewBuyProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 20, 60, -1));
+        lblNewPurchaseProduct.setText("Producto");
+        jTabNewPurchase.add(lblNewPurchaseProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 60, -1));
 
-        txtNewBuyProduct.addActionListener(new java.awt.event.ActionListener() {
+        inputPurchaseName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNewBuyProductActionPerformed(evt);
+                inputPurchaseNameActionPerformed(evt);
             }
         });
-        jTabNewBuy.add(txtNewBuyProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 42, 180, -1));
+        jTabNewPurchase.add(inputPurchaseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 180, -1));
 
-        lblNewBuyPrice.setText("Precio unitario");
-        jTabNewBuy.add(lblNewBuyPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(352, 19, 85, -1));
+        lblNewPurchasePrice.setText("Precio unitario");
+        jTabNewPurchase.add(lblNewPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 85, -1));
 
-        txtNewBuyPrice.addActionListener(new java.awt.event.ActionListener() {
+        inputPurchasePrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNewBuyPriceActionPerformed(evt);
+                inputPurchasePriceActionPerformed(evt);
             }
         });
-        jTabNewBuy.add(txtNewBuyPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(352, 41, 94, -1));
+        jTabNewPurchase.add(inputPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 40, 94, -1));
 
-        lblQtyNewBuyProduct.setText("Cantidad");
-        jTabNewBuy.add(lblQtyNewBuyProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 20, 60, -1));
+        lblQtyNewPurchaseProduct.setText("Cantidad");
+        jTabNewPurchase.add(lblQtyNewPurchaseProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 60, -1));
 
-        txtQtyNewBuyProduct.addActionListener(new java.awt.event.ActionListener() {
+        inputPurchaseQty.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtQtyNewBuyProductActionPerformed(evt);
+                inputPurchaseQtyActionPerformed(evt);
             }
         });
-        jTabNewBuy.add(txtQtyNewBuyProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 42, 94, -1));
+        jTabNewPurchase.add(inputPurchaseQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 94, -1));
 
-        lblNewBuySupplier.setText("Proveedor");
-        jTabNewBuy.add(lblNewBuySupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 443, 84, -1));
+        lblNewPurchaseSupplier.setText("Proveedor");
+        jTabNewPurchase.add(lblNewPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 443, 84, -1));
 
-        cbxNewBuySupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTabNewBuy.add(cbxNewBuySupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 466, 153, -1));
+        cbxPurchaseSupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabNewPurchase.add(cbxPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 466, 153, -1));
 
-        lblNewBuyPaymentMethod.setText("Pagué con");
-        jTabNewBuy.add(lblNewBuyPaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 443, 60, -1));
+        lblNewPurchasePaymentMethod.setText("Pagué con");
+        jTabNewPurchase.add(lblNewPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 443, 60, -1));
 
-        cbxNewBuyPaymentMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTabNewBuy.add(cbxNewBuyPaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 466, 153, -1));
+        cbxPurchasePaymentMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabNewPurchase.add(cbxPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 466, 153, -1));
 
-        btnNewBuyAdd.setText("Agregar");
-        jTabNewBuy.add(btnNewBuyAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(565, 41, -1, -1));
+        btnRegisterPurchase.setText("Agregar");
+        jTabNewPurchase.add(btnRegisterPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 40, -1, -1));
 
-        lblNewBuyDate.setText("Fecha");
-        jTabNewBuy.add(lblNewBuyDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(465, 20, 85, -1));
+        lblNewPurchaseDate.setText("Fecha");
+        jTabNewPurchase.add(lblNewPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 20, 85, -1));
 
-        txtNewBuyDate.addActionListener(new java.awt.event.ActionListener() {
+        inputPurchaseDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNewBuyDateActionPerformed(evt);
+                inputPurchaseDateActionPerformed(evt);
             }
         });
-        jTabNewBuy.add(txtNewBuyDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(465, 42, 94, -1));
+        jTabNewPurchase.add(inputPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 40, 94, -1));
 
-        jTabs.addTab("Comprar", jTabNewBuy);
+        lblPurchaseId.setText("#");
+        jTabNewPurchase.add(lblPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 10, 20));
+
+        inputPurchaseId.setEnabled(false);
+        inputPurchaseId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputPurchaseIdActionPerformed(evt);
+            }
+        });
+        jTabNewPurchase.add(inputPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 94, -1));
+
+        jTabs.addTab("Comprar", jTabNewPurchase);
 
         jTabSales.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -1563,7 +1586,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabs.addTab("tab11", jPanel14);
 
         getContentPane().add(jTabs);
-        jTabs.setBounds(180, 140, 1340, 660);
+        jTabs.setBounds(190, 140, 1340, 660);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1576,21 +1599,21 @@ public class AdminPanel extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtQtyNewSaleProductActionPerformed
 
-    private void txtNewBuyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewBuyProductActionPerformed
+    private void inputPurchaseNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPurchaseNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNewBuyProductActionPerformed
+    }//GEN-LAST:event_inputPurchaseNameActionPerformed
 
-    private void txtNewBuyPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewBuyPriceActionPerformed
+    private void inputPurchasePriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPurchasePriceActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNewBuyPriceActionPerformed
+    }//GEN-LAST:event_inputPurchasePriceActionPerformed
 
-    private void txtQtyNewBuyProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQtyNewBuyProductActionPerformed
+    private void inputPurchaseQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPurchaseQtyActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtQtyNewBuyProductActionPerformed
+    }//GEN-LAST:event_inputPurchaseQtyActionPerformed
 
-    private void txtNewBuyDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewBuyDateActionPerformed
+    private void inputPurchaseDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPurchaseDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNewBuyDateActionPerformed
+    }//GEN-LAST:event_inputPurchaseDateActionPerformed
 
     private void btnNewBusinessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewBusinessActionPerformed
         // TODO add your handling code here:
@@ -1627,6 +1650,10 @@ public class AdminPanel extends javax.swing.JFrame {
     private void btnNewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewUserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNewUserActionPerformed
+
+    private void inputPurchaseIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPurchaseIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputPurchaseIdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1667,7 +1694,6 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel appTitle;
     private javax.swing.JButton btnGenerateNewSale;
     private javax.swing.JButton btnNewBusiness;
-    private javax.swing.JButton btnNewBuyAdd;
     public javax.swing.JButton btnNewCategory;
     public javax.swing.JButton btnNewCustomer;
     public javax.swing.JButton btnNewProduct;
@@ -1678,6 +1704,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JButton btnRegisterCategory;
     public javax.swing.JButton btnRegisterCustomer;
     public javax.swing.JButton btnRegisterProduct;
+    public javax.swing.JButton btnRegisterPurchase;
     public javax.swing.JButton btnRegisterSupplier;
     public javax.swing.JButton btnRegisterUser;
     private javax.swing.JButton btnUpdateBusiness;
@@ -1690,12 +1717,12 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel buysPagination;
     private javax.swing.JTable buysTable;
     public javax.swing.JTable categoriesTable;
-    private javax.swing.JComboBox<String> cbxNewBuyPaymentMethod;
-    private javax.swing.JComboBox<String> cbxNewBuySupplier;
     private javax.swing.JComboBox<String> cbxNewSaleCustomer;
     private javax.swing.JComboBox<String> cbxNewSalePaymentMethod;
     private javax.swing.JComboBox<String> cbxNewSaleProduct;
     public javax.swing.JComboBox<Object> cbxProductCategories;
+    public javax.swing.JComboBox<String> cbxPurchasePaymentMethod;
+    public javax.swing.JComboBox<String> cbxPurchaseSupplier;
     public javax.swing.JComboBox<Object> cbxUserRole;
     public javax.swing.JTable customersTable;
     private javax.swing.JPanel header;
@@ -1727,6 +1754,11 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JTextField inputProductSellPrice;
     public javax.swing.JTextField inputProductStock;
     public javax.swing.JTextField inputProductionCost;
+    public javax.swing.JTextField inputPurchaseDate;
+    public javax.swing.JTextField inputPurchaseId;
+    public javax.swing.JTextField inputPurchaseName;
+    public javax.swing.JTextField inputPurchasePrice;
+    public javax.swing.JTextField inputPurchaseQty;
     public javax.swing.JTextField inputSupplierAddress;
     public javax.swing.JTextField inputSupplierCUIT;
     public javax.swing.JTextField inputSupplierFirstName;
@@ -1775,10 +1807,10 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupProducts;
     private javax.swing.JPopupMenu jPopupSuppliers;
     private javax.swing.JPopupMenu jPopupUsers;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
@@ -1787,7 +1819,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPanel jTabBuys;
     private javax.swing.JPanel jTabCategories;
     private javax.swing.JPanel jTabCustomers;
-    private javax.swing.JPanel jTabNewBuy;
+    private javax.swing.JPanel jTabNewPurchase;
     private javax.swing.JPanel jTabNewSale;
     private javax.swing.JPanel jTabProducts;
     private javax.swing.JPanel jTabSales;
@@ -1816,11 +1848,11 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel lblInstructions3;
     private javax.swing.JLabel lblInstructions4;
     public javax.swing.JLabel lblNewBuy;
-    private javax.swing.JLabel lblNewBuyDate;
-    private javax.swing.JLabel lblNewBuyPaymentMethod;
-    private javax.swing.JLabel lblNewBuyPrice;
-    private javax.swing.JLabel lblNewBuyProduct;
-    private javax.swing.JLabel lblNewBuySupplier;
+    private javax.swing.JLabel lblNewPurchaseDate;
+    private javax.swing.JLabel lblNewPurchasePaymentMethod;
+    private javax.swing.JLabel lblNewPurchasePrice;
+    private javax.swing.JLabel lblNewPurchaseProduct;
+    private javax.swing.JLabel lblNewPurchaseSupplier;
     public javax.swing.JLabel lblNewSale;
     private javax.swing.JLabel lblNewSaleCustomer;
     private javax.swing.JLabel lblNewSalePaymentMethod;
@@ -1836,7 +1868,8 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel lblProductStock;
     private javax.swing.JLabel lblProductionCost;
     public javax.swing.JLabel lblProducts;
-    private javax.swing.JLabel lblQtyNewBuyProduct;
+    private javax.swing.JLabel lblPurchaseId;
+    private javax.swing.JLabel lblQtyNewPurchaseProduct;
     private javax.swing.JLabel lblQtyNewSaleProduct;
     private javax.swing.JLabel lblSupplierAddress;
     private javax.swing.JLabel lblSupplierCUIT;
@@ -1852,18 +1885,14 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel lblUserPass;
     public javax.swing.JLabel lblUsers;
     public javax.swing.JTable productsTable;
+    public javax.swing.JTable purchasesTable;
     private javax.swing.JPanel salesPagination;
     private javax.swing.JTable salesTable;
     private javax.swing.JPanel sideMenu;
     public javax.swing.JTable suppliersTable;
-    private javax.swing.JTable tableNewBuy;
     private javax.swing.JTable tableNewSale;
     private javax.swing.JTextField txtFieldSearchProduct;
-    private javax.swing.JTextField txtNewBuyDate;
-    private javax.swing.JTextField txtNewBuyPrice;
-    private javax.swing.JTextField txtNewBuyProduct;
     private javax.swing.JTextField txtNewSaleTotal;
-    private javax.swing.JTextField txtQtyNewBuyProduct;
     private javax.swing.JTextField txtQtyNewSaleProduct;
     public javax.swing.JTable usersTable;
     // End of variables declaration//GEN-END:variables
