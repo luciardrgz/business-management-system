@@ -18,10 +18,10 @@ import views.AdminPanel;
 
 public class SupplierController implements ActionListener, MouseListener, KeyListener {
 
-    private Supplier supplier;
-    private SupplierDAO supplierDAO;
-    private AdminPanel adminView;
-     private Table color = new Table();
+    private final Supplier supplier;
+    private final SupplierDAO supplierDAO;
+    private final AdminPanel adminView;
+     private final Table color = new Table();
 
     private DefaultTableModel suppliersTable = new DefaultTableModel();
 
@@ -39,7 +39,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         listSuppliers();
     }
 
-    public void setupSupplier() {
+    private void setupSupplier() {
         supplier.setFirstName(adminView.inputSupplierFirstName.getText());
         supplier.setLastName(adminView.inputSupplierLastName.getText());
         supplier.setSocialName(adminView.inputSupplierSocial.getText());
@@ -48,7 +48,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         supplier.setAddress(adminView.inputSupplierAddress.getText());
     }
 
-    public void resetView() {
+    private void resetView() {
         clearSuppliersTable();
         listSuppliers();
         clearSuppliersInput();
@@ -69,7 +69,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void registerSupplier() {
+    private void registerSupplier() {
         if (adminView.inputSupplierSocial.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
@@ -85,7 +85,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void updateSupplier() {
+    private void updateSupplier() {
         if (adminView.inputSupplierSocial.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
@@ -102,7 +102,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void deleteSupplier() {
+    private void deleteSupplier() {
         if (!adminView.inputSupplierId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputSupplierId.getText());
 
@@ -118,7 +118,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void recoverSupplier() {
+    private void recoverSupplier() {
         if (!adminView.inputSupplierId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputSupplierId.getText());
 
@@ -134,7 +134,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void listSuppliers() {
+    private void listSuppliers() {
         adminView.suppliersTable.setDefaultRenderer(adminView.suppliersTable.getColumnClass(0), color);
 
         try {
@@ -175,7 +175,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         adminView.inputSupplierAddress.setText("");
     }
 
-    public void clearSuppliersTable() {
+    private void clearSuppliersTable() {
         for (int i = 0; i < suppliersTable.getRowCount(); i++) {
             suppliersTable.removeRow(i);
             i = i - 1;

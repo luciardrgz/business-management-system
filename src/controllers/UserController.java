@@ -57,7 +57,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         }
     }
 
-    public void setupUser() {
+    private void setupUser() {
         user.setUsername(adminView.inputUserName.getText());
         user.setFirstName(adminView.inputUserFirstName.getText());
         user.setLastName(adminView.inputUserLastName.getText());
@@ -71,13 +71,13 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         }
     }
 
-    public void resetView() {
+    private void resetView() {
         clearUsersTable();
         listUsers();
         clearUsersInput();
     }
 
-    public boolean checkNullFields() {
+    private boolean checkNullFields() {
         boolean check = true;
 
         if (adminView.inputUserName.getText().equals("")
@@ -89,7 +89,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         return check;
     }
 
-    public void registerUser() {
+    private void registerUser() {
         if (checkNullFields() == false) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
@@ -107,7 +107,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         }
     }
 
-    public void updateUser() {
+    private void updateUser() {
         if (checkNullFields() == false) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
@@ -124,7 +124,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         }
     }
 
-    public void deleteUser() {
+    private void deleteUser() {
         if (!adminView.inputUserId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputUserId.getText());
 
@@ -140,7 +140,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         }
     }
 
-    public void recoverUser() {
+    private void recoverUser() {
         if (!adminView.inputUserId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputUserId.getText());
 
@@ -156,7 +156,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         }
     }
 
-    public void listUsers() {
+    private void listUsers() {
         Table color = new Table();
         adminView.usersTable.setDefaultRenderer(adminView.usersTable.getColumnClass(0), color);
 
@@ -194,7 +194,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         adminView.inputUserPass.setText("");
     }
 
-    public void clearUsersTable() {
+    private void clearUsersTable() {
         for (int i = 0; i < usersTable.getRowCount(); i++) {
             usersTable.removeRow(i);
             i = i - 1;
@@ -242,7 +242,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         }
     }
 
-    public void loadRolesComboBox() {
+    private void loadRolesComboBox() {
         List<String> roles;
         try {
             roles = roleDAO.getRolesNamesList();

@@ -52,7 +52,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void setupPurchase() {
+    private void setupPurchase() {
         purchase.setName(adminView.inputPurchaseName.getText());
         purchase.setQuantity(adminView.inputPurchaseQty.getText());
         purchase.setUnitaryPrice(Double.parseDouble(adminView.inputPurchasePrice.getText()));
@@ -81,13 +81,13 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
     }
 
-    public void resetView() {
+    private void resetView() {
         clearPurchasesTable();
         listPurchases();
         clearPurchasesInput();
     }
 
-    public void registerPurchase() {
+    private void registerPurchase() {
         if (adminView.inputPurchaseName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "El nombre del producto comprado es obligatoria.");
         } else {
@@ -102,7 +102,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void updatePurchase() {
+    private void updatePurchase() {
         if (adminView.inputPurchaseName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "El nombre del producto comprado es obligatorio.");
         } else {
@@ -120,7 +120,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void listPurchases() {
+    private void listPurchases() {
         adminView.purchasesTable.setDefaultRenderer(adminView.purchasesTable.getColumnClass(0), color);
 
         try {
@@ -161,7 +161,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         adminView.cbxPurchasePaymentMethod.setSelectedIndex(-1);
     }
 
-    public void clearPurchasesTable() {
+    private void clearPurchasesTable() {
         for (int i = 0; i < purchasesTable.getRowCount(); i++) {
             purchasesTable.removeRow(i);
             i = i - 1;
@@ -183,7 +183,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void setSupplierIndex(int row, int col) {
+    private void setSupplierIndex(int row, int col) {
         int supplierIndex;
         try {
             supplierIndex = supplierDAO.retrieveSupplierIdByName(adminView.purchasesTable.getValueAt(row, col).toString());
@@ -196,7 +196,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void setPaymentMethodIndex(int row, int col) {
+    private void setPaymentMethodIndex(int row, int col) {
         int paymentMethodIndex;
         try {
             paymentMethodIndex = paymentMethodDAO.retrievePaymentMethodIdByName(adminView.purchasesTable.getValueAt(row, col).toString());
@@ -212,7 +212,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     public void keyReleased(KeyEvent e) {
     }
 
-    public void loadSuppliersComboBox() {
+    private void loadSuppliersComboBox() {
         List<String> suppliers;
         try {
             suppliers = supplierDAO.getSupplierNames();
@@ -225,7 +225,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void loadPaymentMethodsComboBox() {
+    private void loadPaymentMethodsComboBox() {
         List<String> paymentMethods;
         try {
             paymentMethods = paymentMethodDAO.getPaymentMethodNames();
