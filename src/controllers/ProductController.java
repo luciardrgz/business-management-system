@@ -62,14 +62,17 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         }
     }
 
-    public void setupProduct() {
+    private void setupProduct() {
         product.setName(adminView.inputProductName.getText());
         product.setDescription(adminView.inputProductDescription.getText());
         product.setStock(Integer.parseInt(adminView.inputProductStock.getText()));
         product.setProductionCost(Integer.parseInt(adminView.inputProductStock.getText()));
         product.setProductionCost(Double.parseDouble(adminView.inputProductionCost.getText()));
         product.setSellingPrice(Double.parseDouble(adminView.inputProductSellPrice.getText()));
-
+        setProductCategoryId();
+    }
+    
+    private void setProductCategoryId(){
         int productCategoryId;
         try {
             productCategoryId = categoryDAO.retrieveCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
@@ -81,13 +84,13 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         }
     }
 
-    public void resetView() {
+    private void resetView() {
         clearProductsTable();
         listProducts();
         clearProductsInput();
     }
 
-    public void registerProduct() {
+    private void registerProduct() {
         if (adminView.inputProductName.getText().equals("") || adminView.cbxProductCategories.getSelectedItem().toString().equals("")) {
             JOptionPane.showMessageDialog(null, "Nombre y categoría son campos obligatorios.");
         } else {
@@ -102,7 +105,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         }
     }
 
-    public void updateProduct() {
+    private void updateProduct() {
         if (adminView.inputProductName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
@@ -120,7 +123,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         }
     }
 
-    public void deleteProduct() {
+    private void deleteProduct() {
         if (!adminView.inputProductId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputProductId.getText());
             try {
@@ -135,7 +138,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         }
     }
 
-    public void recoverProduct() {
+    private void recoverProduct() {
         if (!adminView.inputProductId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputProductId.getText());
             try {

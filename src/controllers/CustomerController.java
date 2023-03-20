@@ -18,10 +18,10 @@ import views.AdminPanel;
 
 public class CustomerController implements ActionListener, MouseListener, KeyListener {
 
-    private Customer customer;
-    private CustomerDAO customerDAO;
-    private AdminPanel adminView;
-    private Table color = new Table();
+    private final Customer customer;
+    private final CustomerDAO customerDAO;
+    private final AdminPanel adminView;
+    private final Table color = new Table();
 
     private DefaultTableModel customersTable = new DefaultTableModel();
 
@@ -55,20 +55,20 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void setupCustomer() {
+    private void setupCustomer() {
         customer.setFirstName(adminView.inputCustomerFirstName.getText());
         customer.setLastName(adminView.inputCustomerLastName.getText());
         customer.setPhone(adminView.inputCustomerPhone.getText());
         customer.setAddress(adminView.inputCustomerAddress.getText());
     }
 
-    public void resetView() {
+    private void resetView() {
         clearCustomersTable();
         listCustomers();
         clearCustomersInput();
     }
 
-    public boolean checkNullFields() {
+    private boolean checkNullFields() {
         boolean check = true;
 
         if (adminView.inputCustomerFirstName.getText().equals("")
@@ -80,7 +80,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         return check;
     }
 
-    public void registerCustomer() {
+    private void registerCustomer() {
         if (checkNullFields() == false) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
@@ -96,7 +96,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void updateCustomer() {
+    private void updateCustomer() {
         if (!adminView.inputCustomerId.getText().equals("")) {
             if (checkNullFields() == false) {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
@@ -117,8 +117,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void listCustomers() {
-        
+    private void listCustomers() {   
         adminView.customersTable.setDefaultRenderer(adminView.customersTable.getColumnClass(0), color);
 
         try {
@@ -156,14 +155,14 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         adminView.inputCustomerAddress.setText("");
     }
 
-    public void clearCustomersTable() {
+    private void clearCustomersTable() {
         for (int i = 0; i < customersTable.getRowCount(); i++) {
             customersTable.removeRow(i);
             i = i - 1;
         }
     }
 
-    public void deleteCustomer() {
+    private void deleteCustomer() {
         if (!adminView.inputCustomerId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCustomerId.getText());
 
@@ -179,7 +178,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void recoverCustomer() {
+    private void recoverCustomer() {
         if (!adminView.inputCustomerId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCustomerId.getText());
 

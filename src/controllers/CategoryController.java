@@ -57,13 +57,13 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void updateView() {
+    private void updateView() {
         clearCategoriesTable();
         listCategories();
         clearCategoriesInput();
     }
 
-    public void registerCategory() {
+    private void registerCategory() {
         if (adminView.inputCategoryName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "No ingresaste ninguna categoría.");
         } else {
@@ -79,7 +79,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void updateCategory() {
+    private void updateCategory() {
         if (adminView.inputCategoryName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "No ingresaste ninguna categoría.");
         } else {
@@ -98,7 +98,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void deleteCategory() {
+    private void deleteCategory() {
         if (!adminView.inputCategoryId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCategoryId.getText());
             try {
@@ -113,7 +113,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    public void recoverCategory() {
+    private void recoverCategory() {
         if (!adminView.inputCategoryId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCategoryId.getText());
             try {
@@ -158,7 +158,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         adminView.inputCategoryName.setText("");
     }
 
-    public void clearCategoriesTable() {
+    private void clearCategoriesTable() {
         for (int i = 0; i < categoriesTable.getRowCount(); i++) {
             categoriesTable.removeRow(i);
             i = i - 1;
