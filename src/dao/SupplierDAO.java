@@ -78,6 +78,23 @@ public class SupplierDAO {
         return suppliersList;
     }
 
+    public List<String> getSupplierNames() throws DBException {
+        List<Supplier> suppliers;
+        List<String> supplierNames = new ArrayList<>();
+        try {
+            suppliers = getSuppliersList("");
+            for (Supplier supplier : suppliers) {
+                supplierNames.add(supplier.getSocialName());
+            }
+        } catch (DBException ex) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+
+        return supplierNames;
+    }
+
     public void update(Supplier supplier) throws DBException {
         String sql = "UPDATE suppliers SET first_name = ?, last_name = ?, social_name = ?, cuit = ?, phone = ?, address = ? WHERE id = ?";
 
@@ -98,7 +115,7 @@ public class SupplierDAO {
         } catch (SQLException e) {
             throw new DBException();
         } finally {
-           connector.closeConn(conn);
+            connector.closeConn(conn);
         }
     }
 
@@ -116,9 +133,54 @@ public class SupplierDAO {
         } catch (SQLException e) {
             throw new DBException();
         } finally {
-           connector.closeConn(conn);
+            connector.closeConn(conn);
+        }
+    }
+
+    public int retrieveSupplierIdByName(String supplierName) throws DBException {
+        int foundSupplierId = -1;
+
+        String sql = "SELECT id FROM suppliers WHERE social_name LIKE ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + supplierName + "%");
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                foundSupplierId = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+        return foundSupplierId;
+    }
+
+    public String retrieveSupplierNameById(int supplierId) throws DBException {
+        String foundSupplierName = null;
+        String sql = "SELECT social_name FROM suppliers WHERE id = ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, supplierId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                foundSupplierName = rs.getString("social_name");
+            }
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
 
+        return foundSupplierName;
     }
 
 }
