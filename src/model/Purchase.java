@@ -14,6 +14,7 @@ public class Purchase {
     private double unitaryPrice;
     private String date;
     private int supplier;
-    private int paymentMethod;
+    //private int paymentMethod;
+    private Enum EPaymentMethod;
     private Enum EStatus;
 }
