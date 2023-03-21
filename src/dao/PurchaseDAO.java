@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Connector;
+import model.EPaymentMethod;
 import model.EStatus;
 import model.Purchase;
 
@@ -30,10 +31,11 @@ public class PurchaseDAO {
             ps.setDouble(3, purchase.getUnitaryPrice());
             ps.setString(4, purchase.getDate());
             ps.setInt(5, purchase.getSupplier());
-            ps.setInt(6, purchase.getPaymentMethod());
+            ps.setString(6, purchase.getEPaymentMethod().toString());
             ps.setString(7, purchase.getEStatus().toString());
-
+            
             ps.execute();
+
         } catch (SQLException e) {
             throw new DBException();
         }
@@ -67,10 +69,13 @@ public class PurchaseDAO {
                 currentPurchase.setUnitaryPrice(rs.getDouble("unitary_price"));
                 currentPurchase.setDate(rs.getString("date"));
                 currentPurchase.setSupplier(rs.getInt("supplier"));
-                currentPurchase.setPaymentMethod(rs.getInt("payment_method"));
+
+                EPaymentMethod paymentMethod = EPaymentMethod.valueOf(rs.getString("payment_method"));
+                currentPurchase.setEPaymentMethod(paymentMethod);
+
                 EStatus status = EStatus.valueOf(rs.getString("status"));
                 currentPurchase.setEStatus(status);
-                
+
                 purchasesList.add(currentPurchase);
             }
         } catch (SQLException e) {
@@ -92,7 +97,7 @@ public class PurchaseDAO {
             ps.setDouble(3, purchase.getUnitaryPrice());
             ps.setString(4, purchase.getDate());
             ps.setDouble(5, purchase.getSupplier());
-            ps.setInt(6, purchase.getPaymentMethod());
+            ps.setString(6, purchase.getEPaymentMethod().toString());
             ps.setString(7, purchase.getEStatus().toString());
             ps.setInt(8, purchase.getId());
 

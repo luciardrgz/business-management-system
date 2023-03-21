@@ -2,7 +2,6 @@ package controllers;
 
 import dao.PurchaseDAO;
 import dao.SupplierDAO;
-import dao.PaymentMethodDAO;
 import exceptions.DBException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +13,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import model.EPaymentMethod;
 import model.EStatus;
 import model.Purchase;
 import views.AdminPanel;
@@ -26,7 +26,6 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     public AdminPanel adminView;
     private final Table color = new Table();
     private SupplierDAO supplierDAO = new SupplierDAO();
-    private PaymentMethodDAO paymentMethodDAO = new PaymentMethodDAO();
     private DefaultTableModel purchasesTable = new DefaultTableModel();
 
     public PurchaseController() {
@@ -72,8 +71,6 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         purchase.setDate(adminView.inputPurchaseDate.getText());
 
         int purchaseSupplierId;
-        int paymentMethodId;
-
         try {
             purchaseSupplierId = supplierDAO.retrieveSupplierIdByName(adminView.cbxPurchaseSupplier.getSelectedItem().toString());
             if (purchaseSupplierId != -1) {
@@ -83,17 +80,11 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
 
-        try {
-            paymentMethodId = paymentMethodDAO.retrievePaymentMethodIdByName(adminView.cbxPurchasePaymentMethod.getSelectedItem().toString());
-            if (paymentMethodId != -1) {
-                purchase.setPaymentMethod(paymentMethodId);
-            }
-        } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
+        EPaymentMethod paymentMethod = EPaymentMethod.nameForUserToConstant(adminView.cbxPurchasePaymentMethod.getSelectedItem().toString());
+        purchase.setEPaymentMethod(paymentMethod);
 
-        purchase.setEStatus(EStatus.valueOf(adminView.cbxPurchaseStatus.getSelectedItem().toString()));
-
+        EStatus status = EStatus.nameForUserToConstant(adminView.cbxPurchaseStatus.getSelectedItem().toString());
+        purchase.setEStatus(status);
     }
 
     private void resetView() {
@@ -152,9 +143,15 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
                 currentPurchase[3] = purchasesList.get(i).getUnitaryPrice();
                 currentPurchase[4] = purchasesList.get(i).getDate();
                 currentPurchase[5] = supplierDAO.retrieveSupplierNameById(purchasesList.get(i).getSupplier());
-                currentPurchase[6] = paymentMethodDAO.retrievePaymentMethodNameById(purchasesList.get(i).getPaymentMethod());
-                currentPurchase[7] = purchasesList.get(i).getEStatus() != null ? purchasesList.get(i).getEStatus().toString() : "";
 
+                Enum currentPaymentMethodEnum = purchasesList.get(i).getEPaymentMethod();
+                EPaymentMethod currentPaymentMethod = EPaymentMethod.valueOf(currentPaymentMethodEnum.name());
+                currentPurchase[6] = currentPaymentMethod.getNameForUser();
+                
+                Enum currentStatusEnum = purchasesList.get(i).getEStatus();
+                EStatus currentStatus = EStatus.valueOf(currentStatusEnum.name());
+                currentPurchase[7] = currentStatus.getNameForUser();
+                
                 purchasesTable.addRow(currentPurchase);
             }
 
@@ -196,7 +193,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             adminView.inputPurchasePrice.setText(adminView.purchasesTable.getValueAt(row, 3).toString());
             adminView.inputPurchaseDate.setText(adminView.purchasesTable.getValueAt(row, 4).toString());
             setSupplierIndex(row, 5);
-            setPaymentMethodIndex(row, 6);
+            setPaymentMethodIndex(adminView.purchasesTable.getValueAt(row, 6).toString());
             setStatusIndex(adminView.purchasesTable.getValueAt(row, 7).toString());
         }
     }
@@ -214,15 +211,18 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    private void setPaymentMethodIndex(int row, int col) {
-        int paymentMethodIndex;
-        try {
-            paymentMethodIndex = paymentMethodDAO.retrievePaymentMethodIdByName(adminView.purchasesTable.getValueAt(row, col).toString());
-            if ((paymentMethodIndex - 1) < adminView.cbxPurchasePaymentMethod.getItemCount()) {
-                adminView.cbxPurchasePaymentMethod.setSelectedIndex(paymentMethodIndex - 1);
+    private void setPaymentMethodIndex(String paymentMethod) {
+        EPaymentMethod[] paymentMethods = EPaymentMethod.values();
+        int purchasePaymentMethodIndex = -1;
+        
+        for (int i = 0; i < paymentMethods.length; i++) {
+            if (paymentMethods[i].getNameForUser().equals(paymentMethod)) {
+                purchasePaymentMethodIndex = i;
+                break;
             }
-        } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        if (purchasePaymentMethodIndex != -1) {
+            adminView.cbxPurchasePaymentMethod.setSelectedIndex(purchasePaymentMethodIndex);
         }
     }
 
@@ -230,7 +230,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         EStatus[] statuses = EStatus.values();
         int purchaseStatusIndex = -1;
         for (int i = 0; i < statuses.length; i++) {
-            if (statuses[i].toString().equals(purchaseStatus)) {
+            if (statuses[i].getNameForUser().equals(purchaseStatus)) {
                 purchaseStatusIndex = i;
                 break;
             }
@@ -254,15 +254,12 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     }
 
     private void loadPaymentMethodsComboBox() {
-        List<String> paymentMethods;
-        try {
-            paymentMethods = paymentMethodDAO.getPaymentMethodNames();
-            adminView.cbxPurchasePaymentMethod.removeAllItems();
-            for (String paymentMethod : paymentMethods) {
-                adminView.cbxPurchasePaymentMethod.addItem(paymentMethod);
-            }
-        } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+        EPaymentMethod[] paymentMethods;
+
+        paymentMethods = EPaymentMethod.class.getEnumConstants();
+        adminView.cbxPurchasePaymentMethod.removeAllItems();
+        for (EPaymentMethod paymentMethod : paymentMethods) {
+            adminView.cbxPurchasePaymentMethod.addItem(paymentMethod.getNameForUser());
         }
     }
 
@@ -272,7 +269,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         statuses = EStatus.class.getEnumConstants();
         adminView.cbxPurchaseStatus.removeAllItems();
         for (EStatus status : statuses) {
-            adminView.cbxPurchaseStatus.addItem(status.name());
+            adminView.cbxPurchaseStatus.addItem(status.getNameForUser());
         }
     }
 
@@ -280,7 +277,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         if (!adminView.inputPurchaseId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputPurchaseId.getText());
             try {
-                purchaseDAO.changeStatus(EStatus.CANCELADA.name(), id);
+                purchaseDAO.changeStatus(EStatus.CANCELLED.name(), id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Compra cancelada exitosamente.");
             } catch (DBException ex) {
@@ -295,7 +292,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         if (!adminView.inputPurchaseId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputPurchaseId.getText());
             try {
-                purchaseDAO.changeStatus(EStatus.REALIZADA.name(), id);
+                purchaseDAO.changeStatus(EStatus.DONE.name(), id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Compra reactivada exitosamente.");
             } catch (DBException ex) {
