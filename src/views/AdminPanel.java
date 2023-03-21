@@ -76,6 +76,9 @@ public class AdminPanel extends javax.swing.JFrame {
         jPopupSuppliers = new javax.swing.JPopupMenu();
         jMenuItemDeleteSupplier = new javax.swing.JMenuItem();
         jMenuItemReenterSupplier = new javax.swing.JMenuItem();
+        jPopupPurchases = new javax.swing.JPopupMenu();
+        jMenuItemDeletePurchase = new javax.swing.JMenuItem();
+        jMenuItemReenterPurchase = new javax.swing.JMenuItem();
         appTitle = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         sideMenu = new javax.swing.JPanel();
@@ -222,21 +225,29 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabNewPurchase = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         purchasesTable = new javax.swing.JTable();
-        lblNewPurchaseProduct = new javax.swing.JLabel();
+        lblPurchaseId = new javax.swing.JLabel();
+        inputPurchaseId = new javax.swing.JTextField();
+        lblPurchaseName = new javax.swing.JLabel();
         inputPurchaseName = new javax.swing.JTextField();
-        lblNewPurchasePrice = new javax.swing.JLabel();
-        inputPurchasePrice = new javax.swing.JTextField();
-        lblQtyNewPurchaseProduct = new javax.swing.JLabel();
+        lblPurchaseQty = new javax.swing.JLabel();
         inputPurchaseQty = new javax.swing.JTextField();
+        lblPurchasePrice = new javax.swing.JLabel();
+        inputPurchasePrice = new javax.swing.JTextField();
+        lblPurchaseDate = new javax.swing.JLabel();
+        inputPurchaseDate = new javax.swing.JTextField();
         lblNewPurchaseSupplier = new javax.swing.JLabel();
         cbxPurchaseSupplier = new javax.swing.JComboBox<>();
         lblNewPurchasePaymentMethod = new javax.swing.JLabel();
         cbxPurchasePaymentMethod = new javax.swing.JComboBox<>();
+        lblPurchaseStatus = new javax.swing.JLabel();
+        cbxPurchaseStatus = new javax.swing.JComboBox<>();
+        searchPurchasePanel = new javax.swing.JPanel();
+        inputPurchaseSearch = new javax.swing.JTextField();
+        iconPurchaseSearch = new javax.swing.JLabel();
+        btnCleanPurchaseSearch = new javax.swing.JButton();
         btnRegisterPurchase = new javax.swing.JButton();
-        lblNewPurchaseDate = new javax.swing.JLabel();
-        inputPurchaseDate = new javax.swing.JTextField();
-        lblPurchaseId = new javax.swing.JLabel();
-        inputPurchaseId = new javax.swing.JTextField();
+        btnUpdatePurchase = new javax.swing.JButton();
+        btnClearPurchase = new javax.swing.JButton();
         jTabSales = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         salesTable = new javax.swing.JTable();
@@ -268,10 +279,12 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jMenuItemDeleteUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
         jMenuItemDeleteUser.setText("Eliminar");
+        jMenuItemDeleteUser.setComponentPopupMenu(jPopupUsers);
         jPopupUsers.add(jMenuItemDeleteUser);
 
         jMenuReenterUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
         jMenuReenterUser.setText("Reingresar");
+        jMenuReenterUser.setComponentPopupMenu(jPopupUsers);
         jMenuReenterUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuReenterUserActionPerformed(evt);
@@ -281,6 +294,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jMenuItemDeleteCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
         jMenuItemDeleteCustomer.setText("Eliminar");
+        jMenuItemDeleteCustomer.setComponentPopupMenu(jPopupCustomers);
         jMenuItemDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemDeleteCustomerActionPerformed(evt);
@@ -290,6 +304,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jMenuItemReenterCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
         jMenuItemReenterCustomer.setText("Reingresar");
+        jMenuItemReenterCustomer.setComponentPopupMenu(jPopupCustomers);
         jPopupCustomers.add(jMenuItemReenterCustomer);
 
         jPopupProducts.setComponentPopupMenu(jPopupProducts);
@@ -297,10 +312,12 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jMenuItemDeleteProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
         jMenuItemDeleteProduct.setText("Eliminar");
+        jMenuItemDeleteProduct.setComponentPopupMenu(jPopupProducts);
         jPopupProducts.add(jMenuItemDeleteProduct);
 
         jMenuItemReenterProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
         jMenuItemReenterProduct.setText("Reingresar");
+        jMenuItemReenterProduct.setComponentPopupMenu(jPopupProducts);
         jMenuItemReenterProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemReenterProductActionPerformed(evt);
@@ -309,23 +326,36 @@ public class AdminPanel extends javax.swing.JFrame {
         jPopupProducts.add(jMenuItemReenterProduct);
 
         jMenuItemDeleteCategory.setText("jMenuItem1");
+        jMenuItemDeleteCategory.setComponentPopupMenu(jPopupCategories);
         jPopupCategories.add(jMenuItemDeleteCategory);
 
         jMenuItemReenterCategory.setText("jMenuItem2");
+        jMenuItemReenterCategory.setComponentPopupMenu(jPopupCategories);
         jPopupCategories.add(jMenuItemReenterCategory);
 
         jMenuItemDeleteSupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
         jMenuItemDeleteSupplier.setText("Eliminar");
+        jMenuItemDeleteSupplier.setComponentPopupMenu(jPopupSuppliers);
         jPopupSuppliers.add(jMenuItemDeleteSupplier);
 
         jMenuItemReenterSupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
         jMenuItemReenterSupplier.setText("Reingresar");
+        jMenuItemReenterSupplier.setComponentPopupMenu(jPopupSuppliers);
         jPopupSuppliers.add(jMenuItemReenterSupplier);
+
+        jMenuItemDeletePurchase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
+        jMenuItemDeletePurchase.setText("Eliminar");
+        jMenuItemDeletePurchase.setComponentPopupMenu(jPopupPurchases);
+        jPopupPurchases.add(jMenuItemDeletePurchase);
+
+        jMenuItemReenterPurchase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
+        jMenuItemReenterPurchase.setText("Reingresar");
+        jMenuItemReenterPurchase.setComponentPopupMenu(jPopupPurchases);
+        jPopupPurchases.add(jMenuItemReenterPurchase);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         setMinimumSize(new java.awt.Dimension(1550, 800));
-        setPreferredSize(new java.awt.Dimension(1550, 800));
         getContentPane().setLayout(null);
 
         appTitle.setBackground(new java.awt.Color(153, 153, 153));
@@ -661,6 +691,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabProducts.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
         lblInstructions.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions.setForeground(new java.awt.Color(0, 0, 0));
         lblInstructions.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
         jTabProducts.add(lblInstructions, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
 
@@ -771,6 +802,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabCategories.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
         lblInstructions1.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions1.setForeground(new java.awt.Color(0, 0, 0));
         lblInstructions1.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
         jTabCategories.add(lblInstructions1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
 
@@ -895,6 +927,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabCustomers.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
         lblInstructions2.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions2.setForeground(new java.awt.Color(0, 0, 0));
         lblInstructions2.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
         jTabCustomers.add(lblInstructions2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
 
@@ -1045,6 +1078,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabSuppliers.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
         lblInstructions3.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions3.setForeground(new java.awt.Color(0, 0, 0));
         lblInstructions3.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
         jTabSuppliers.add(lblInstructions3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
 
@@ -1189,6 +1223,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabUsers.add(jPanel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
         lblInstructions4.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions4.setForeground(new java.awt.Color(0, 0, 0));
         lblInstructions4.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
         jTabUsers.add(lblInstructions4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
 
@@ -1298,80 +1333,42 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jTabs.addTab("Vender", jTabNewSale);
 
+        jTabNewPurchase.setBackground(new java.awt.Color(204, 204, 255));
         jTabNewPurchase.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        purchasesTable.setRowHeight(30);
+
+        JTableHeader purchasesHeader = purchasesTable.getTableHeader();
+        purchasesHeader.setFont(headerFont);
+        purchasesTable.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
         purchasesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Producto", "Cant", "Precio", "Fecha", "Proveedor", "Método de pago"
+                "Id", "Producto", "Cant", "Precio", "Fecha", "Proveedor", "Método de pago", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        purchasesTable.setComponentPopupMenu(jPopupPurchases);
         jScrollPane6.setViewportView(purchasesTable);
 
-        jTabNewPurchase.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 78, 1006, 352));
+        jTabNewPurchase.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 1280, 430));
 
-        lblNewPurchaseProduct.setText("Producto");
-        jTabNewPurchase.add(lblNewPurchaseProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 60, -1));
-
-        inputPurchaseName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputPurchaseNameActionPerformed(evt);
-            }
-        });
-        jTabNewPurchase.add(inputPurchaseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 180, -1));
-
-        lblNewPurchasePrice.setText("Precio unitario");
-        jTabNewPurchase.add(lblNewPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 85, -1));
-
-        inputPurchasePrice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputPurchasePriceActionPerformed(evt);
-            }
-        });
-        jTabNewPurchase.add(inputPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 40, 94, -1));
-
-        lblQtyNewPurchaseProduct.setText("Cantidad");
-        jTabNewPurchase.add(lblQtyNewPurchaseProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 60, -1));
-
-        inputPurchaseQty.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputPurchaseQtyActionPerformed(evt);
-            }
-        });
-        jTabNewPurchase.add(inputPurchaseQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 94, -1));
-
-        lblNewPurchaseSupplier.setText("Proveedor");
-        jTabNewPurchase.add(lblNewPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 443, 84, -1));
-
-        cbxPurchaseSupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTabNewPurchase.add(cbxPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 466, 153, -1));
-
-        lblNewPurchasePaymentMethod.setText("Pagué con");
-        jTabNewPurchase.add(lblNewPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 443, 60, -1));
-
-        cbxPurchasePaymentMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTabNewPurchase.add(cbxPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 466, 153, -1));
-
-        btnRegisterPurchase.setText("Agregar");
-        jTabNewPurchase.add(btnRegisterPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 40, -1, -1));
-
-        lblNewPurchaseDate.setText("Fecha");
-        jTabNewPurchase.add(lblNewPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 20, 85, -1));
-
-        inputPurchaseDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputPurchaseDateActionPerformed(evt);
-            }
-        });
-        jTabNewPurchase.add(inputPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 40, 94, -1));
-
+        lblPurchaseId.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        lblPurchaseId.setForeground(new java.awt.Color(0, 0, 0));
         lblPurchaseId.setText("#");
-        jTabNewPurchase.add(lblPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 10, 20));
+        jTabNewPurchase.add(lblPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 10, 10));
 
         inputPurchaseId.setEnabled(false);
         inputPurchaseId.addActionListener(new java.awt.event.ActionListener() {
@@ -1379,7 +1376,116 @@ public class AdminPanel extends javax.swing.JFrame {
                 inputPurchaseIdActionPerformed(evt);
             }
         });
-        jTabNewPurchase.add(inputPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 94, -1));
+        jTabNewPurchase.add(inputPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 60, 30));
+
+        lblPurchaseName.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        lblPurchaseName.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchaseName.setText("Producto");
+        jTabNewPurchase.add(lblPurchaseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 60, -1));
+
+        inputPurchaseName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputPurchaseNameActionPerformed(evt);
+            }
+        });
+        jTabNewPurchase.add(inputPurchaseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 40, 250, 30));
+
+        lblPurchaseQty.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        lblPurchaseQty.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchaseQty.setText("Cantidad");
+        jTabNewPurchase.add(lblPurchaseQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 60, -1));
+
+        inputPurchaseQty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputPurchaseQtyActionPerformed(evt);
+            }
+        });
+        jTabNewPurchase.add(inputPurchaseQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 40, 60, 30));
+
+        lblPurchasePrice.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        lblPurchasePrice.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchasePrice.setText("Precio unitario");
+        jTabNewPurchase.add(lblPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 90, -1));
+
+        inputPurchasePrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputPurchasePriceActionPerformed(evt);
+            }
+        });
+        jTabNewPurchase.add(inputPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, 90, 30));
+
+        lblPurchaseDate.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        lblPurchaseDate.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchaseDate.setText("Fecha");
+        jTabNewPurchase.add(lblPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 20, 85, -1));
+
+        inputPurchaseDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputPurchaseDateActionPerformed(evt);
+            }
+        });
+        jTabNewPurchase.add(inputPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, 94, 30));
+
+        lblNewPurchaseSupplier.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        lblNewPurchaseSupplier.setForeground(new java.awt.Color(0, 0, 0));
+        lblNewPurchaseSupplier.setText("Proveedor");
+        jTabNewPurchase.add(lblNewPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 70, -1));
+
+        cbxPurchaseSupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabNewPurchase.add(cbxPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 40, 170, 30));
+
+        lblNewPurchasePaymentMethod.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        lblNewPurchasePaymentMethod.setForeground(new java.awt.Color(0, 0, 0));
+        lblNewPurchasePaymentMethod.setText("Pagué con");
+        jTabNewPurchase.add(lblNewPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 20, 70, -1));
+
+        cbxPurchasePaymentMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabNewPurchase.add(cbxPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 40, 153, 30));
+
+        lblPurchaseStatus.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        lblPurchaseStatus.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchaseStatus.setText("Estado");
+        jTabNewPurchase.add(lblPurchaseStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 20, 85, -1));
+
+        cbxPurchaseStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabNewPurchase.add(cbxPurchaseStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 40, 110, 30));
+
+        searchPurchasePanel.setBackground(new java.awt.Color(204, 204, 204));
+        searchPurchasePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Buscar según Producto / Proveedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat Medium", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+        searchPurchasePanel.setForeground(new java.awt.Color(0, 0, 0));
+        searchPurchasePanel.setLayout(null);
+
+        inputPurchaseSearch.setBackground(new java.awt.Color(255, 255, 255));
+        searchPurchasePanel.add(inputPurchaseSearch);
+        inputPurchaseSearch.setBounds(50, 20, 296, 30);
+
+        iconPurchaseSearch.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        iconPurchaseSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/magnifying-glass.png"))); // NOI18N
+        searchPurchasePanel.add(iconPurchaseSearch);
+        iconPurchaseSearch.setBounds(10, 20, 30, 30);
+
+        btnCleanPurchaseSearch.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        btnCleanPurchaseSearch.setText("Limpiar");
+        searchPurchasePanel.add(btnCleanPurchaseSearch);
+        btnCleanPurchaseSearch.setBounds(350, 20, 90, 30);
+
+        jTabNewPurchase.add(searchPurchasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 520, 450, 60));
+
+        btnRegisterPurchase.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        btnRegisterPurchase.setText("Agregar");
+        jTabNewPurchase.add(btnRegisterPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 40, 110, 30));
+
+        btnUpdatePurchase.setText("Modificar");
+        jTabNewPurchase.add(btnUpdatePurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 100, 30));
+
+        btnClearPurchase.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        btnClearPurchase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clean.png"))); // NOI18N
+        btnClearPurchase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearPurchaseActionPerformed(evt);
+            }
+        });
+        jTabNewPurchase.add(btnClearPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 520, 70, 30));
 
         jTabs.addTab("Comprar", jTabNewPurchase);
 
@@ -1655,6 +1761,10 @@ public class AdminPanel extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_inputPurchaseIdActionPerformed
 
+    private void btnClearPurchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPurchaseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearPurchaseActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1692,6 +1802,8 @@ public class AdminPanel extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel appTitle;
+    private javax.swing.JButton btnCleanPurchaseSearch;
+    public javax.swing.JButton btnClearPurchase;
     private javax.swing.JButton btnGenerateNewSale;
     private javax.swing.JButton btnNewBusiness;
     public javax.swing.JButton btnNewCategory;
@@ -1711,6 +1823,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JButton btnUpdateCategory;
     public javax.swing.JButton btnUpdateCustomer;
     public javax.swing.JButton btnUpdateProduct;
+    public javax.swing.JButton btnUpdatePurchase;
     public javax.swing.JButton btnUpdateSupplier;
     public javax.swing.JButton btnUpdateUser;
     private javax.swing.JButton btnUsers;
@@ -1722,6 +1835,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbxNewSaleProduct;
     public javax.swing.JComboBox<Object> cbxProductCategories;
     public javax.swing.JComboBox<String> cbxPurchasePaymentMethod;
+    public javax.swing.JComboBox<String> cbxPurchaseStatus;
     public javax.swing.JComboBox<String> cbxPurchaseSupplier;
     public javax.swing.JComboBox<Object> cbxUserRole;
     public javax.swing.JTable customersTable;
@@ -1730,6 +1844,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel iconCustomerSearch;
     private javax.swing.JLabel iconProductSearch;
     private javax.swing.JLabel iconProductSearch1;
+    private javax.swing.JLabel iconPurchaseSearch;
     private javax.swing.JLabel iconSupplierSearch;
     private javax.swing.JTextField inputBusinessAddress;
     private javax.swing.JTextField inputBusinessCUIT;
@@ -1759,6 +1874,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JTextField inputPurchaseName;
     public javax.swing.JTextField inputPurchasePrice;
     public javax.swing.JTextField inputPurchaseQty;
+    public javax.swing.JTextField inputPurchaseSearch;
     public javax.swing.JTextField inputSupplierAddress;
     public javax.swing.JTextField inputSupplierCUIT;
     public javax.swing.JTextField inputSupplierFirstName;
@@ -1779,11 +1895,13 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItemDeleteCategory;
     public javax.swing.JMenuItem jMenuItemDeleteCustomer;
     public javax.swing.JMenuItem jMenuItemDeleteProduct;
+    public javax.swing.JMenuItem jMenuItemDeletePurchase;
     public javax.swing.JMenuItem jMenuItemDeleteSupplier;
     public javax.swing.JMenuItem jMenuItemDeleteUser;
     public javax.swing.JMenuItem jMenuItemReenterCategory;
     public javax.swing.JMenuItem jMenuItemReenterCustomer;
     public javax.swing.JMenuItem jMenuItemReenterProduct;
+    public javax.swing.JMenuItem jMenuItemReenterPurchase;
     public javax.swing.JMenuItem jMenuItemReenterSupplier;
     public javax.swing.JMenuItem jMenuReenterUser;
     private javax.swing.JPanel jPanel12;
@@ -1805,6 +1923,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupCategories;
     private javax.swing.JPopupMenu jPopupCustomers;
     private javax.swing.JPopupMenu jPopupProducts;
+    private javax.swing.JPopupMenu jPopupPurchases;
     private javax.swing.JPopupMenu jPopupSuppliers;
     private javax.swing.JPopupMenu jPopupUsers;
     private javax.swing.JScrollPane jScrollPane10;
@@ -1848,10 +1967,7 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel lblInstructions3;
     private javax.swing.JLabel lblInstructions4;
     public javax.swing.JLabel lblNewBuy;
-    private javax.swing.JLabel lblNewPurchaseDate;
     private javax.swing.JLabel lblNewPurchasePaymentMethod;
-    private javax.swing.JLabel lblNewPurchasePrice;
-    private javax.swing.JLabel lblNewPurchaseProduct;
     private javax.swing.JLabel lblNewPurchaseSupplier;
     public javax.swing.JLabel lblNewSale;
     private javax.swing.JLabel lblNewSaleCustomer;
@@ -1868,8 +1984,12 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel lblProductStock;
     private javax.swing.JLabel lblProductionCost;
     public javax.swing.JLabel lblProducts;
+    private javax.swing.JLabel lblPurchaseDate;
     private javax.swing.JLabel lblPurchaseId;
-    private javax.swing.JLabel lblQtyNewPurchaseProduct;
+    private javax.swing.JLabel lblPurchaseName;
+    private javax.swing.JLabel lblPurchasePrice;
+    private javax.swing.JLabel lblPurchaseQty;
+    private javax.swing.JLabel lblPurchaseStatus;
     private javax.swing.JLabel lblQtyNewSaleProduct;
     private javax.swing.JLabel lblSupplierAddress;
     private javax.swing.JLabel lblSupplierCUIT;
@@ -1888,6 +2008,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JTable purchasesTable;
     private javax.swing.JPanel salesPagination;
     private javax.swing.JTable salesTable;
+    private javax.swing.JPanel searchPurchasePanel;
     private javax.swing.JPanel sideMenu;
     public javax.swing.JTable suppliersTable;
     private javax.swing.JTable tableNewSale;
