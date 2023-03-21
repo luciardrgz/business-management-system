@@ -15,4 +15,5 @@ public class Purchase {
     private String date;
     private int supplier;
     private int paymentMethod;
+    private Enum EStatus;
 }

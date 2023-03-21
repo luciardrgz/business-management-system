@@ -57,7 +57,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    private void updateView() {
+    private void resetView() {
         clearCategoriesTable();
         listCategories();
         clearCategoriesInput();
@@ -70,7 +70,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
             category.setName(adminView.inputCategoryName.getText());
             try {
                 categoryDAO.register(category);
-                updateView();
+                resetView();
                 productController.loadCategoriesComboBox();
                 JOptionPane.showMessageDialog(null, "¡Categoría registrada con éxito!");
             } catch (DBException ex) {
@@ -87,7 +87,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
             category.setId(Integer.parseInt((adminView.inputCategoryId.getText())));
             try {
                 categoryDAO.update(category);
-                updateView();
+                resetView();
                 productController.loadCategoriesComboBox();
                 productController.clearProductsTable();
                 productController.listProducts();
@@ -103,7 +103,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputCategoryId.getText());
             try {
                 categoryDAO.changeStatus("Inactivo", id);
-                updateView();
+                resetView();
                 JOptionPane.showMessageDialog(null, "Categoría dada de baja exitosamente.");
             } catch (DBException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -118,7 +118,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputCategoryId.getText());
             try {
                 categoryDAO.changeStatus("Activo", id);
-                updateView();
+                resetView();
                 JOptionPane.showMessageDialog(null, "Categoría dada de alta exitosamente.");
             } catch (DBException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -147,12 +147,12 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
 
             adminView.categoriesTable.setModel(categoriesTable);
             JTableHeader header = adminView.categoriesTable.getTableHeader();
- color.changeHeaderColors(header);
+            color.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
-    
+
     private void clearCategoriesInput() {
         adminView.inputCategoryId.setText("");
         adminView.inputCategoryName.setText("");
@@ -178,11 +178,10 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == adminView.inputCategorySearch) {
-            clearCategoriesTable();
-            listCategories();
+            resetView();
         }
     }
-    
+
     @Override
     public void mousePressed(MouseEvent e) {
     }

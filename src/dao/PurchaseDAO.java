@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Connector;
+import model.EStatus;
 import model.Purchase;
 
 public class PurchaseDAO {
@@ -18,7 +19,7 @@ public class PurchaseDAO {
     private ResultSet rs;
 
     public void add(Purchase purchase) throws DBException {
-        String sql = "INSERT INTO purchases (name, quantity, unitary_price, date, supplier, payment_method) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO purchases (name, quantity, unitary_price, date, supplier, payment_method, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             conn = connector.getConn();
@@ -30,6 +31,7 @@ public class PurchaseDAO {
             ps.setString(4, purchase.getDate());
             ps.setInt(5, purchase.getSupplier());
             ps.setInt(6, purchase.getPaymentMethod());
+            ps.setString(7, purchase.getEStatus().toString());
 
             ps.execute();
         } catch (SQLException e) {
@@ -37,16 +39,25 @@ public class PurchaseDAO {
         }
     }
 
-    public List<Purchase> getPurchasesList() throws DBException {
+    public List<Purchase> getPurchasesList(String value) throws DBException {
         List<Purchase> purchasesList = new ArrayList();
+        SupplierDAO supplierDAO = new SupplierDAO();
 
         String sql = "SELECT * FROM purchases ORDER BY id ASC";
+        String valueToSearch = "SELECT * FROM purchases WHERE name LIKE ? or supplier LIKE ?";
 
         try {
             conn = connector.getConn();
 
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
+            if (value.equalsIgnoreCase("")) {
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+            } else {
+                ps = conn.prepareStatement(valueToSearch);
+                ps.setString(1, "%" + value + "%");
+                ps.setInt(2, supplierDAO.retrieveSupplierIdByName(value));
+                rs = ps.executeQuery();
+            }
 
             while (rs.next()) {
                 Purchase currentPurchase = new Purchase();
@@ -57,7 +68,9 @@ public class PurchaseDAO {
                 currentPurchase.setDate(rs.getString("date"));
                 currentPurchase.setSupplier(rs.getInt("supplier"));
                 currentPurchase.setPaymentMethod(rs.getInt("payment_method"));
-
+                EStatus status = EStatus.valueOf(rs.getString("status"));
+                currentPurchase.setEStatus(status);
+                
                 purchasesList.add(currentPurchase);
             }
         } catch (SQLException e) {
@@ -68,7 +81,7 @@ public class PurchaseDAO {
     }
 
     public void update(Purchase purchase) throws DBException {
-        String sql = "UPDATE purchases SET name = ?, quantity = ?, unitary_price = ?, date = ?, supplier = ?, payment_method = ? WHERE id = ?";
+        String sql = "UPDATE purchases SET name = ?, quantity = ?, unitary_price = ?, date = ?, supplier = ?, payment_method = ?, status = ? WHERE id = ?";
 
         try {
             conn = connector.getConn();
@@ -80,7 +93,24 @@ public class PurchaseDAO {
             ps.setString(4, purchase.getDate());
             ps.setDouble(5, purchase.getSupplier());
             ps.setInt(6, purchase.getPaymentMethod());
-            ps.setInt(7, purchase.getId());
+            ps.setString(7, purchase.getEStatus().toString());
+            ps.setInt(8, purchase.getId());
+
+            ps.execute();
+        } catch (SQLException ex) {
+            throw new DBException(ex);
+        }
+    }
+
+    public void changeStatus(String status, int id) throws DBException {
+        String sql = "UPDATE purchases SET status = ? WHERE id = ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, status);
+            ps.setInt(2, id);
 
             ps.execute();
         } catch (SQLException ex) {
