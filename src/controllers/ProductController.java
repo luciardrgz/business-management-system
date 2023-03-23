@@ -37,10 +37,13 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         this.adminView.btnRegisterProduct.addActionListener(this);
         this.adminView.btnUpdateProduct.addActionListener(this);
         this.adminView.btnNewProduct.addActionListener(this);
+        this.adminView.btnAddStock.addActionListener(this);
+        this.adminView.btnRemoveStock.addActionListener(this);
         this.adminView.jMenuItemDeleteProduct.addActionListener(this);
         this.adminView.jMenuItemReenterProduct.addActionListener(this);
         this.adminView.inputProductSearch.addKeyListener(this);
         this.adminView.productsTable.addMouseListener(this);
+
         AutoCompleteDecorator.decorate(adminView.cbxProductCategories);
 
         loadCategoriesComboBox();
@@ -57,6 +60,10 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             deleteProduct();
         } else if (e.getSource() == adminView.jMenuItemReenterProduct) {
             recoverProduct();
+        } else if (e.getSource() == adminView.btnAddStock) {
+            addStockInInput();
+        } else if (e.getSource() == adminView.btnRemoveStock) {
+            removeStockInInput();
         } else {
             clearProductsInput();
         }
@@ -71,8 +78,8 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         product.setSellingPrice(Double.parseDouble(adminView.inputProductSellPrice.getText()));
         setProductCategoryId();
     }
-    
-    private void setProductCategoryId(){
+
+    private void setProductCategoryId() {
         int productCategoryId;
         try {
             productCategoryId = categoryDAO.retrieveCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
@@ -245,6 +252,23 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
+
+    private void addStockInInput() {
+        String currentStock = adminView.inputProductStock.getText();
+        
+        if (!currentStock.isEmpty()) {
+            adminView.inputProductStock.setText(String.valueOf(Integer.parseInt(currentStock) + 1));
+        }
+    }
+
+    private void removeStockInInput() {
+    String currentStock = adminView.inputProductStock.getText();
+    
+    if(!currentStock.isEmpty()) {
+        int newStock = Integer.parseInt(currentStock) - 1;
+        adminView.inputProductStock.setText(String.valueOf(newStock));
+    }
+}
 
     @Override
     public void mousePressed(MouseEvent e) {
