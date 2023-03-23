@@ -10,6 +10,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -135,7 +137,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
             purchasesTable.setRowCount(0);
 
-            Object[] currentPurchase = new Object[8];
+            Object[] currentPurchase = new Object[9];
             for (int i = 0; i < purchasesList.size(); i++) {
                 currentPurchase[0] = purchasesList.get(i).getId();
                 currentPurchase[1] = purchasesList.get(i).getName();
@@ -147,11 +149,12 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
                 Enum currentPaymentMethodEnum = purchasesList.get(i).getEPaymentMethod();
                 EPaymentMethod currentPaymentMethod = EPaymentMethod.valueOf(currentPaymentMethodEnum.name());
                 currentPurchase[6] = currentPaymentMethod.getNameForUser();
-                
+
                 Enum currentStatusEnum = purchasesList.get(i).getEStatus();
                 EStatus currentStatus = EStatus.valueOf(currentStatusEnum.name());
                 currentPurchase[7] = currentStatus.getNameForUser();
-                
+                currentPurchase[8] = takeNumbersIn(purchasesList.get(i).getQuantity()) * purchasesList.get(i).getUnitaryPrice();
+
                 purchasesTable.addRow(currentPurchase);
             }
 
@@ -162,6 +165,21 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+    }
+
+    private Double takeNumbersIn(String purchaseQty) {
+        String pattern = "\\d+";
+
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(purchaseQty);
+
+        String numbers = "";
+
+        while (m.find()) {
+            numbers = m.group();
+        }
+
+        return Double.parseDouble(numbers);
     }
 
     private void clearPurchasesInput() {
@@ -214,7 +232,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     private void setPaymentMethodIndex(String paymentMethod) {
         EPaymentMethod[] paymentMethods = EPaymentMethod.values();
         int purchasePaymentMethodIndex = -1;
-        
+
         for (int i = 0; i < paymentMethods.length; i++) {
             if (paymentMethods[i].getNameForUser().equals(paymentMethod)) {
                 purchasePaymentMethodIndex = i;
