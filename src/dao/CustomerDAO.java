@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Connector;
 import model.Customer;
+import model.EPersonStatus;
 
 public class CustomerDAO {
 
@@ -62,7 +63,8 @@ public class CustomerDAO {
                 currentCustomer.setLastName(rs.getString("last_name"));
                 currentCustomer.setPhone(rs.getString("phone"));
                 currentCustomer.setAddress(rs.getString("address"));
-                currentCustomer.setStatus(rs.getString("status"));
+                 EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
+                currentCustomer.setStatus(status);
 
                 customersList.add(currentCustomer);
             }

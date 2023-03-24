@@ -14,6 +14,7 @@ import javax.swing.table.JTableHeader;
 import dao.CategoryDAO;
 import model.Product;
 import dao.ProductDAO;
+import model.EProductStatus;
 import views.Table;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import views.AdminPanel;
@@ -178,7 +179,11 @@ public class ProductController implements ActionListener, MouseListener, KeyList
                 currentProduct[4] = productsList.get(i).getProductionCost();
                 currentProduct[5] = productsList.get(i).getSellingPrice();
                 currentProduct[6] = categoryDAO.retrieveCategoryNameById(productsList.get(i).getCategoryId());
-                currentProduct[7] = productsList.get(i).getStatus();
+                
+                Enum currentStatusEnum = productsList.get(i).getStatus();
+                EProductStatus currentStatus = EProductStatus.valueOf(currentStatusEnum.name());
+                currentProduct[7] = currentStatus.getNameForUser();
+
 
                 productsTable.addRow(currentProduct);
             }

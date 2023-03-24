@@ -1,14 +1,12 @@
 package model;
 
-public enum EStatus {
-    DONE("Realizada"),
-    WAITING("En espera"),
-    RECEIVED("Recibida"),
-    CANCELLED("Cancelada");
+public enum EProductStatus {
+    AVAILABLE("Disponible"),
+    DISCONTINUED("Discontinuado");
 
     private final String nameForUser;
 
-    EStatus(String nameForUser) {
+    EProductStatus(String nameForUser) {
         this.nameForUser = nameForUser;
     }
 
@@ -16,9 +14,9 @@ public enum EStatus {
         return nameForUser;
     }
     
-    public static EStatus nameForUserToConstant(String nameForUser) {
+    public static EProductStatus nameForUserToConstant(String nameForUser) {
         
-        for (EStatus status : EStatus.values()) {
+        for (EProductStatus status : EProductStatus.values()) {
             
             if (status.getNameForUser().equals(nameForUser)) {
                 return status;

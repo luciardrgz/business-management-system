@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Connector;
 import model.EPaymentMethod;
-import model.EStatus;
+import model.EPurchaseStatus;
 import model.Purchase;
 
 public class PurchaseDAO {
@@ -73,7 +73,7 @@ public class PurchaseDAO {
                 EPaymentMethod paymentMethod = EPaymentMethod.valueOf(rs.getString("payment_method"));
                 currentPurchase.setEPaymentMethod(paymentMethod);
 
-                EStatus status = EStatus.valueOf(rs.getString("status"));
+                EPurchaseStatus status = EPurchaseStatus.valueOf(rs.getString("status"));
                 currentPurchase.setEStatus(status);
 
                 purchasesList.add(currentPurchase);

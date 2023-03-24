@@ -15,6 +15,7 @@ import views.Table;
 import model.User;
 import dao.UserDAO;
 import exceptions.DBException;
+import model.ERole;
 import views.AdminPanel;
 
 public class UserController implements ActionListener, MouseListener, KeyListener {
@@ -61,14 +62,9 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         user.setUsername(adminView.inputUserName.getText());
         user.setFirstName(adminView.inputUserFirstName.getText());
         user.setLastName(adminView.inputUserLastName.getText());
-
-        String roleName = adminView.cbxUserRole.getSelectedItem().toString();
-        try {
-            int roleId = roleDAO.retrieveRoleIdByName(roleName);
-            user.setRole(roleId);
-        } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
+        
+        ERole role = ERole.nameForUserToConstant(adminView.cbxUserRole.getSelectedItem().toString());
+        user.setRole(role);
     }
 
     private void resetView() {
@@ -172,7 +168,11 @@ public class UserController implements ActionListener, MouseListener, KeyListene
                 currentUser[1] = usersList.get(i).getUsername();
                 currentUser[2] = usersList.get(i).getFirstName();
                 currentUser[3] = usersList.get(i).getLastName();
-                currentUser[4] = roleDAO.retrieveRoleNameById(usersList.get(i).getRole());
+                
+                Enum currentRoleEnum = usersList.get(i).getRole();
+                ERole currentRole = ERole.valueOf(currentRoleEnum.name());
+                currentUser[4] = currentRole.getNameForUser();
+
                 currentUser[5] = usersList.get(i).getStatus();
 
                 usersTable.addRow(currentUser);

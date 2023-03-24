@@ -13,5 +13,5 @@ public class Customer {
     private String lastName;
     private String phone;
     private String address;
-    private String status;
+    private EPersonStatus status;
 }

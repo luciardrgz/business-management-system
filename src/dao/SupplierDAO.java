@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Connector;
+import model.EPersonStatus;
 import model.Supplier;
 
 public class SupplierDAO {
@@ -65,7 +66,10 @@ public class SupplierDAO {
                 currentSupplier.setCuit(rs.getString("cuit"));
                 currentSupplier.setPhone(rs.getString("phone"));
                 currentSupplier.setAddress(rs.getString("address"));
-                currentSupplier.setStatus(rs.getString("status"));
+                
+                EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
+                currentSupplier.setStatus(status);
+
 
                 suppliersList.add(currentSupplier);
             }
