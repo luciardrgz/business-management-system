@@ -15,5 +15,5 @@ public class Product {
     private double productionCost;
     private double sellingPrice;
     private int categoryId;
-    private String status;
+    private EProductStatus status;
 }

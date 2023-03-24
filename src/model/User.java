@@ -14,6 +14,6 @@ public class User {
     private String lastName;
     private String password;
     private String box;
-    private int role;
-    private String status;
+    private ERole role;
+    private EPersonStatus status;
 }

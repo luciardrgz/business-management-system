@@ -15,5 +15,5 @@ public class Supplier {
     private String cuit;
     private String phone;
     private String address;
-    private String status;
+    private EPersonStatus status;
 }
