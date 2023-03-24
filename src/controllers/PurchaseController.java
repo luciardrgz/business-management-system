@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import model.EPaymentMethod;
-import model.EStatus;
+import model.EPurchaseStatus;
 import model.Purchase;
 import views.AdminPanel;
 import views.Table;
@@ -85,7 +85,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         EPaymentMethod paymentMethod = EPaymentMethod.nameForUserToConstant(adminView.cbxPurchasePaymentMethod.getSelectedItem().toString());
         purchase.setEPaymentMethod(paymentMethod);
 
-        EStatus status = EStatus.nameForUserToConstant(adminView.cbxPurchaseStatus.getSelectedItem().toString());
+        EPurchaseStatus status = EPurchaseStatus.nameForUserToConstant(adminView.cbxPurchaseStatus.getSelectedItem().toString());
         purchase.setEStatus(status);
     }
 
@@ -151,7 +151,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
                 currentPurchase[6] = currentPaymentMethod.getNameForUser();
 
                 Enum currentStatusEnum = purchasesList.get(i).getEStatus();
-                EStatus currentStatus = EStatus.valueOf(currentStatusEnum.name());
+                EPurchaseStatus currentStatus = EPurchaseStatus.valueOf(currentStatusEnum.name());
                 currentPurchase[7] = currentStatus.getNameForUser();
                 currentPurchase[8] = takeNumbersIn(purchasesList.get(i).getQuantity()) * purchasesList.get(i).getUnitaryPrice();
 
@@ -245,7 +245,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     }
 
     private void setStatusIndex(String purchaseStatus) {
-        EStatus[] statuses = EStatus.values();
+        EPurchaseStatus[] statuses = EPurchaseStatus.values();
         int purchaseStatusIndex = -1;
         for (int i = 0; i < statuses.length; i++) {
             if (statuses[i].getNameForUser().equals(purchaseStatus)) {
@@ -282,11 +282,11 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     }
 
     private void loadStatusesComboBox() {
-        EStatus[] statuses;
+        EPurchaseStatus[] statuses;
 
-        statuses = EStatus.class.getEnumConstants();
+        statuses = EPurchaseStatus.class.getEnumConstants();
         adminView.cbxPurchaseStatus.removeAllItems();
-        for (EStatus status : statuses) {
+        for (EPurchaseStatus status : statuses) {
             adminView.cbxPurchaseStatus.addItem(status.getNameForUser());
         }
     }
@@ -295,7 +295,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         if (!adminView.inputPurchaseId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputPurchaseId.getText());
             try {
-                purchaseDAO.changeStatus(EStatus.CANCELLED.name(), id);
+                purchaseDAO.changeStatus(EPurchaseStatus.CANCELLED.name(), id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Compra cancelada exitosamente.");
             } catch (DBException ex) {
@@ -310,7 +310,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         if (!adminView.inputPurchaseId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputPurchaseId.getText());
             try {
-                purchaseDAO.changeStatus(EStatus.DONE.name(), id);
+                purchaseDAO.changeStatus(EPurchaseStatus.DONE.name(), id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Compra reactivada exitosamente.");
             } catch (DBException ex) {

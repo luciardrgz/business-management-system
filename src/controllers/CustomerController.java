@@ -13,6 +13,7 @@ import javax.swing.table.JTableHeader;
 import model.Customer;
 import dao.CustomerDAO;
 import exceptions.DBException;
+import model.EPersonStatus;
 import views.Table;
 import views.AdminPanel;
 
@@ -133,7 +134,10 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
                 currentCustomer[2] = customersList.get(i).getLastName();
                 currentCustomer[3] = customersList.get(i).getPhone();
                 currentCustomer[4] = customersList.get(i).getAddress();
-                currentCustomer[5] = customersList.get(i).getStatus();
+                
+                Enum currentStatusEnum = customersList.get(i).getStatus();
+                EPersonStatus currentStatus = EPersonStatus.valueOf(currentStatusEnum.name());
+                currentCustomer[5] = currentStatus.getNameForUser();
 
                 customersTable.addRow(currentCustomer);
             }
