@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Connector;
+import model.EPersonStatus;
+import model.ERole;
 import model.User;
 
 public class UserDAO {
@@ -35,8 +37,13 @@ public class UserDAO {
                 user.setUsername(rs.getString("username"));
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
-                user.setRole(rs.getInt("role"));
-                user.setStatus(rs.getString("status"));
+
+                ERole role = ERole.valueOf(rs.getString("role"));
+                user.setRole(role);
+
+                EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
+                user.setStatus(status);
+
             }
         } catch (SQLException e) {
             throw new DBException();
@@ -58,7 +65,7 @@ public class UserDAO {
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastName());
             ps.setString(4, user.getPassword());
-            ps.setInt(5, user.getRole());
+            ps.setString(5, user.getRole().toString());
 
             ps.execute();
 
@@ -92,8 +99,12 @@ public class UserDAO {
                 currentUser.setUsername(rs.getString("username"));
                 currentUser.setFirstName(rs.getString("first_name"));
                 currentUser.setLastName(rs.getString("last_name"));
-                currentUser.setRole(rs.getInt("role"));
-                currentUser.setStatus(rs.getString("status"));
+
+                ERole role = ERole.valueOf(rs.getString("role"));
+                currentUser.setRole(role);
+
+                EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
+                currentUser.setStatus(status);
 
                 usersList.add(currentUser);
             }
@@ -116,7 +127,7 @@ public class UserDAO {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastName());
-            ps.setInt(4, user.getRole());
+            ps.setString(4, user.getRole().toString());
             ps.setInt(5, user.getId());
 
             ps.execute();

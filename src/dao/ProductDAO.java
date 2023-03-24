@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Connector;
+import model.EProductStatus;
 import model.Product;
 
 public class ProductDAO {
@@ -42,7 +43,7 @@ public class ProductDAO {
         List<Product> productsList = new ArrayList();
         CategoryDAO categoryDAO = new CategoryDAO();
 
-        String sql = "SELECT * FROM products ORDER BY status DESC";
+        String sql = "SELECT * FROM products ORDER BY status ASC";
         String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR id_category = ?"; 
 
         try {
@@ -68,7 +69,9 @@ public class ProductDAO {
                 currentProduct.setProductionCost(rs.getDouble("production_cost"));
                 currentProduct.setSellingPrice(rs.getDouble("selling_price"));
                 currentProduct.setCategoryId(rs.getInt("id_category"));
-                currentProduct.setStatus(rs.getString("status"));
+                
+                EProductStatus status = EProductStatus.valueOf(rs.getString("status"));
+                currentProduct.setStatus(status);
 
                 productsList.add(currentProduct);
             }
