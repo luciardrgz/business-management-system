@@ -118,37 +118,40 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         }
     }
 
-    private void listCustomers() {   
+    private void listCustomers() {
         adminView.customersTable.setDefaultRenderer(adminView.customersTable.getColumnClass(0), color);
 
         try {
             List<Customer> customersList = customerDAO.getCustomersList(adminView.inputCustomerSearch.getText());
-            customersTable = (DefaultTableModel) adminView.customersTable.getModel();
+            setCustomerTable(customersList);
 
-            customersTable.setRowCount(0);
-
-            Object[] currentCustomer = new Object[6];
-            for (int i = 0; i < customersList.size(); i++) {
-                currentCustomer[0] = customersList.get(i).getId();
-                currentCustomer[1] = customersList.get(i).getFirstName();
-                currentCustomer[2] = customersList.get(i).getLastName();
-                currentCustomer[3] = customersList.get(i).getPhone();
-                currentCustomer[4] = customersList.get(i).getAddress();
-                
-                Enum currentStatusEnum = customersList.get(i).getStatus();
-                EPersonStatus currentStatus = EPersonStatus.valueOf(currentStatusEnum.name());
-                currentCustomer[5] = currentStatus.getNameForUser();
-
-                customersTable.addRow(currentCustomer);
-            }
-
-            adminView.customersTable.setModel(customersTable);
-            JTableHeader header = adminView.customersTable.getTableHeader();
-             color.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+    }
 
+    private void setCustomerTable(List<Customer> customersList) {
+        customersTable = (DefaultTableModel) adminView.customersTable.getModel();
+        customersTable.setRowCount(0);
+
+        Object[] currentCustomer = new Object[6];
+        for (int i = 0; i < customersList.size(); i++) {
+            currentCustomer[0] = customersList.get(i).getId();
+            currentCustomer[1] = customersList.get(i).getFirstName();
+            currentCustomer[2] = customersList.get(i).getLastName();
+            currentCustomer[3] = customersList.get(i).getPhone();
+            currentCustomer[4] = customersList.get(i).getAddress();
+
+            Enum currentStatusEnum = customersList.get(i).getStatus();
+            EPersonStatus currentStatus = EPersonStatus.valueOf(currentStatusEnum.name());
+            currentCustomer[5] = currentStatus.getNameForUser();
+
+            customersTable.addRow(currentCustomer);
+        }
+
+        adminView.customersTable.setModel(customersTable);
+        JTableHeader header = adminView.customersTable.getTableHeader();
+        color.changeHeaderColors(header);
     }
 
     private void clearCustomersInput() {
