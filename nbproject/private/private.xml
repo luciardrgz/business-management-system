@@ -3,8 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/PurchaseController.java</file>
             <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/views/AdminPanel.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/SaleController.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/ProductController.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/repositories/CategoryRepository.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/repositories/CustomerRepository.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/dao/CategoryDAO.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/controllers/PurchaseController.java</file>
+            <file>file:/C:/Users/lurdr/Documents/NetBeansProjects/management-sys/src/dao/ProductDAO.java</file>
         </group>
     </open-files>
 </project-private>

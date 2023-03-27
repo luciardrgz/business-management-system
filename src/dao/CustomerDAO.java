@@ -39,7 +39,7 @@ public class CustomerDAO {
         }
     }
 
-    public List getCustomersList(String value) throws DBException {
+    public List<Customer> getCustomersList(String value) throws DBException {
         List<Customer> customersList = new ArrayList();
 
         String sql = "SELECT * FROM customers ORDER BY status ASC";
@@ -115,5 +115,70 @@ public class CustomerDAO {
         }  finally {
             connector.closeConn(conn);
         }
+    }
+    
+    public String retrieveCustomerNameById(int customerId) throws DBException {
+        String foundCustomerName = null;
+        String sql = "SELECT first_name FROM customers WHERE id = ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, customerId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                foundCustomerName = rs.getString("name");
+            }
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+        return foundCustomerName;
+    }
+    
+    
+    public int retrieveCustomerIdByName(String customerName) throws DBException {
+        int foundCustomerId = -1;
+
+        String sql = "SELECT id FROM customers WHERE name LIKE '%" + customerName + "%'";
+
+        try {
+            conn = connector.getConn();
+
+            if (!customerName.equalsIgnoreCase("")) {
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    foundCustomerId = rs.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+        return foundCustomerId;
+    }
+    
+     public List<String> retrieveCustomerNames() throws DBException {
+        List<String> customerNames = new ArrayList<>();
+        String sql = "SELECT first_name, last_name FROM customers";
+        
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+             rs = ps.executeQuery();
+
+            if (rs.next()) {
+                customerNames.add(rs.getString("first_name") + " " + rs.getString("last_name"));
+            }
+
+        } catch (SQLException e) {
+            throw new DBException(e);
+        }
+        return customerNames;
     }
 }

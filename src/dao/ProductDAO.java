@@ -36,15 +36,15 @@ public class ProductDAO {
 
         } catch (SQLException e) {
             throw new DBException();
-        } 
+        }
     }
 
-    public List getProductsList(String value) throws DBException {
+    public List<Product> getProductsList(String value) throws DBException {
         List<Product> productsList = new ArrayList();
         CategoryDAO categoryDAO = new CategoryDAO();
 
         String sql = "SELECT * FROM products ORDER BY status ASC";
-        String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR id_category = ?"; 
+        String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR id_category = ?";
 
         try {
             conn = connector.getConn();
@@ -69,7 +69,7 @@ public class ProductDAO {
                 currentProduct.setProductionCost(rs.getDouble("production_cost"));
                 currentProduct.setSellingPrice(rs.getDouble("selling_price"));
                 currentProduct.setCategoryId(rs.getInt("id_category"));
-                
+
                 EProductStatus status = EProductStatus.valueOf(rs.getString("status"));
                 currentProduct.setStatus(status);
 
@@ -101,7 +101,7 @@ public class ProductDAO {
 
         } catch (SQLException ex) {
             throw new DBException(ex);
-        } 
+        }
     }
 
     public void changeStatus(String status, int id) throws DBException {
@@ -117,7 +117,93 @@ public class ProductDAO {
             ps.execute();
         } catch (SQLException ex) {
             throw new DBException(ex);
-        } 
+        }
+    }
+    
+     public String retrieveProductNameById(int productId) throws DBException {
+        String foundProductName = null;
+        String sql = "SELECT name FROM products WHERE id = ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, productId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                foundProductName = rs.getString("name");
+            }
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+
+        return foundProductName;
     }
 
+    public int retrieveProductIdByName(String productName) throws DBException {
+        int foundProductId = -1;
+        String sql = "SELECT id FROM products WHERE name LIKE '%" + productName + "%'";
+
+        try {
+            conn = connector.getConn();
+
+            if (!productName.equalsIgnoreCase("")) {
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    foundProductId = rs.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+
+        return foundProductId;
+    }
+
+    public double retrieveProductPrice(int id) throws DBException {
+        double price = -1;
+        String sql = "SELECT selling_price FROM products WHERE id = ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                price = rs.getDouble("selling_price");
+            }
+
+        } catch (SQLException e) {
+            throw new DBException(e);
+        }
+
+        return price;
+    }
+
+    public List<String> retrieveProductNames() throws DBException {
+        List<String> productNames = new ArrayList<>();
+        String sql = "SELECT name FROM products";
+        
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+             rs = ps.executeQuery();
+
+            if (rs.next()) {
+                productNames.add(rs.getString("name"));
+            }
+
+        } catch (SQLException e) {
+            throw new DBException(e);
+        }
+
+        return productNames;
+    }
 }

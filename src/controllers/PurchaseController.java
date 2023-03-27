@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import utils.ComboBoxUtils;
 import model.EPaymentMethod;
 import model.EPurchaseStatus;
 import model.Purchase;
@@ -46,8 +47,8 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         this.adminView.purchasesTable.addMouseListener(this);
 
         loadSuppliersComboBox();
-        loadPaymentMethodsComboBox();
-        loadStatusesComboBox();
+        ComboBoxUtils.loadPaymentMethodsComboBox(adminView.cbxPurchasePaymentMethod);
+        ComboBoxUtils.loadStatusesComboBox(adminView.cbxPurchaseStatus);
         listPurchases();
     }
 
@@ -268,26 +269,6 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
-
-    private void loadPaymentMethodsComboBox() {
-        EPaymentMethod[] paymentMethods;
-
-        paymentMethods = EPaymentMethod.class.getEnumConstants();
-        adminView.cbxPurchasePaymentMethod.removeAllItems();
-        for (EPaymentMethod paymentMethod : paymentMethods) {
-            adminView.cbxPurchasePaymentMethod.addItem(paymentMethod.getNameForUser());
-        }
-    }
-
-    private void loadStatusesComboBox() {
-        EPurchaseStatus[] statuses;
-
-        statuses = EPurchaseStatus.class.getEnumConstants();
-        adminView.cbxPurchaseStatus.removeAllItems();
-        for (EPurchaseStatus status : statuses) {
-            adminView.cbxPurchaseStatus.addItem(status.getNameForUser());
         }
     }
 

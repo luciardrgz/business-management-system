@@ -11,12 +11,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import dao.CategoryDAO;
 import model.Product;
 import dao.ProductDAO;
+import model.ECategoryType;
 import model.EProductStatus;
 import views.Table;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import repositories.CategoryRepository;
 import views.AdminPanel;
 
 public class ProductController implements ActionListener, MouseListener, KeyListener {
@@ -25,7 +26,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     private ProductDAO productDAO;
     public AdminPanel adminView;
     private final Table color = new Table();
-    private CategoryDAO categoryDAO = new CategoryDAO(this);
+    private CategoryRepository categoryRepository = new CategoryRepository();
     private DefaultTableModel productsTable = new DefaultTableModel();
 
     public ProductController() {
@@ -74,7 +75,6 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         product.setName(adminView.inputProductName.getText());
         product.setDescription(adminView.inputProductDescription.getText());
         product.setStock(Integer.parseInt(adminView.inputProductStock.getText()));
-        product.setProductionCost(Integer.parseInt(adminView.inputProductStock.getText()));
         product.setProductionCost(Double.parseDouble(adminView.inputProductionCost.getText()));
         product.setSellingPrice(Double.parseDouble(adminView.inputProductSellPrice.getText()));
         setProductCategoryId();
@@ -83,7 +83,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     private void setProductCategoryId() {
         int productCategoryId;
         try {
-            productCategoryId = categoryDAO.retrieveCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
+            productCategoryId = categoryRepository.retrieveCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
             if (productCategoryId != -1) {
                 product.setCategoryId(productCategoryId);
             }
@@ -178,12 +178,11 @@ public class ProductController implements ActionListener, MouseListener, KeyList
                 currentProduct[3] = productsList.get(i).getStock();
                 currentProduct[4] = productsList.get(i).getProductionCost();
                 currentProduct[5] = productsList.get(i).getSellingPrice();
-                currentProduct[6] = categoryDAO.retrieveCategoryNameById(productsList.get(i).getCategoryId());
-                
+                currentProduct[6] = categoryRepository.retrieveCategoryNameById(productsList.get(i).getCategoryId());
+
                 Enum currentStatusEnum = productsList.get(i).getStatus();
                 EProductStatus currentStatus = EProductStatus.valueOf(currentStatusEnum.name());
                 currentProduct[7] = currentStatus.getNameForUser();
-
 
                 productsTable.addRow(currentProduct);
             }
@@ -227,7 +226,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
 
             int index;
             try {
-                index = categoryDAO.retrieveCategoryIdByName(adminView.productsTable.getValueAt(row, 6).toString());
+                index = categoryRepository.retrieveCategoryIdByName(adminView.productsTable.getValueAt(row, 6).toString());
                 if ((index - 1) < adminView.cbxProductCategories.getItemCount()) {
                     adminView.cbxProductCategories.setSelectedIndex(index - 1);
                 }
@@ -247,12 +246,15 @@ public class ProductController implements ActionListener, MouseListener, KeyList
 
     public void loadCategoriesComboBox() {
         List<String> categories;
+
         try {
-            categories = categoryDAO.getCategoryNames();
+            categories = categoryRepository.retrieveCategoryNames(ECategoryType.PRODUCT);
             adminView.cbxProductCategories.removeAllItems();
+            
             for (String category : categories) {
                 adminView.cbxProductCategories.addItem(category);
             }
+            
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -260,20 +262,20 @@ public class ProductController implements ActionListener, MouseListener, KeyList
 
     private void addStockInInput() {
         String currentStock = adminView.inputProductStock.getText();
-        
+
         if (!currentStock.isEmpty()) {
             adminView.inputProductStock.setText(String.valueOf(Integer.parseInt(currentStock) + 1));
         }
     }
 
     private void removeStockInInput() {
-    String currentStock = adminView.inputProductStock.getText();
-    
-    if(!currentStock.isEmpty()) {
-        int newStock = Integer.parseInt(currentStock) - 1;
-        adminView.inputProductStock.setText(String.valueOf(newStock));
-    }
-}
+        String currentStock = adminView.inputProductStock.getText();
+
+        if (!currentStock.isEmpty()) {
+            int newStock = Integer.parseInt(currentStock) - 1;
+            adminView.inputProductStock.setText(String.valueOf(newStock));
+        }
+    } 
 
     @Override
     public void mousePressed(MouseEvent e) {

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Category;
 import model.Connector;
+import model.ECategoryType;
 
 public class CategoryDAO {
 
@@ -27,17 +28,38 @@ public class CategoryDAO {
     }
 
     public void register(Category category) throws DBException {
-        String sql = "INSERT INTO categories (name) VALUES (?)";
+        String sql = "INSERT INTO categories (name, type) VALUES (?, ?)";
 
         try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, category.getName());
+            ps.setString(2, category.getCategoryType().toString());
             ps.execute();
 
         } catch (SQLException e) {
             throw new DBException();
+        }
+    }
+
+    public void update(Category category) throws DBException {
+        String sql = "UPDATE categories SET name = ?, type = ? WHERE id = ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, category.getName());
+            ps.setString(2, category.getCategoryType().toString());
+            ps.setInt(3, category.getId());
+
+            ps.execute();
+
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
         }
     }
 
@@ -62,6 +84,9 @@ public class CategoryDAO {
                 Category currentCategory = new Category();
                 currentCategory.setId(rs.getInt("id"));
                 currentCategory.setName(rs.getString("name"));
+
+                ECategoryType categoryType = ECategoryType.valueOf(rs.getString("type"));
+                currentCategory.setCategoryType(categoryType);
 
                 categoriesList.add(currentCategory);
             }
@@ -121,43 +146,22 @@ public class CategoryDAO {
         return foundCategoryName;
     }
 
-    public Category retrieveCategoryByName(String categoryName) throws DBException {
-        Category foundCategory = new Category();
-
-        String sql = "SELECT * FROM categories WHERE name LIKE ?";
+    public List<String> retrieveCategoryNames(ECategoryType categoryType) throws DBException {
+        String sql = "SELECT name FROM categories WHERE type LIKE ?";
+        List<String> categoryNames = new ArrayList<>();
 
         try {
             conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + categoryType.toString() + "%");
+            rs = ps.executeQuery();
 
-            if (!categoryName.equalsIgnoreCase("")) {
-                ps = conn.prepareStatement(sql);
-                ps.setString(1, categoryName);
-                rs = ps.executeQuery();
-
-                if (rs.next()) {
-                    foundCategory.setId(rs.getInt("id"));
-                    foundCategory.setName(rs.getString("name"));
-                }
+            while (rs.next()) {
+                categoryNames.add(rs.getString("name"));
             }
+
         } catch (SQLException e) {
-            throw new DBException();
-        } finally {
-            connector.closeConn(conn);
-        }
-
-        return foundCategory;
-    }
-
-    public List<String> getCategoryNames() throws DBException {
-        List<Category> categories;
-        List<String> categoryNames = new ArrayList<>();
-        try {
-            categories = getCategoriesList("");
-            for (Category category : categories) {
-                categoryNames.add(category.getName());
-            }
-        } catch (DBException ex) {
-            throw new DBException();
+            throw new DBException(e);
         } finally {
             connector.closeConn(conn);
         }
@@ -165,41 +169,25 @@ public class CategoryDAO {
         return categoryNames;
     }
 
-    public void update(Category category) throws DBException {
-        String sql = "UPDATE categories SET name = ? WHERE id = ?";
+    public List<String> retrieveCategoryTypes() throws DBException {
+        String sql = "SELECT type FROM categories";
+        List<String> categoryTypes = new ArrayList<>();
 
         try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
 
-            ps.setString(1, category.getName());
-            ps.setInt(2, category.getId());
-
-            ps.execute();
+            if (rs.next()) {
+                categoryTypes.add(rs.getString("type"));
+            }
 
         } catch (SQLException e) {
-            throw new DBException();
+            throw new DBException(e);
         } finally {
             connector.closeConn(conn);
         }
+
+        return categoryTypes;
     }
-
-    public void changeStatus(String status, int id) throws DBException {
-        String sql = "UPDATE categories SET status = ? WHERE id = ?";
-
-        try {
-            conn = connector.getConn();
-            ps = conn.prepareStatement(sql);
-
-            ps.setString(1, status);
-            ps.setInt(2, id);
-
-            ps.execute();
-        } catch (SQLException e) {
-            throw new DBException();
-        } finally {
-            connector.closeConn(conn);
-        }
-    }
-
 }

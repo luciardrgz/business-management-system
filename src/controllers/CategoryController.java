@@ -14,19 +14,20 @@ import javax.swing.table.JTableHeader;
 import lombok.NoArgsConstructor;
 import model.Category;
 import dao.CategoryDAO;
+import model.ECategoryType;
 import views.Table;
 import views.AdminPanel;
 
 @NoArgsConstructor
 public class CategoryController implements ActionListener, MouseListener, KeyListener {
-
+    
     private Category category;
     private CategoryDAO categoryDAO;
     private AdminPanel adminView;
     private Table color = new Table();
     private ProductController productController;
     private DefaultTableModel categoriesTable = new DefaultTableModel();
-
+    
     public CategoryController(Category category, CategoryDAO categoryDAO, ProductController productController, AdminPanel adminView) {
         this.category = category;
         this.categoryDAO = categoryDAO;
@@ -40,8 +41,9 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         this.adminView.inputCategorySearch.addKeyListener(this);
         this.adminView.categoriesTable.addMouseListener(this);
         listCategories();
+        loadTypesComboBox();
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == adminView.btnRegisterCategory) {
@@ -49,25 +51,32 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         } else if (e.getSource() == adminView.btnUpdateCategory) {
             updateCategory();
         } else if (e.getSource() == adminView.jMenuItemDeleteCategory) {
-            deleteCategory();
+            //deleteCategory();
         } else if (e.getSource() == adminView.jMenuItemReenterCategory) {
-            recoverCategory();
+            //recoverCategory();
         } else {
             clearCategoriesInput();
         }
     }
-
+    
     private void resetView() {
         clearCategoriesTable();
         listCategories();
         clearCategoriesInput();
     }
-
+    
+    private void setupCategory() {
+        ECategoryType type = ECategoryType.nameForUserToConstant(adminView.cbxCategoryTypes.getSelectedItem().toString());
+        category.setCategoryType(type);
+        
+        category.setName(adminView.inputCategoryName.getText());
+    }
+    
     private void registerCategory() {
         if (adminView.inputCategoryName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "No ingresaste ninguna categoría.");
         } else {
-            category.setName(adminView.inputCategoryName.getText());
+            setupCategory();
             try {
                 categoryDAO.register(category);
                 resetView();
@@ -78,13 +87,14 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
             }
         }
     }
-
+    
     private void updateCategory() {
         if (adminView.inputCategoryName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "No ingresaste ninguna categoría.");
         } else {
-            category.setName(adminView.inputCategoryName.getText());
             category.setId(Integer.parseInt((adminView.inputCategoryId.getText())));
+            setupCategory();
+            
             try {
                 categoryDAO.update(category);
                 resetView();
@@ -98,6 +108,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         }
     }
 
+    /*
     private void deleteCategory() {
         if (!adminView.inputCategoryId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCategoryId.getText());
@@ -126,82 +137,118 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una categoría para darlo de alta.");
         }
-    }
-
+    }*/
     public void listCategories() {
         adminView.categoriesTable.setDefaultRenderer(adminView.categoriesTable.getColumnClass(0), color);
-
+        
         try {
             List<Category> categoriesList = categoryDAO.getCategoriesList(adminView.inputCategorySearch.getText());
-            categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
-
-            categoriesTable.setRowCount(0);
-
-            Object[] currentCategory = new Object[2];
-            for (int i = 0; i < categoriesList.size(); i++) {
-                currentCategory[0] = categoriesList.get(i).getId();
-                currentCategory[1] = categoriesList.get(i).getName();
-
-                categoriesTable.addRow(currentCategory);
-            }
-
-            adminView.categoriesTable.setModel(categoriesTable);
-            JTableHeader header = adminView.categoriesTable.getTableHeader();
-            color.changeHeaderColors(header);
+            setCategoriesTable(categoriesList);
+            
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
-
+    
+    private void setCategoriesTable(List<Category> categoriesList) {
+        categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
+        categoriesTable.setRowCount(0);
+        
+        Object[] currentCategory = new Object[3];
+        for (int i = 0; i < categoriesList.size(); i++) {
+            currentCategory[0] = categoriesList.get(i).getId();
+            
+            currentCategory[1] = categoriesList.get(i).getName();
+            
+            Enum currentTypeEnum = categoriesList.get(i).getCategoryType();
+            ECategoryType currentType = ECategoryType.valueOf(currentTypeEnum.name());
+            currentCategory[2] = currentType.getNameForUser();
+            
+            categoriesTable.addRow(currentCategory);
+        }
+        
+        adminView.categoriesTable.setModel(categoriesTable);
+        JTableHeader header = adminView.categoriesTable.getTableHeader();
+        color.changeHeaderColors(header);
+    }
+    
+    private void loadTypesComboBox() {
+        ECategoryType[] types;
+        
+        types = ECategoryType.class.getEnumConstants();
+        adminView.cbxCategoryTypes.removeAllItems();
+        for (ECategoryType type : types) {
+            adminView.cbxCategoryTypes.addItem(type.getNameForUser());
+        }
+    }
+    
     private void clearCategoriesInput() {
         adminView.inputCategoryId.setText("");
+        adminView.cbxCategoryTypes.setSelectedIndex(-1);
         adminView.inputCategoryName.setText("");
     }
-
+    
     private void clearCategoriesTable() {
         for (int i = 0; i < categoriesTable.getRowCount(); i++) {
             categoriesTable.removeRow(i);
             i = i - 1;
         }
     }
-
+    
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == adminView.categoriesTable) {
             int row = adminView.categoriesTable.rowAtPoint(e.getPoint());
-
+            
             adminView.inputCategoryId.setText(adminView.categoriesTable.getValueAt(row, 0).toString());
             adminView.inputCategoryName.setText(adminView.categoriesTable.getValueAt(row, 1).toString());
+            setTypeIndex(adminView.categoriesTable.getValueAt(row, 2).toString());
+            
         }
     }
-
+    
+    private void setTypeIndex(String categoryType) {
+        ECategoryType[] types = ECategoryType.values();
+        int categoryTypesIndex = -1;
+        
+        for (int i = 0; i < types.length; i++) {
+            if (types[i].getNameForUser().equals(categoryType)) {
+                categoryTypesIndex = i;
+                break;
+            }
+        }
+        if (categoryTypesIndex != -1) {
+            adminView.cbxCategoryTypes.setSelectedIndex(categoryTypesIndex);
+        }
+    }
+    
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == adminView.inputCategorySearch) {
             resetView();
         }
     }
-
+    
     @Override
     public void mousePressed(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseEntered(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseExited(MouseEvent e) {
     }
-
+    
     @Override
     public void keyTyped(KeyEvent e) {
     }
-
+    
     @Override
     public void keyPressed(KeyEvent e) {
     }
