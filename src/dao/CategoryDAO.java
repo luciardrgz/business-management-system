@@ -190,23 +190,4 @@ public class CategoryDAO {
 
         return categoryTypes;
     }
-
-    /*
-    public void changeStatus(String status, int id) throws DBException {
-        String sql = "UPDATE categories SET status = ? WHERE id = ?";
-
-        try {
-            conn = connector.getConn();
-            ps = conn.prepareStatement(sql);
-
-            ps.setString(1, status);
-            ps.setInt(2, id);
-
-            ps.execute();
-        } catch (SQLException e) {
-            throw new DBException();
-        } finally {
-            connector.closeConn(conn);
-        }
-    }*/
 }
