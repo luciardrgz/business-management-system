@@ -183,6 +183,9 @@ public class ProductDAO {
         } catch (SQLException e) {
             throw new DBException(e);
         }
+        finally {
+            connector.closeConn(conn);
+        }
 
         return price;
     }
@@ -196,7 +199,7 @@ public class ProductDAO {
             ps = conn.prepareStatement(sql);
              rs = ps.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 productNames.add(rs.getString("name"));
             }
 
