@@ -37,11 +37,5 @@ public class Table extends DefaultTableCellRenderer {
         }
 
         return deleted;
-    }
-
-    public void changeHeaderColors(JTableHeader header) {
-        header.setOpaque(false);
-        header.setBackground(Color.decode("#00B359"));
-        header.setForeground(Color.white);
-    }
+    } 
 }
