@@ -109,7 +109,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     }
 
     private void resetView() {
-        TableUtils.clearTable(productsTable);
+        //TableUtils.clearTable(productsTable);
         listProducts();
         clearProductsInput();
     }
@@ -151,7 +151,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         if (!adminView.inputProductId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputProductId.getText());
             try {
-                productRepository.changeStatus("Discontinuado", id);
+                productRepository.changeStatus(EProductStatus.DISCONTINUED, id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Producto dado de baja exitosamente.");
             } catch (DBException ex) {
@@ -166,7 +166,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         if (!adminView.inputProductId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputProductId.getText());
             try {
-                productRepository.changeStatus("Disponible", id);
+                productRepository.changeStatus(EProductStatus.AVAILABLE, id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Producto dado de alta exitosamente.");
             } catch (DBException ex) {
@@ -232,7 +232,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             adminView.inputProductStock.setText(adminView.productsTable.getValueAt(row, 3).toString());
             adminView.inputProductionCost.setText(adminView.productsTable.getValueAt(row, 4).toString());
             adminView.inputProductSellPrice.setText(adminView.productsTable.getValueAt(row, 5).toString());
-            setProductCategoryIndex(6);
+            setProductCategoryIndex(row);
         }
     }
 
