@@ -170,7 +170,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputCustomerId.getText());
 
             try {
-                customerRepository.changeStatus("Inactivo", id);
+                customerRepository.changeStatus(EPersonStatus.INACTIVE, id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Cliente dado de baja exitosamente.");
             } catch (DBException ex) {
@@ -186,7 +186,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputCustomerId.getText());
 
             try {
-                customerRepository.changeStatus("Activo", id);
+                customerRepository.changeStatus(EPersonStatus.ACTIVE, id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Cliente dado de alta exitosamente.");
             } catch (DBException ex) {

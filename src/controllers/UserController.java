@@ -15,6 +15,7 @@ import views.Table;
 import model.User;
 import dao.UserDAO;
 import exceptions.DBException;
+import model.EPersonStatus;
 import model.ERole;
 import repositories.UserRepository;
 import utils.TableUtils;
@@ -128,7 +129,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             int id = Integer.parseInt(adminView.inputUserId.getText());
 
             try {
-                userRepository.changeStatus("Inactivo", id);
+                userRepository.changeStatus(EPersonStatus.INACTIVE, id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Usuario dado de baja exitosamente.");
             } catch (DBException ex) {
@@ -144,7 +145,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             int id = Integer.parseInt(adminView.inputUserId.getText());
 
             try {
-                userRepository.changeStatus("Activo", id);
+                userRepository.changeStatus(EPersonStatus.ACTIVE, id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Usuario dado de alta exitosamente.");
             } catch (DBException ex) {
@@ -176,7 +177,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
                 ERole currentRole = ERole.valueOf(currentRoleEnum.name());
                 currentUser[4] = currentRole.getNameForUser();
 
-                currentUser[5] = usersList.get(i).getStatus();
+                currentUser[5] = usersList.get(i).getStatus().getNameForUser();
 
                 usersTable.addRow(currentUser);
             }
