@@ -14,12 +14,15 @@ import views.Table;
 import model.Supplier;
 import dao.SupplierDAO;
 import exceptions.DBException;
+import repositories.SupplierRepository;
+import utils.TableUtils;
 import views.AdminPanel;
 
 public class SupplierController implements ActionListener, MouseListener, KeyListener {
 
     private final Supplier supplier;
     private final SupplierDAO supplierDAO;
+    private final SupplierRepository supplierRepository = new SupplierRepository();
     private final AdminPanel adminView;
      private final Table color = new Table();
 
@@ -49,7 +52,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     }
 
     private void resetView() {
-        clearSuppliersTable();
+        TableUtils.clearTable(suppliersTable);
         listSuppliers();
         clearSuppliersInput();
     }
@@ -76,7 +79,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             setupSupplier();
 
             try {
-                supplierDAO.register(supplier);
+                supplierRepository.register(supplier);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Proveedor registrado con éxito!");
             } catch (DBException ex) {
@@ -93,7 +96,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             supplier.setId(Integer.parseInt(adminView.inputSupplierId.getText()));
 
             try {
-                supplierDAO.update(supplier);
+                supplierRepository.update(supplier);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Proveedor modificado con éxito!");
             } catch (DBException ex) {
@@ -107,7 +110,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputSupplierId.getText());
 
             try {
-                supplierDAO.changeStatus("Inactivo", id);
+                supplierRepository.changeStatus("Inactivo", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Proveedor dado de baja exitosamente.");
             } catch (DBException ex) {
@@ -123,7 +126,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputSupplierId.getText());
 
             try {
-                supplierDAO.changeStatus("Activo", id);
+                supplierRepository.changeStatus("Activo", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Proveedor dado de alta exitosamente.");
             } catch (DBException ex) {
@@ -138,7 +141,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         adminView.suppliersTable.setDefaultRenderer(adminView.suppliersTable.getColumnClass(0), color);
 
         try {
-            List<Supplier> suppliersList = supplierDAO.getSuppliersList(adminView.inputSupplierSearch.getText());
+            List<Supplier> suppliersList = supplierRepository.getSuppliersList(adminView.inputSupplierSearch.getText());
             suppliersTable = (DefaultTableModel) adminView.suppliersTable.getModel();
 
             suppliersTable.setRowCount(0);
@@ -159,7 +162,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
 
             adminView.suppliersTable.setModel(suppliersTable);
             JTableHeader header = adminView.suppliersTable.getTableHeader();
-            color.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -173,13 +176,6 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         adminView.inputSupplierCUIT.setText("");
         adminView.inputSupplierPhone.setText("");
         adminView.inputSupplierAddress.setText("");
-    }
-
-    private void clearSuppliersTable() {
-        for (int i = 0; i < suppliersTable.getRowCount(); i++) {
-            suppliersTable.removeRow(i);
-            i = i - 1;
-        }
     }
 
     @Override
@@ -200,8 +196,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == adminView.inputSupplierSearch) {
-            clearSuppliersTable();
-            listSuppliers();
+            resetView();
         }
     }
 
