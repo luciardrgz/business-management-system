@@ -19,14 +19,18 @@ import views.Table;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import repositories.CategoryRepository;
 import views.AdminPanel;
+import listeners.ICategoryUpdateListener;
+import repositories.ProductRepository;
+import utils.TableUtils;
 
-public class ProductController implements ActionListener, MouseListener, KeyListener {
+public class ProductController implements ActionListener, MouseListener, KeyListener, ICategoryUpdateListener {
 
     private Product product;
     private ProductDAO productDAO;
     public AdminPanel adminView;
-    private final Table color = new Table();
+    private ProductRepository productRepository = new ProductRepository();
     private CategoryRepository categoryRepository = new CategoryRepository();
+    private final Table color = new Table();
     private DefaultTableModel productsTable = new DefaultTableModel();
 
     public ProductController() {
@@ -92,8 +96,20 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         }
     }
 
+    private void setProductCategoryIndex(int row) {
+        int index;
+        try {
+            index = categoryRepository.retrieveCategoryIdByName(adminView.productsTable.getValueAt(row, 6).toString());
+            if ((index - 1) < adminView.cbxProductCategories.getItemCount()) {
+                adminView.cbxProductCategories.setSelectedIndex(index - 1);
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
     private void resetView() {
-        clearProductsTable();
+        TableUtils.clearTable(productsTable);
         listProducts();
         clearProductsInput();
     }
@@ -104,7 +120,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         } else {
             setupProduct();
             try {
-                productDAO.add(product);
+                productRepository.register(product);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Producto registrado con éxito!");
             } catch (DBException ex) {
@@ -121,7 +137,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             product.setId(Integer.parseInt((adminView.inputProductId.getText())));
 
             try {
-                productDAO.update(product);
+                productRepository.update(product);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Producto modificado con éxito!");
 
@@ -135,7 +151,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         if (!adminView.inputProductId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputProductId.getText());
             try {
-                productDAO.changeStatus("Discontinuado", id);
+                productRepository.changeStatus("Discontinuado", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Producto dado de baja exitosamente.");
             } catch (DBException ex) {
@@ -150,7 +166,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         if (!adminView.inputProductId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputProductId.getText());
             try {
-                productDAO.changeStatus("Disponible", id);
+                productRepository.changeStatus("Disponible", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Producto dado de alta exitosamente.");
             } catch (DBException ex) {
@@ -161,11 +177,11 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         }
     }
 
-    public void listProducts() {
+    private void listProducts() {
         adminView.productsTable.setDefaultRenderer(adminView.productsTable.getColumnClass(0), color);
 
         try {
-            List<Product> productsList = productDAO.getProductsList(adminView.inputProductSearch.getText());
+            List<Product> productsList = productRepository.getProductsList(adminView.inputProductSearch.getText());
             productsTable = (DefaultTableModel) adminView.productsTable.getModel();
 
             productsTable.setRowCount(0);
@@ -189,7 +205,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
 
             adminView.productsTable.setModel(productsTable);
             JTableHeader header = adminView.productsTable.getTableHeader();
-            color.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -205,13 +221,6 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         adminView.cbxProductCategories.setSelectedIndex(-1);
     }
 
-    public void clearProductsTable() {
-        for (int i = 0; i < productsTable.getRowCount(); i++) {
-            productsTable.removeRow(i);
-            i = i - 1;
-        }
-    }
-
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == adminView.productsTable) {
@@ -223,41 +232,37 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             adminView.inputProductStock.setText(adminView.productsTable.getValueAt(row, 3).toString());
             adminView.inputProductionCost.setText(adminView.productsTable.getValueAt(row, 4).toString());
             adminView.inputProductSellPrice.setText(adminView.productsTable.getValueAt(row, 5).toString());
-
-            int index;
-            try {
-                index = categoryRepository.retrieveCategoryIdByName(adminView.productsTable.getValueAt(row, 6).toString());
-                if ((index - 1) < adminView.cbxProductCategories.getItemCount()) {
-                    adminView.cbxProductCategories.setSelectedIndex(index - 1);
-                }
-            } catch (DBException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-            }
+            setProductCategoryIndex(6);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == adminView.inputProductSearch) {
-            clearProductsTable();
-            listProducts();
+            resetView();
         }
     }
 
-    public void loadCategoriesComboBox() {
+    private void loadCategoriesComboBox() {
         List<String> categories;
 
         try {
             categories = categoryRepository.retrieveCategoryNames(ECategoryType.PRODUCT);
             adminView.cbxProductCategories.removeAllItems();
-            
+
             for (String category : categories) {
                 adminView.cbxProductCategories.addItem(category);
             }
-            
+
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+    }
+
+    @Override
+    public void onCategoryUpdate() {
+        loadCategoriesComboBox();
+        resetView();
     }
 
     private void addStockInInput() {
@@ -275,7 +280,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             int newStock = Integer.parseInt(currentStock) - 1;
             adminView.inputProductStock.setText(String.valueOf(newStock));
         }
-    } 
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {

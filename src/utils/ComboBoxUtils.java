@@ -23,5 +23,10 @@ public class ComboBoxUtils {
             comboBox.addItem(status.getNameForUser());
         }
     }
+    
+    public static String[] splitCboxCustomerName(String fullCustomerName) {
+        String[] nameComposition = fullCustomerName.split(" ");
+        return nameComposition;
+    }
 }
 

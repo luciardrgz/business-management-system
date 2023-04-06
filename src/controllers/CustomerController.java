@@ -14,14 +14,17 @@ import model.Customer;
 import dao.CustomerDAO;
 import exceptions.DBException;
 import model.EPersonStatus;
+import repositories.CustomerRepository;
 import views.Table;
 import views.AdminPanel;
+import utils.TableUtils;
 
 public class CustomerController implements ActionListener, MouseListener, KeyListener {
 
     private final Customer customer;
     private final CustomerDAO customerDAO;
     private final AdminPanel adminView;
+    private final CustomerRepository customerRepository = new CustomerRepository();
     private final Table color = new Table();
 
     private DefaultTableModel customersTable = new DefaultTableModel();
@@ -64,7 +67,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
     }
 
     private void resetView() {
-        clearCustomersTable();
+        TableUtils.clearTable(customersTable);
         listCustomers();
         clearCustomersInput();
     }
@@ -88,7 +91,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             setupCustomer();
 
             try {
-                customerDAO.register(customer);
+                customerRepository.register(customer);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Cliente registrado exitosamente.");
             } catch (DBException ex) {
@@ -106,7 +109,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
                 customer.setId(Integer.parseInt(adminView.inputCustomerId.getText()));
 
                 try {
-                    customerDAO.update(customer);
+                    customerRepository.update(customer);
                     resetView();
                     JOptionPane.showMessageDialog(null, "Cliente modificado exitosamente.");
                 } catch (DBException ex) {
@@ -122,7 +125,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         adminView.customersTable.setDefaultRenderer(adminView.customersTable.getColumnClass(0), color);
 
         try {
-            List<Customer> customersList = customerDAO.getCustomersList(adminView.inputCustomerSearch.getText());
+            List<Customer> customersList = customerRepository.getCustomersList(adminView.inputCustomerSearch.getText());
             setCustomerTable(customersList);
 
         } catch (DBException ex) {
@@ -151,7 +154,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
 
         adminView.customersTable.setModel(customersTable);
         JTableHeader header = adminView.customersTable.getTableHeader();
-        color.changeHeaderColors(header);
+        TableUtils.changeHeaderColors(header);
     }
 
     private void clearCustomersInput() {
@@ -162,19 +165,12 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         adminView.inputCustomerAddress.setText("");
     }
 
-    private void clearCustomersTable() {
-        for (int i = 0; i < customersTable.getRowCount(); i++) {
-            customersTable.removeRow(i);
-            i = i - 1;
-        }
-    }
-
     private void deleteCustomer() {
         if (!adminView.inputCustomerId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputCustomerId.getText());
 
             try {
-                customerDAO.changeStatus("Inactivo", id);
+                customerRepository.changeStatus("Inactivo", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Cliente dado de baja exitosamente.");
             } catch (DBException ex) {
@@ -190,7 +186,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputCustomerId.getText());
 
             try {
-                customerDAO.changeStatus("Activo", id);
+                customerRepository.changeStatus("Activo", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Cliente dado de alta exitosamente.");
             } catch (DBException ex) {
@@ -217,8 +213,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == adminView.inputCustomerSearch) {
-            clearCustomersTable();
-            listCustomers();
+            resetView();
         }
     }
 

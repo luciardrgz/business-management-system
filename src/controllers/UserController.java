@@ -16,6 +16,8 @@ import model.User;
 import dao.UserDAO;
 import exceptions.DBException;
 import model.ERole;
+import repositories.UserRepository;
+import utils.TableUtils;
 import views.AdminPanel;
 
 public class UserController implements ActionListener, MouseListener, KeyListener {
@@ -23,6 +25,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     private final User user;
     private final UserDAO userDAO;
     private final AdminPanel adminView;
+    private final UserRepository userRepository = new UserRepository();
     private DefaultTableModel usersTable = new DefaultTableModel();
     private final RoleDAO roleDAO = new RoleDAO();
 
@@ -68,7 +71,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     }
 
     private void resetView() {
-        clearUsersTable();
+        TableUtils.clearTable(usersTable);
         listUsers();
         clearUsersInput();
     }
@@ -93,7 +96,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             user.setPassword(String.valueOf(adminView.inputUserPass.getPassword()));
 
             try {
-                userDAO.register(user);
+                userRepository.register(user);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Usuario registrado con éxito!");
             } catch (DBException ex) {
@@ -111,7 +114,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             user.setId(Integer.parseInt((adminView.inputUserId.getText())));
 
             try {
-                userDAO.update(user);
+                userRepository.update(user);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Usuario modificado con éxito!");
             } catch (DBException ex) {
@@ -125,7 +128,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             int id = Integer.parseInt(adminView.inputUserId.getText());
 
             try {
-                userDAO.changeStatus("Inactivo", id);
+                userRepository.changeStatus("Inactivo", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Usuario dado de baja exitosamente.");
             } catch (DBException ex) {
@@ -141,7 +144,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             int id = Integer.parseInt(adminView.inputUserId.getText());
 
             try {
-                userDAO.changeStatus("Activo", id);
+                userRepository.changeStatus("Activo", id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Usuario dado de alta exitosamente.");
             } catch (DBException ex) {
@@ -157,7 +160,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         adminView.usersTable.setDefaultRenderer(adminView.usersTable.getColumnClass(0), color);
 
         try {
-            List<User> usersList = userDAO.getUsersList(adminView.inputUserSearch.getText());
+            List<User> usersList = userRepository.getUsersList(adminView.inputUserSearch.getText());
             usersTable = (DefaultTableModel) adminView.usersTable.getModel();
 
             usersTable.setRowCount(0);
@@ -180,7 +183,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
 
             adminView.usersTable.setModel(usersTable);
             JTableHeader header = adminView.usersTable.getTableHeader();
-            color.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -192,13 +195,6 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         adminView.inputUserFirstName.setText("");
         adminView.inputUserLastName.setText("");
         adminView.inputUserPass.setText("");
-    }
-
-    private void clearUsersTable() {
-        for (int i = 0; i < usersTable.getRowCount(); i++) {
-            usersTable.removeRow(i);
-            i = i - 1;
-        }
     }
 
     @Override
@@ -237,8 +233,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == adminView.inputUserSearch) {
-            clearUsersTable();
-            listUsers();
+            resetView();
         }
     }
 
