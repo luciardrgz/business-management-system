@@ -73,8 +73,18 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     private void setupPurchase() {
         purchase.setName(adminView.inputPurchaseName.getText());
         purchase.setQuantity(adminView.inputPurchaseQty.getText());
-        purchase.setUnitaryPrice(Double.parseDouble(adminView.inputPurchasePrice.getText()));
-        purchase.setDate(adminView.inputPurchaseDate.getText());
+
+        if (!adminView.inputPurchasePrice.getText().equals("")) {
+            purchase.setUnitaryPrice(Double.parseDouble(adminView.inputPurchasePrice.getText()));
+        } else {
+            purchase.setUnitaryPrice(0.0);
+        }
+
+        if (!adminView.inputPurchaseDate.getText().equals("")) {
+            purchase.setDate(adminView.inputPurchaseDate.getText());
+        } else {
+            purchase.setDate("-");
+        }
 
         int purchaseSupplierId;
         try {
@@ -91,6 +101,8 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
         EPurchaseStatus status = EPurchaseStatus.nameForUserToConstant(adminView.cbxPurchaseStatus.getSelectedItem().toString());
         purchase.setEStatus(status);
+        
+        System.out.println("SETUP PURCHASE: " + purchase.toString());
     }
 
     private void resetView() {
@@ -100,8 +112,8 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     }
 
     private void registerPurchase() {
-        if (adminView.inputPurchaseName.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "El nombre del producto comprado es obligatorio.");
+        if (checkNullFields() == false) {
+            JOptionPane.showMessageDialog(null, "Ingrese al menos producto, cantidad, proveedor y método de pago.");
         } else {
             setupPurchase();
             try {
@@ -112,6 +124,17 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
+    }
+
+    private boolean checkNullFields() {
+        boolean check = true;
+        if (adminView.inputPurchaseName.getText().equals("")
+                || adminView.inputPurchaseQty.getText().equals("")
+                || adminView.cbxPurchaseSupplier.getSelectedIndex() == -1
+                || adminView.cbxPurchasePaymentMethod.getSelectedIndex() == -1) {
+            check = false;
+        }
+        return check;
     }
 
     private void updatePurchase() {

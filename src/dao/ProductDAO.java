@@ -44,7 +44,7 @@ public class ProductDAO {
         CategoryDAO categoryDAO = new CategoryDAO();
 
         String sql = "SELECT * FROM products ORDER BY status ASC";
-        String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR id_category = ?";
+        String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR id_category = ? OR description LIKE ?";
 
         try {
             conn = connector.getConn();
@@ -57,6 +57,7 @@ public class ProductDAO {
                 ps = conn.prepareStatement(valueToSearch);
                 ps.setString(1, "%" + value + "%");
                 ps.setInt(2, categoryDAO.retrieveCategoryIdByName(value));
+                ps.setString(3, "%" + value + "%");
                 rs = ps.executeQuery();
             }
 
