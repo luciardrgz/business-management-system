@@ -3,6 +3,7 @@ package repositories;
 import dao.ProductDAO;
 import exceptions.DBException;
 import java.util.List;
+import model.EProductStatus;
 import model.Product;
 
 public class ProductRepository {
@@ -33,9 +34,9 @@ public class ProductRepository {
         }
     }
     
-    public void changeStatus(String status, int id) throws DBException {
+    public void changeStatus(EProductStatus status, int id) throws DBException {
         try {
-            productDAO.changeStatus(status, id);
+            productDAO.changeStatus(status.name(), id);
         } catch (DBException ex) {
             throw new DBException();
         }
