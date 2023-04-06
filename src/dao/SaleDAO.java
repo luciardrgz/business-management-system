@@ -23,17 +23,18 @@ public class SaleDAO {
     private CustomerRepository customerRepository;
 
     public void add(Sale sale) throws DBException {
-        String sql = "INSERT INTO sales (product, quantity, customer, payment_method, total) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO sales (id, product, quantity, customer, payment_method, total) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
 
-            ps.setString(1, productRepository.retrieveProductNameById(sale.getProduct()));
-            ps.setInt(2, sale.getQuantity());
-            ps.setString(3, customerRepository.retrieveCustomerNameById(sale.getCustomer()));
-            ps.setString(4, sale.getPaymentMethod().toString());
-            ps.setDouble(5, sale.getTotal());
+            ps.setInt(1, sale.getId());
+            ps.setInt(2, sale.getProduct());
+            ps.setInt(3, sale.getQuantity());
+            ps.setInt(4, sale.getCustomer());
+            ps.setString(5, sale.getPaymentMethod().toString());
+            ps.setDouble(6, sale.getTotal());
 
             ps.execute();
 
@@ -41,14 +42,28 @@ public class SaleDAO {
             throw new DBException();
         }
     }
-    
-    public void addToTable(Sale sale){
+
+    public int getLastId() throws DBException {
+        int lastId = 0;
+        String sql = "SELECT MAX(id) FROM sales";
         
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                lastId = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new DBException();
+        }
+        
+        return lastId;
     }
 
     public List<Sale> getSalesList(String value) throws DBException {
         List<Sale> salesList = new ArrayList();
-        CustomerDAO customerDAO = new CustomerDAO();
 
         String sql = "SELECT * FROM sales ORDER BY id ASC";
         String valueToSearch = "SELECT * FROM sales WHERE product LIKE ? or customer LIKE ?";
