@@ -139,15 +139,15 @@ public class CustomerDAO {
     }
     
     
-    public int retrieveCustomerIdByName(String customerName) throws DBException {
+    public int retrieveCustomerIdByName(String firstName, String lastName) throws DBException {
         int foundCustomerId = -1;
 
-        String sql = "SELECT id FROM customers WHERE name LIKE '%" + customerName + "%'";
+        String sql = "SELECT id FROM customers WHERE first_name LIKE '%" + firstName + "%' AND last_name LIKE '%" + lastName + "%'";
 
         try {
             conn = connector.getConn();
 
-            if (!customerName.equalsIgnoreCase("")) {
+            if (!firstName.equalsIgnoreCase("") && !lastName.equalsIgnoreCase("")) {
                 ps = conn.prepareStatement(sql);
                 rs = ps.executeQuery();
 
@@ -172,7 +172,7 @@ public class CustomerDAO {
             ps = conn.prepareStatement(sql);
              rs = ps.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 customerNames.add(rs.getString("first_name") + " " + rs.getString("last_name"));
             }
 
