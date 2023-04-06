@@ -19,6 +19,8 @@ import utils.ComboBoxUtils;
 import model.EPaymentMethod;
 import model.EPurchaseStatus;
 import model.Purchase;
+import repositories.PurchaseRepository;
+import utils.TableUtils;
 import views.AdminPanel;
 import views.Table;
 
@@ -27,6 +29,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     private Purchase purchase;
     private PurchaseDAO purchaseDAO;
     public AdminPanel adminView;
+    private PurchaseRepository purchaseRepository = new PurchaseRepository();
     private final Table color = new Table();
     private SupplierDAO supplierDAO = new SupplierDAO();
     private DefaultTableModel purchasesTable = new DefaultTableModel();
@@ -91,7 +94,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     }
 
     private void resetView() {
-        clearPurchasesTable();
+        TableUtils.clearTable(purchasesTable);
         listPurchases();
         clearPurchasesInput();
     }
@@ -102,7 +105,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         } else {
             setupPurchase();
             try {
-                purchaseDAO.add(purchase);
+                purchaseRepository.register(purchase);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Compra registrada con éxito!");
             } catch (DBException ex) {
@@ -119,7 +122,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             purchase.setId(Integer.parseInt((adminView.inputPurchaseId.getText())));
 
             try {
-                purchaseDAO.update(purchase);
+                purchaseRepository.update(purchase);
                 resetView();
                 JOptionPane.showMessageDialog(null, "¡Compra modificada con éxito!");
 
@@ -133,7 +136,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         adminView.purchasesTable.setDefaultRenderer(adminView.purchasesTable.getColumnClass(0), color);
 
         try {
-            List<Purchase> purchasesList = purchaseDAO.getPurchasesList(adminView.inputPurchaseSearch.getText());
+            List<Purchase> purchasesList = purchaseRepository.getPurchasesList(adminView.inputPurchaseSearch.getText());
             purchasesTable = (DefaultTableModel) adminView.purchasesTable.getModel();
 
             purchasesTable.setRowCount(0);
@@ -161,7 +164,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
             adminView.purchasesTable.setModel(purchasesTable);
             JTableHeader header = adminView.purchasesTable.getTableHeader();
-            color.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(header);
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -192,13 +195,6 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         adminView.cbxPurchaseSupplier.setSelectedIndex(-1);
         adminView.cbxPurchasePaymentMethod.setSelectedIndex(-1);
         adminView.cbxPurchaseStatus.setSelectedIndex(-1);
-    }
-
-    private void clearPurchasesTable() {
-        for (int i = 0; i < purchasesTable.getRowCount(); i++) {
-            purchasesTable.removeRow(i);
-            i = i - 1;
-        }
     }
 
     @Override
@@ -276,7 +272,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         if (!adminView.inputPurchaseId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputPurchaseId.getText());
             try {
-                purchaseDAO.changeStatus(EPurchaseStatus.CANCELLED.name(), id);
+                purchaseRepository.changeStatus(EPurchaseStatus.CANCELLED.name(), id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Compra cancelada exitosamente.");
             } catch (DBException ex) {
@@ -291,7 +287,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         if (!adminView.inputPurchaseId.getText().equals("")) {
             int id = Integer.parseInt(adminView.inputPurchaseId.getText());
             try {
-                purchaseDAO.changeStatus(EPurchaseStatus.DONE.name(), id);
+                purchaseRepository.changeStatus(EPurchaseStatus.DONE.name(), id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Compra reactivada exitosamente.");
             } catch (DBException ex) {
