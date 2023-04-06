@@ -884,7 +884,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        categoriesTable.setComponentPopupMenu(jPopupProducts);
+        categoriesTable.setComponentPopupMenu(jPopupCategories);
         jScrollPane2.setViewportView(categoriesTable);
         if (categoriesTable.getColumnModel().getColumnCount() > 0) {
             categoriesTable.getColumnModel().getColumn(0).setMinWidth(30);
@@ -1009,7 +1009,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        customersTable.setComponentPopupMenu(jPopupProducts);
+        customersTable.setComponentPopupMenu(jPopupCustomers);
         jScrollPane3.setViewportView(customersTable);
         if (customersTable.getColumnModel().getColumnCount() > 0) {
             customersTable.getColumnModel().getColumn(0).setMinWidth(30);
@@ -1160,7 +1160,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        suppliersTable.setComponentPopupMenu(jPopupProducts);
+        suppliersTable.setComponentPopupMenu(jPopupSuppliers);
         jScrollPane10.setViewportView(suppliersTable);
         if (suppliersTable.getColumnModel().getColumnCount() > 0) {
             suppliersTable.getColumnModel().getColumn(0).setMinWidth(30);
@@ -1288,36 +1288,37 @@ public class AdminPanel extends javax.swing.JFrame {
         usersTable.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Usuario", "Apellido", "Rol", "Estado"
+                "Id", "Usuario", "Nombre", "Apellido", "Rol", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        usersTable.setComponentPopupMenu(jPopupProducts);
+        usersTable.setComponentPopupMenu(jPopupUsers);
         jScrollPane9.setViewportView(usersTable);
         if (usersTable.getColumnModel().getColumnCount() > 0) {
             usersTable.getColumnModel().getColumn(0).setMinWidth(30);
             usersTable.getColumnModel().getColumn(0).setPreferredWidth(30);
             usersTable.getColumnModel().getColumn(0).setMaxWidth(30);
             usersTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-            usersTable.getColumnModel().getColumn(3).setMinWidth(60);
-            usersTable.getColumnModel().getColumn(3).setPreferredWidth(60);
-            usersTable.getColumnModel().getColumn(3).setMaxWidth(60);
-            usersTable.getColumnModel().getColumn(4).setMinWidth(110);
-            usersTable.getColumnModel().getColumn(4).setPreferredWidth(110);
-            usersTable.getColumnModel().getColumn(4).setMaxWidth(110);
+            usersTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+            usersTable.getColumnModel().getColumn(4).setMinWidth(130);
+            usersTable.getColumnModel().getColumn(4).setPreferredWidth(130);
+            usersTable.getColumnModel().getColumn(4).setMaxWidth(130);
+            usersTable.getColumnModel().getColumn(5).setMinWidth(110);
+            usersTable.getColumnModel().getColumn(5).setPreferredWidth(110);
+            usersTable.getColumnModel().getColumn(5).setMaxWidth(110);
         }
 
         jTabUsers.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 830, 550));
@@ -1337,7 +1338,15 @@ public class AdminPanel extends javax.swing.JFrame {
             new String [] {
                 "Producto", "Cantidad", "Subtotal"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane5.setViewportView(newSaleTable);
 
         jTabNewSale.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 89, 1260, 400));
@@ -1392,7 +1401,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         btnDeleteProductFromNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnDeleteProductFromNewSale.setText("Quitar");
-        jTabNewSale.add(btnDeleteProductFromNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 80, 30));
+        jTabNewSale.add(btnDeleteProductFromNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 100, 30));
 
         btnGenerateNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnGenerateNewSale.setText("Generar factura");
@@ -1400,7 +1409,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         btnAddProductToNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnAddProductToNewSale.setText("Agregar");
-        jTabNewSale.add(btnAddProductToNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, 80, 30));
+        jTabNewSale.add(btnAddProductToNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, 100, 30));
 
         btnEditNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnEditNewSaleInfo.setText("Editar");
@@ -1409,7 +1418,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 btnEditNewSaleInfoActionPerformed(evt);
             }
         });
-        jTabNewSale.add(btnEditNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, 80, 30));
+        jTabNewSale.add(btnEditNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, 100, 30));
 
         btnSaveNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnSaveNewSaleInfo.setText("Guardar");
@@ -1418,7 +1427,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 btnSaveNewSaleInfoActionPerformed(evt);
             }
         });
-        jTabNewSale.add(btnSaveNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 80, 30));
+        jTabNewSale.add(btnSaveNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 100, 30));
 
         jTabs.addTab("Vender", jTabNewSale);
 
