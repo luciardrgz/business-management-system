@@ -20,7 +20,7 @@ public class CustomerRepository {
     
      public void register(Customer customer) throws DBException {
         try {
-            customerDAO.register(customer);
+            customerDAO.add(customer);
         } catch (DBException ex) {
             throw new DBException();
         }
@@ -45,23 +45,23 @@ public class CustomerRepository {
     public List<Customer> getCustomersList(String value) throws DBException {
         List<Customer> customers;
         try {
-            customers = customerDAO.getCustomersList(value);
+            customers = customerDAO.retrieveCustomersList(value);
         } catch (DBException ex) {
             throw new DBException();
         }
         return customers;
     }
 
-    public String retrieveCustomerNameById(int customerId) throws DBException {
+    public String getCustomerNameById(int customerId) throws DBException {
         return customerDAO.retrieveCustomerNameById(customerId);
     }
 
-    public int retrieveCustomerIdByName(String customerName) throws DBException {
+    public int getCustomerIdByName(String customerName) throws DBException {
         String[] splittedName = ComboBoxUtils.splitCboxCustomerName(customerName);
         return customerDAO.retrieveCustomerIdByName(splittedName[0], splittedName[1]);
     }
 
-    public List<String> retrieveCustomerNames() throws DBException {
+    public List<String> getCustomerNames() throws DBException {
         return customerDAO.retrieveCustomerNames();
     }
 }

@@ -43,7 +43,7 @@ public class PurchaseRepository {
     public List<Purchase> getPurchasesList(String value) throws DBException {
         List<Purchase> purchases;
         try {
-            purchases = purchaseDAO.getPurchasesList(value);
+            purchases = purchaseDAO.retrievePurchasesList(value);
         } catch (DBException ex) {
             throw new DBException();
         }

@@ -42,8 +42,28 @@ public class SaleDAO {
             throw new DBException();
         }
     }
+    
+    public void update(Sale sale) throws DBException {
+        String sql = "UPDATE sales SET product = ?, quantity = ?, customer = ?, payment_method = ?, total = ? WHERE id = ?";
 
-    public int getLastId() throws DBException {
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, productRepository.retrieveProductNameById(sale.getProduct()));
+            ps.setInt(2, sale.getQuantity());
+            ps.setString(3, customerRepository.getCustomerNameById(sale.getCustomer()));
+            ps.setString(4, sale.getPaymentMethod().toString());
+            ps.setDouble(5, sale.getTotal());
+            ps.setInt(6, sale.getId());
+
+            ps.execute();
+        } catch (SQLException ex) {
+            throw new DBException(ex);
+        }
+    }
+
+    public int retrieveLastId() throws DBException {
         int lastId = 0;
         String sql = "SELECT MAX(id) FROM sales";
         
@@ -62,7 +82,7 @@ public class SaleDAO {
         return lastId;
     }
 
-    public List<Sale> getSalesList(String value) throws DBException {
+    public List<Sale> retrieveSalesList(String value) throws DBException {
         List<Sale> salesList = new ArrayList();
 
         String sql = "SELECT * FROM sales ORDER BY id ASC";
@@ -100,25 +120,5 @@ public class SaleDAO {
         }
 
         return salesList;
-    }
-
-    public void update(Sale sale) throws DBException {
-        String sql = "UPDATE sales SET product = ?, quantity = ?, customer = ?, payment_method = ?, total = ? WHERE id = ?";
-
-        try {
-            conn = connector.getConn();
-            ps = conn.prepareStatement(sql);
-
-            ps.setString(1, productRepository.retrieveProductNameById(sale.getProduct()));
-            ps.setInt(2, sale.getQuantity());
-            ps.setString(3, customerRepository.retrieveCustomerNameById(sale.getCustomer()));
-            ps.setString(4, sale.getPaymentMethod().toString());
-            ps.setDouble(5, sale.getTotal());
-            ps.setInt(6, sale.getId());
-
-            ps.execute();
-        } catch (SQLException ex) {
-            throw new DBException(ex);
-        }
     }
 }

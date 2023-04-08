@@ -27,7 +27,7 @@ public class SaleRepository {
     public int getLastId() throws DBException {
         int id = -1;
         try {
-            id = saleDAO.getLastId();
+            id = saleDAO.retrieveLastId();
         } catch (DBException ex) {
             throw new DBException();
         }

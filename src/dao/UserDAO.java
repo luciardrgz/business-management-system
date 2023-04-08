@@ -54,7 +54,7 @@ public class UserDAO {
         return user;
     }
 
-    public void register(User user) throws DBException {
+    public void add(User user) throws DBException {
         String sql = "INSERT INTO users (username, first_name, last_name, password, role) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -74,47 +74,6 @@ public class UserDAO {
         } finally {
             connector.closeConn(conn);
         }
-    }
-
-    public List getUsersList(String value) throws DBException {
-        List<User> usersList = new ArrayList();
-
-        String sql = "SELECT * FROM users ORDER BY status ASC";
-        String valueToSearch = "SELECT * FROM users WHERE username LIKE '%" + value + "%' OR first_name LIKE '%" + value + "%'";
-
-        try {
-            conn = connector.getConn();
-
-            if (value.equalsIgnoreCase("")) {
-                ps = conn.prepareStatement(sql);
-                rs = ps.executeQuery();
-            } else {
-                ps = conn.prepareStatement(valueToSearch);
-                rs = ps.executeQuery();
-            }
-
-            while (rs.next()) {
-                User currentUser = new User();
-                currentUser.setId(rs.getInt("id"));
-                currentUser.setUsername(rs.getString("username"));
-                currentUser.setFirstName(rs.getString("first_name"));
-                currentUser.setLastName(rs.getString("last_name"));
-
-                ERole role = ERole.valueOf(rs.getString("role"));
-                currentUser.setRole(role);
-
-                EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
-                currentUser.setStatus(status);
-
-                usersList.add(currentUser);
-            }
-        } catch (SQLException ex) {
-            throw new DBException();
-        } finally {
-            connector.closeConn(conn);
-        }
-
-        return usersList;
     }
 
     public void update(User user) throws DBException {
@@ -155,6 +114,47 @@ public class UserDAO {
         } finally {
             connector.closeConn(conn);
         }
+    }
+    
+    public List retrieveUsersList(String value) throws DBException {
+        List<User> usersList = new ArrayList();
+
+        String sql = "SELECT * FROM users ORDER BY status ASC";
+        String valueToSearch = "SELECT * FROM users WHERE username LIKE '%" + value + "%' OR first_name LIKE '%" + value + "%'";
+
+        try {
+            conn = connector.getConn();
+
+            if (value.equalsIgnoreCase("")) {
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+            } else {
+                ps = conn.prepareStatement(valueToSearch);
+                rs = ps.executeQuery();
+            }
+
+            while (rs.next()) {
+                User currentUser = new User();
+                currentUser.setId(rs.getInt("id"));
+                currentUser.setUsername(rs.getString("username"));
+                currentUser.setFirstName(rs.getString("first_name"));
+                currentUser.setLastName(rs.getString("last_name"));
+
+                ERole role = ERole.valueOf(rs.getString("role"));
+                currentUser.setRole(role);
+
+                EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
+                currentUser.setStatus(status);
+
+                usersList.add(currentUser);
+            }
+        } catch (SQLException ex) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+
+        return usersList;
     }
 
 }

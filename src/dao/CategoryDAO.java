@@ -27,7 +27,7 @@ public class CategoryDAO {
         this.productController = productController;
     }
 
-    public void register(Category category) throws DBException {
+    public void add(Category category) throws DBException {
         String sql = "INSERT INTO categories (name, type) VALUES (?, ?)";
 
         try {
@@ -63,7 +63,7 @@ public class CategoryDAO {
         }
     }
 
-    public List getCategoriesList(String value) throws DBException {
+    public List retrieveCategoriesList(String value) throws DBException {
         List<Category> categoriesList = new ArrayList();
 
         String sql = "SELECT * FROM categories ORDER BY id ASC";

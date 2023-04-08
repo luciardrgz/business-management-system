@@ -45,7 +45,7 @@ public class ProductRepository {
     public List<Product> getProductsList(String value) throws DBException {
         List<Product> products;
         try {
-            products = productDAO.getProductsList(value);
+            products = productDAO.retrieveProductsList(value);
         } catch (DBException ex) {
             throw new DBException();
         }
