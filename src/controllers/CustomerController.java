@@ -126,17 +126,20 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
 
         try {
             List<Customer> customersList = customerRepository.getCustomersList(adminView.inputCustomerSearch.getText());
-            setCustomerTable(customersList);
+            customersTable = (DefaultTableModel) adminView.customersTable.getModel();
+            customersTable.setRowCount(0);
 
+            customersListToObjectArray(customersList);
+
+            adminView.customersTable.setModel(customersTable);
+            JTableHeader header = adminView.customersTable.getTableHeader();
+            TableUtils.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
-    private void setCustomerTable(List<Customer> customersList) {
-        customersTable = (DefaultTableModel) adminView.customersTable.getModel();
-        customersTable.setRowCount(0);
-
+    private void customersListToObjectArray(List<Customer> customersList) {
         Object[] currentCustomer = new Object[6];
         for (int i = 0; i < customersList.size(); i++) {
             currentCustomer[0] = customersList.get(i).getId();
@@ -151,10 +154,6 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
 
             customersTable.addRow(currentCustomer);
         }
-
-        adminView.customersTable.setModel(customersTable);
-        JTableHeader header = adminView.customersTable.getTableHeader();
-        TableUtils.changeHeaderColors(header);
     }
 
     private void clearCustomersInput() {

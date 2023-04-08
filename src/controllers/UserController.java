@@ -66,7 +66,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         user.setUsername(adminView.inputUserName.getText());
         user.setFirstName(adminView.inputUserFirstName.getText());
         user.setLastName(adminView.inputUserLastName.getText());
-        
+
         ERole role = ERole.nameForUserToConstant(adminView.cbxUserRole.getSelectedItem().toString());
         user.setRole(role);
     }
@@ -165,28 +165,31 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             usersTable = (DefaultTableModel) adminView.usersTable.getModel();
 
             usersTable.setRowCount(0);
-
-            Object[] currentUser = new Object[6];
-            for (int i = 0; i < usersList.size(); i++) {
-                currentUser[0] = usersList.get(i).getId();
-                currentUser[1] = usersList.get(i).getUsername();
-                currentUser[2] = usersList.get(i).getFirstName();
-                currentUser[3] = usersList.get(i).getLastName();
-                
-                Enum currentRoleEnum = usersList.get(i).getRole();
-                ERole currentRole = ERole.valueOf(currentRoleEnum.name());
-                currentUser[4] = currentRole.getNameForUser();
-
-                currentUser[5] = usersList.get(i).getStatus().getNameForUser();
-
-                usersTable.addRow(currentUser);
-            }
+            usersListToObjectArray(usersList);
 
             adminView.usersTable.setModel(usersTable);
             JTableHeader header = adminView.usersTable.getTableHeader();
             TableUtils.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    private void usersListToObjectArray(List<User> usersList) {
+        Object[] currentUser = new Object[6];
+        for (int i = 0; i < usersList.size(); i++) {
+            currentUser[0] = usersList.get(i).getId();
+            currentUser[1] = usersList.get(i).getUsername();
+            currentUser[2] = usersList.get(i).getFirstName();
+            currentUser[3] = usersList.get(i).getLastName();
+
+            Enum currentRoleEnum = usersList.get(i).getRole();
+            ERole currentRole = ERole.valueOf(currentRoleEnum.name());
+            currentUser[4] = currentRole.getNameForUser();
+
+            currentUser[5] = usersList.get(i).getStatus().getNameForUser();
+
+            usersTable.addRow(currentUser);
         }
     }
 
@@ -222,7 +225,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         int index;
         try {
             index = roleDAO.retrieveRoleIdByName(adminView.usersTable.getValueAt(row, 4).toString());
-            
+
             if ((index - 1) < adminView.cbxUserRole.getItemCount()) {
                 adminView.cbxUserRole.setSelectedIndex(index - 1);
             }

@@ -24,7 +24,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     private final SupplierDAO supplierDAO;
     private final SupplierRepository supplierRepository = new SupplierRepository();
     private final AdminPanel adminView;
-     private final Table color = new Table();
+    private final Table color = new Table();
 
     private DefaultTableModel suppliersTable = new DefaultTableModel();
 
@@ -145,26 +145,29 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             suppliersTable = (DefaultTableModel) adminView.suppliersTable.getModel();
 
             suppliersTable.setRowCount(0);
-
-            Object[] currentSupplier = new Object[8];
-            for (int i = 0; i < suppliersList.size(); i++) {
-                currentSupplier[0] = suppliersList.get(i).getId();
-                currentSupplier[1] = suppliersList.get(i).getFirstName();
-                currentSupplier[2] = suppliersList.get(i).getLastName();
-                currentSupplier[3] = suppliersList.get(i).getSocialName();
-                currentSupplier[4] = suppliersList.get(i).getCuit();
-                currentSupplier[5] = suppliersList.get(i).getPhone();
-                currentSupplier[6] = suppliersList.get(i).getAddress();
-                currentSupplier[7] = suppliersList.get(i).getStatus();
-
-                suppliersTable.addRow(currentSupplier);
-            }
+            suppliersListToObjectArray(suppliersList);
 
             adminView.suppliersTable.setModel(suppliersTable);
             JTableHeader header = adminView.suppliersTable.getTableHeader();
             TableUtils.changeHeaderColors(header);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    private void suppliersListToObjectArray(List<Supplier> suppliersList) {
+        Object[] currentSupplier = new Object[8];
+        for (int i = 0; i < suppliersList.size(); i++) {
+            currentSupplier[0] = suppliersList.get(i).getId();
+            currentSupplier[1] = suppliersList.get(i).getFirstName();
+            currentSupplier[2] = suppliersList.get(i).getLastName();
+            currentSupplier[3] = suppliersList.get(i).getSocialName();
+            currentSupplier[4] = suppliersList.get(i).getCuit();
+            currentSupplier[5] = suppliersList.get(i).getPhone();
+            currentSupplier[6] = suppliersList.get(i).getAddress();
+            currentSupplier[7] = suppliersList.get(i).getStatus();
+
+            suppliersTable.addRow(currentSupplier);
         }
     }
 
