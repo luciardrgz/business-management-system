@@ -218,7 +218,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         int customerId;
 
         try {
-            customerId = customerRepository.retrieveCustomerIdByName(adminView.cbxNewSaleCustomer.getSelectedItem().toString());
+            customerId = customerRepository.getCustomerIdByName(adminView.cbxNewSaleCustomer.getSelectedItem().toString());
             if (customerId != -1) {
                 finalSale.setCustomer(customerId);
             }
@@ -311,7 +311,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         List<String> customers;
 
         try {
-            customers = customerRepository.retrieveCustomerNames();
+            customers = customerRepository.getCustomerNames();
             adminView.cbxNewSaleCustomer.removeAllItems();
             for (String customer : customers) {
                 adminView.cbxNewSaleCustomer.addItem(customer);

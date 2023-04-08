@@ -19,7 +19,7 @@ public class SupplierRepository {
 
     public void register(Supplier supplier) throws DBException {
         try {
-            supplierDAO.register(supplier);
+            supplierDAO.add(supplier);
         } catch (DBException ex) {
             throw new DBException();
         }
@@ -44,10 +44,40 @@ public class SupplierRepository {
     public List<Supplier> getSuppliersList(String value) throws DBException {
         List<Supplier> suppliers;
         try {
-            suppliers = supplierDAO.getSuppliersList(value);
+            suppliers = supplierDAO.retrieveSuppliersList(value);
         } catch (DBException ex) {
             throw new DBException();
         }
         return suppliers;
+    }
+    
+    public int getSupplierIdByName(String name) throws DBException {
+        int id = -1;
+        try {
+            id = supplierDAO.retrieveSupplierIdByName(name);
+        } catch (DBException ex) {
+            throw new DBException();
+        }
+        return id;
+    }
+    
+     public String getSupplierNameById(int id) throws DBException {
+        String name = "";
+        try {
+            name = supplierDAO.retrieveSupplierNameById(id);
+        } catch (DBException ex) {
+            throw new DBException();
+        }
+        return name;
+    }
+     
+     public List<String> getSupplierNames() throws DBException {
+        List<String> names = null;
+        try {
+            names = supplierDAO.retrieveSupplierNames();
+        } catch (DBException ex) {
+            throw new DBException();
+        }
+        return names;
     }
 }

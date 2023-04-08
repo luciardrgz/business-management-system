@@ -21,7 +21,7 @@ public class CategoryRepository {
 
     public void register(Category category) throws DBException {
         try {
-            categoryDAO.register(category);
+            categoryDAO.add(category);
         } catch (SQLException ex) {
             throw new DBException();
         }
@@ -35,23 +35,23 @@ public class CategoryRepository {
         }
     }
 
-    public List<Category> retrieveAllCategories(String search) throws DBException {
-        return categoryDAO.getCategoriesList(search);
+    public List<Category> getAllCategories(String search) throws DBException {
+        return categoryDAO.retrieveCategoriesList(search);
     }
 
-    public String retrieveCategoryNameById(int categoryId) throws DBException {
+    public String getCategoryNameById(int categoryId) throws DBException {
         return categoryDAO.retrieveCategoryNameById(categoryId);
     }
 
-    public int retrieveCategoryIdByName(String categoryName) throws DBException {
+    public int getCategoryIdByName(String categoryName) throws DBException {
         return categoryDAO.retrieveCategoryIdByName(categoryName);
     }
 
-    public List<String> retrieveCategoryNames(ECategoryType categoryType) throws DBException {
+    public List<String> getCategoryNames(ECategoryType categoryType) throws DBException {
         return categoryDAO.retrieveCategoryNames(categoryType);
     }
 
-    public List<String> retrieveCategoryTypes() throws DBException {
+    public List<String> getCategoryTypes() throws DBException {
         return categoryDAO.retrieveCategoryTypes();
     }
 }

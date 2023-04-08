@@ -20,7 +20,7 @@ public class UserRepository {
 
     public void register(User user) throws DBException {
         try {
-            userDAO.register(user);
+            userDAO.add(user);
         } catch (DBException ex) {
             throw new DBException();
         }
@@ -45,7 +45,7 @@ public class UserRepository {
     public List<User> getUsersList(String value) throws DBException {
         List<User> users;
         try {
-            users = userDAO.getUsersList(value);
+            users = userDAO.retrieveUsersList(value);
         } catch (DBException ex) {
             throw new DBException();
         }

@@ -18,7 +18,7 @@ public class SupplierDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    public void register(Supplier supplier) throws DBException {
+    public void add(Supplier supplier) throws DBException {
         String sql = "INSERT INTO suppliers (first_name, last_name, social_name, cuit, phone, address) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
@@ -38,65 +38,6 @@ public class SupplierDAO {
         } finally {
             connector.closeConn(conn);
         }
-    }
-
-    public List getSuppliersList(String value) throws DBException {
-        List<Supplier> suppliersList = new ArrayList();
-
-        String sql = "SELECT * FROM suppliers ORDER BY status ASC";
-        String valueToSearch = "SELECT * FROM suppliers WHERE first_name LIKE '%" + value + "%' OR last_name LIKE '%" + value + "%' OR social_name LIKE '%" + value + "%'";
-
-        try {
-            conn = connector.getConn();
-
-            if (value.equalsIgnoreCase("")) {
-                ps = conn.prepareStatement(sql);
-                rs = ps.executeQuery();
-            } else {
-                ps = conn.prepareStatement(valueToSearch);
-                rs = ps.executeQuery();
-            }
-
-            while (rs.next()) {
-                Supplier currentSupplier = new Supplier();
-                currentSupplier.setId(rs.getInt("id"));
-                currentSupplier.setFirstName(rs.getString("first_name"));
-                currentSupplier.setLastName(rs.getString("last_name"));
-                currentSupplier.setSocialName(rs.getString("social_name"));
-                currentSupplier.setCuit(rs.getString("cuit"));
-                currentSupplier.setPhone(rs.getString("phone"));
-                currentSupplier.setAddress(rs.getString("address"));
-                
-                EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
-                currentSupplier.setStatus(status);
-
-
-                suppliersList.add(currentSupplier);
-            }
-        } catch (SQLException e) {
-            throw new DBException();
-        } finally {
-            connector.closeConn(conn);
-        }
-
-        return suppliersList;
-    }
-
-    public List<String> getSupplierNames() throws DBException {
-        List<Supplier> suppliers;
-        List<String> supplierNames = new ArrayList<>();
-        try {
-            suppliers = getSuppliersList("");
-            for (Supplier supplier : suppliers) {
-                supplierNames.add(supplier.getSocialName());
-            }
-        } catch (DBException ex) {
-            throw new DBException();
-        } finally {
-            connector.closeConn(conn);
-        }
-
-        return supplierNames;
     }
 
     public void update(Supplier supplier) throws DBException {
@@ -139,6 +80,65 @@ public class SupplierDAO {
         } finally {
             connector.closeConn(conn);
         }
+    }
+    
+        public List<Supplier> retrieveSuppliersList(String value) throws DBException {
+        List<Supplier> suppliersList = new ArrayList();
+
+        String sql = "SELECT * FROM suppliers ORDER BY status ASC";
+        String valueToSearch = "SELECT * FROM suppliers WHERE first_name LIKE '%" + value + "%' OR last_name LIKE '%" + value + "%' OR social_name LIKE '%" + value + "%'";
+
+        try {
+            conn = connector.getConn();
+
+            if (value.equalsIgnoreCase("")) {
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+            } else {
+                ps = conn.prepareStatement(valueToSearch);
+                rs = ps.executeQuery();
+            }
+
+            while (rs.next()) {
+                Supplier currentSupplier = new Supplier();
+                currentSupplier.setId(rs.getInt("id"));
+                currentSupplier.setFirstName(rs.getString("first_name"));
+                currentSupplier.setLastName(rs.getString("last_name"));
+                currentSupplier.setSocialName(rs.getString("social_name"));
+                currentSupplier.setCuit(rs.getString("cuit"));
+                currentSupplier.setPhone(rs.getString("phone"));
+                currentSupplier.setAddress(rs.getString("address"));
+                
+                EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
+                currentSupplier.setStatus(status);
+
+
+                suppliersList.add(currentSupplier);
+            }
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+
+        return suppliersList;
+    }
+
+    public List<String> retrieveSupplierNames() throws DBException {
+        List<Supplier> suppliers;
+        List<String> supplierNames = new ArrayList<>();
+        try {
+            suppliers = retrieveSuppliersList("");
+            for (Supplier supplier : suppliers) {
+                supplierNames.add(supplier.getSocialName());
+            }
+        } catch (DBException ex) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+
+        return supplierNames;
     }
 
     public int retrieveSupplierIdByName(String supplierName) throws DBException {

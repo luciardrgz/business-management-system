@@ -37,9 +37,47 @@ public class ProductDAO {
         } catch (SQLException e) {
             throw new DBException();
         }
+    }  
+
+    public void update(Product product) throws DBException {
+        String sql = "UPDATE products SET name = ?, description = ?, stock = ?, production_cost = ?, selling_price = ?, id_category = ? WHERE id = ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, product.getName());
+            ps.setString(2, product.getDescription());
+            ps.setInt(3, product.getStock());
+            ps.setDouble(4, product.getProductionCost());
+            ps.setDouble(5, product.getSellingPrice());
+            ps.setInt(6, product.getCategoryId());
+            ps.setInt(7, product.getId());
+
+            ps.execute();
+
+        } catch (SQLException ex) {
+            throw new DBException(ex);
+        }
     }
 
-    public List<Product> getProductsList(String value) throws DBException {
+    public void changeStatus(String status, int id) throws DBException {
+        String sql = "UPDATE products SET status = ? WHERE id = ?";
+
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, status);
+            ps.setInt(2, id);
+
+            ps.execute();
+        } catch (SQLException ex) {
+            throw new DBException(ex);
+        }
+    }
+    
+    public List<Product> retrieveProductsList(String value) throws DBException {
         List<Product> productsList = new ArrayList();
         CategoryDAO categoryDAO = new CategoryDAO();
 
@@ -81,44 +119,6 @@ public class ProductDAO {
         }
 
         return productsList;
-    }
-
-    public void update(Product product) throws DBException {
-        String sql = "UPDATE products SET name = ?, description = ?, stock = ?, production_cost = ?, selling_price = ?, id_category = ? WHERE id = ?";
-
-        try {
-            conn = connector.getConn();
-            ps = conn.prepareStatement(sql);
-
-            ps.setString(1, product.getName());
-            ps.setString(2, product.getDescription());
-            ps.setInt(3, product.getStock());
-            ps.setDouble(4, product.getProductionCost());
-            ps.setDouble(5, product.getSellingPrice());
-            ps.setInt(6, product.getCategoryId());
-            ps.setInt(7, product.getId());
-
-            ps.execute();
-
-        } catch (SQLException ex) {
-            throw new DBException(ex);
-        }
-    }
-
-    public void changeStatus(String status, int id) throws DBException {
-        String sql = "UPDATE products SET status = ? WHERE id = ?";
-
-        try {
-            conn = connector.getConn();
-            ps = conn.prepareStatement(sql);
-
-            ps.setString(1, status);
-            ps.setInt(2, id);
-
-            ps.execute();
-        } catch (SQLException ex) {
-            throw new DBException(ex);
-        }
     }
     
      public String retrieveProductNameById(int productId) throws DBException {

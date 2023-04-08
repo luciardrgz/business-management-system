@@ -18,7 +18,7 @@ public class CustomerDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    public void register(Customer customer) throws DBException {
+    public void add(Customer customer) throws DBException {
         String sql = "INSERT INTO customers (first_name, last_name, phone, address) VALUES (?, ?, ?, ?)";
 
         try {
@@ -37,44 +37,6 @@ public class CustomerDAO {
         } finally {
             connector.closeConn(conn);
         }
-    }
-
-    public List<Customer> getCustomersList(String value) throws DBException {
-        List<Customer> customersList = new ArrayList();
-
-        String sql = "SELECT * FROM customers ORDER BY status ASC";
-        String valueToSearch = "SELECT * FROM customers WHERE first_name LIKE '%" + value + "%' OR last_name LIKE '%" + value + "%'";
-
-        try {
-            conn = connector.getConn();
-
-            if (value.equalsIgnoreCase("")) {
-                ps = conn.prepareStatement(sql);
-                rs = ps.executeQuery();
-            } else {
-                ps = conn.prepareStatement(valueToSearch);
-                rs = ps.executeQuery();
-            }
-
-            while (rs.next()) {
-                Customer currentCustomer = new Customer();
-                currentCustomer.setId(rs.getInt("id"));
-                currentCustomer.setFirstName(rs.getString("first_name"));
-                currentCustomer.setLastName(rs.getString("last_name"));
-                currentCustomer.setPhone(rs.getString("phone"));
-                currentCustomer.setAddress(rs.getString("address"));
-                 EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
-                currentCustomer.setStatus(status);
-
-                customersList.add(currentCustomer);
-            }
-        } catch (SQLException e) {
-            throw new DBException();
-        } finally {
-            connector.closeConn(conn);
-        }
-
-        return customersList;
     }
 
     public void update(Customer customer) throws DBException {
@@ -115,6 +77,44 @@ public class CustomerDAO {
         }  finally {
             connector.closeConn(conn);
         }
+    }
+    
+    public List<Customer> retrieveCustomersList(String value) throws DBException {
+        List<Customer> customersList = new ArrayList();
+
+        String sql = "SELECT * FROM customers ORDER BY status ASC";
+        String valueToSearch = "SELECT * FROM customers WHERE first_name LIKE '%" + value + "%' OR last_name LIKE '%" + value + "%'";
+
+        try {
+            conn = connector.getConn();
+
+            if (value.equalsIgnoreCase("")) {
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+            } else {
+                ps = conn.prepareStatement(valueToSearch);
+                rs = ps.executeQuery();
+            }
+
+            while (rs.next()) {
+                Customer currentCustomer = new Customer();
+                currentCustomer.setId(rs.getInt("id"));
+                currentCustomer.setFirstName(rs.getString("first_name"));
+                currentCustomer.setLastName(rs.getString("last_name"));
+                currentCustomer.setPhone(rs.getString("phone"));
+                currentCustomer.setAddress(rs.getString("address"));
+                 EPersonStatus status = EPersonStatus.valueOf(rs.getString("status"));
+                currentCustomer.setStatus(status);
+
+                customersList.add(currentCustomer);
+            }
+        } catch (SQLException e) {
+            throw new DBException();
+        } finally {
+            connector.closeConn(conn);
+        }
+
+        return customersList;
     }
     
     public String retrieveCustomerNameById(int customerId) throws DBException {

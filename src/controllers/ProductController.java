@@ -87,7 +87,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     private void setProductCategoryId() {
         int productCategoryId;
         try {
-            productCategoryId = categoryRepository.retrieveCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
+            productCategoryId = categoryRepository.getCategoryIdByName(adminView.cbxProductCategories.getSelectedItem().toString());
             if (productCategoryId != -1) {
                 product.setCategoryId(productCategoryId);
             }
@@ -99,19 +99,13 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     private void setProductCategoryIndex(int row) {
         int index;
         try {
-            index = categoryRepository.retrieveCategoryIdByName(adminView.productsTable.getValueAt(row, 6).toString());
+            index = categoryRepository.getCategoryIdByName(adminView.productsTable.getValueAt(row, 6).toString());
             if ((index - 1) < adminView.cbxProductCategories.getItemCount()) {
                 adminView.cbxProductCategories.setSelectedIndex(index - 1);
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-    }
-
-    private void resetView() {
-        //TableUtils.clearTable(productsTable);
-        listProducts();
-        clearProductsInput();
     }
 
     private void registerProduct() {
@@ -185,23 +179,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             productsTable = (DefaultTableModel) adminView.productsTable.getModel();
 
             productsTable.setRowCount(0);
-
-            Object[] currentProduct = new Object[8];
-            for (int i = 0; i < productsList.size(); i++) {
-                currentProduct[0] = productsList.get(i).getId();
-                currentProduct[1] = productsList.get(i).getName();
-                currentProduct[2] = productsList.get(i).getDescription();
-                currentProduct[3] = productsList.get(i).getStock();
-                currentProduct[4] = productsList.get(i).getProductionCost();
-                currentProduct[5] = productsList.get(i).getSellingPrice();
-                currentProduct[6] = categoryRepository.retrieveCategoryNameById(productsList.get(i).getCategoryId());
-
-                Enum currentStatusEnum = productsList.get(i).getStatus();
-                EProductStatus currentStatus = EProductStatus.valueOf(currentStatusEnum.name());
-                currentProduct[7] = currentStatus.getNameForUser();
-
-                productsTable.addRow(currentProduct);
-            }
+            productListToObjectArray(productsList);
 
             adminView.productsTable.setModel(productsTable);
             JTableHeader header = adminView.productsTable.getTableHeader();
@@ -209,6 +187,35 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+    }
+
+    private void productListToObjectArray(List<Product> productsList) {
+        Object[] currentProduct = new Object[8];
+
+        for (int i = 0; i < productsList.size(); i++) {
+            currentProduct[0] = productsList.get(i).getId();
+            currentProduct[1] = productsList.get(i).getName();
+            currentProduct[2] = productsList.get(i).getDescription();
+            currentProduct[3] = productsList.get(i).getStock();
+            currentProduct[4] = productsList.get(i).getProductionCost();
+            currentProduct[5] = productsList.get(i).getSellingPrice();
+            try {
+                currentProduct[6] = categoryRepository.getCategoryNameById(productsList.get(i).getCategoryId());
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+
+            Enum currentStatusEnum = productsList.get(i).getStatus();
+            EProductStatus currentStatus = EProductStatus.valueOf(currentStatusEnum.name());
+            currentProduct[7] = currentStatus.getNameForUser();
+
+            productsTable.addRow(currentProduct);
+        }
+    }
+
+    private void resetView() {
+        listProducts();
+        clearProductsInput();
     }
 
     private void clearProductsInput() {
@@ -247,7 +254,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         List<String> categories;
 
         try {
-            categories = categoryRepository.retrieveCategoryNames(ECategoryType.PRODUCT);
+            categories = categoryRepository.getCategoryNames(ECategoryType.PRODUCT);
             adminView.cbxProductCategories.removeAllItems();
 
             for (String category : categories) {

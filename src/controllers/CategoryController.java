@@ -42,7 +42,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         this.adminView.btnNewCategory.addActionListener(this);
         this.adminView.inputCategorySearch.addKeyListener(this);
         this.adminView.categoriesTable.addMouseListener(this);
-       
+
         listCategories();
         loadTypesComboBox();
     }
@@ -106,24 +106,31 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
             }
         }
     }
-     
+
     private void listCategories() {
         adminView.categoriesTable.setDefaultRenderer(adminView.categoriesTable.getColumnClass(0), color);
 
+        
+        categoriesTable.setRowCount(0);
+
         try {
-            List<Category> categoriesList = categoryRepository.retrieveAllCategories(adminView.inputCategorySearch.getText());
-            setCategoriesTable(categoriesList);
+            List<Category> categoriesList = categoryRepository.getAllCategories(adminView.inputCategorySearch.getText());
+            categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
+            
+            categoryListToObjectArray(categoriesList);
+            
+            adminView.categoriesTable.setModel(categoriesTable);
+            JTableHeader header = adminView.categoriesTable.getTableHeader();
+            TableUtils.changeHeaderColors(header);
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
-    private void setCategoriesTable(List<Category> categoriesList) {
-        categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
-        categoriesTable.setRowCount(0);
-
+    private void categoryListToObjectArray(List<Category> categoriesList) {
         Object[] currentCategory = new Object[3];
+
         for (int i = 0; i < categoriesList.size(); i++) {
             currentCategory[0] = categoriesList.get(i).getId();
 
@@ -135,10 +142,6 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
 
             categoriesTable.addRow(currentCategory);
         }
-
-        adminView.categoriesTable.setModel(categoriesTable);
-        JTableHeader header = adminView.categoriesTable.getTableHeader();
-        TableUtils.changeHeaderColors(header);
     }
 
     private void loadTypesComboBox() {

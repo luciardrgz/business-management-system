@@ -20,6 +20,7 @@ import model.EPaymentMethod;
 import model.EPurchaseStatus;
 import model.Purchase;
 import repositories.PurchaseRepository;
+import repositories.SupplierRepository;
 import utils.TableUtils;
 import views.AdminPanel;
 import views.Table;
@@ -30,8 +31,8 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     private PurchaseDAO purchaseDAO;
     public AdminPanel adminView;
     private PurchaseRepository purchaseRepository = new PurchaseRepository();
+    private SupplierRepository supplierRepository = new SupplierRepository();
     private final Table color = new Table();
-    private SupplierDAO supplierDAO = new SupplierDAO();
     private DefaultTableModel purchasesTable = new DefaultTableModel();
 
     public PurchaseController() {
@@ -88,7 +89,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
         int purchaseSupplierId;
         try {
-            purchaseSupplierId = supplierDAO.retrieveSupplierIdByName(adminView.cbxPurchaseSupplier.getSelectedItem().toString());
+            purchaseSupplierId = supplierRepository.getSupplierIdByName(adminView.cbxPurchaseSupplier.getSelectedItem().toString());
             if (purchaseSupplierId != -1) {
                 purchase.setSupplier(purchaseSupplierId);
             }
@@ -101,7 +102,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
         EPurchaseStatus status = EPurchaseStatus.nameForUserToConstant(adminView.cbxPurchaseStatus.getSelectedItem().toString());
         purchase.setEStatus(status);
-        
+
         System.out.println("SETUP PURCHASE: " + purchase.toString());
     }
 
@@ -161,29 +162,10 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         try {
             List<Purchase> purchasesList = purchaseRepository.getPurchasesList(adminView.inputPurchaseSearch.getText());
             purchasesTable = (DefaultTableModel) adminView.purchasesTable.getModel();
-
             purchasesTable.setRowCount(0);
 
-            Object[] currentPurchase = new Object[9];
-            for (int i = 0; i < purchasesList.size(); i++) {
-                currentPurchase[0] = purchasesList.get(i).getId();
-                currentPurchase[1] = purchasesList.get(i).getName();
-                currentPurchase[2] = purchasesList.get(i).getQuantity();
-                currentPurchase[3] = purchasesList.get(i).getUnitaryPrice();
-                currentPurchase[4] = purchasesList.get(i).getDate();
-                currentPurchase[5] = supplierDAO.retrieveSupplierNameById(purchasesList.get(i).getSupplier());
-
-                Enum currentPaymentMethodEnum = purchasesList.get(i).getEPaymentMethod();
-                EPaymentMethod currentPaymentMethod = EPaymentMethod.valueOf(currentPaymentMethodEnum.name());
-                currentPurchase[6] = currentPaymentMethod.getNameForUser();
-
-                Enum currentStatusEnum = purchasesList.get(i).getEStatus();
-                EPurchaseStatus currentStatus = EPurchaseStatus.valueOf(currentStatusEnum.name());
-                currentPurchase[7] = currentStatus.getNameForUser();
-                currentPurchase[8] = takeNumbersIn(purchasesList.get(i).getQuantity()) * purchasesList.get(i).getUnitaryPrice();
-
-                purchasesTable.addRow(currentPurchase);
-            }
+            purchaseListToObjectArray(purchasesList);
+            
 
             adminView.purchasesTable.setModel(purchasesTable);
             JTableHeader header = adminView.purchasesTable.getTableHeader();
@@ -191,6 +173,34 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    private void purchaseListToObjectArray(List<Purchase> purchasesList) {
+        Object[] currentPurchase = new Object[9];
+        
+        for (int i = 0; i < purchasesList.size(); i++) {
+            currentPurchase[0] = purchasesList.get(i).getId();
+            currentPurchase[1] = purchasesList.get(i).getName();
+            currentPurchase[2] = purchasesList.get(i).getQuantity();
+            currentPurchase[3] = purchasesList.get(i).getUnitaryPrice();
+            currentPurchase[4] = purchasesList.get(i).getDate();
+            try {
+                currentPurchase[5] = supplierRepository.getSupplierNameById(purchasesList.get(i).getSupplier());
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+
+            Enum currentPaymentMethodEnum = purchasesList.get(i).getEPaymentMethod();
+            EPaymentMethod currentPaymentMethod = EPaymentMethod.valueOf(currentPaymentMethodEnum.name());
+            currentPurchase[6] = currentPaymentMethod.getNameForUser();
+
+            Enum currentStatusEnum = purchasesList.get(i).getEStatus();
+            EPurchaseStatus currentStatus = EPurchaseStatus.valueOf(currentStatusEnum.name());
+            currentPurchase[7] = currentStatus.getNameForUser();
+            currentPurchase[8] = takeNumbersIn(purchasesList.get(i).getQuantity()) * purchasesList.get(i).getUnitaryPrice();
+            
+            purchasesTable.addRow(currentPurchase);
         }
     }
 
@@ -206,7 +216,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             numbers = m.group();
         }
 
-        return Double.parseDouble(numbers);
+        return Double.valueOf(numbers);
     }
 
     private void clearPurchasesInput() {
@@ -239,7 +249,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     private void setSupplierIndex(int row, int col) {
         int supplierIndex;
         try {
-            supplierIndex = supplierDAO.retrieveSupplierIdByName(adminView.purchasesTable.getValueAt(row, col).toString());
+            supplierIndex = supplierRepository.getSupplierIdByName(adminView.purchasesTable.getValueAt(row, col).toString());
 
             if ((supplierIndex - 1) < adminView.cbxPurchaseSupplier.getItemCount()) {
                 adminView.cbxPurchaseSupplier.setSelectedIndex(supplierIndex - 1);
@@ -281,7 +291,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     private void loadSuppliersComboBox() {
         List<String> suppliers;
         try {
-            suppliers = supplierDAO.getSupplierNames();
+            suppliers = supplierRepository.getSupplierNames();
             adminView.cbxPurchaseSupplier.removeAllItems();
             for (String supplier : suppliers) {
                 adminView.cbxPurchaseSupplier.addItem(supplier);
