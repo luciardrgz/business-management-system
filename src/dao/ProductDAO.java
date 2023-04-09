@@ -19,7 +19,7 @@ public class ProductDAO {
     private ResultSet rs;
 
     public void add(Product product) throws DBException {
-        String sql = "INSERT INTO products (name, description, production_cost, stock, selling_price, id_category) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO products (name, description, production_cost, stock, selling_price, category) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             conn = connector.getConn();
@@ -40,7 +40,7 @@ public class ProductDAO {
     }  
 
     public void update(Product product) throws DBException {
-        String sql = "UPDATE products SET name = ?, description = ?, stock = ?, production_cost = ?, selling_price = ?, id_category = ? WHERE id = ?";
+        String sql = "UPDATE products SET name = ?, description = ?, stock = ?, production_cost = ?, selling_price = ?, category = ? WHERE id = ?";
 
         try {
             conn = connector.getConn();
@@ -82,7 +82,7 @@ public class ProductDAO {
         CategoryDAO categoryDAO = new CategoryDAO();
 
         String sql = "SELECT * FROM products ORDER BY status ASC";
-        String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR id_category = ? OR description LIKE ?";
+        String valueToSearch = "SELECT * FROM products WHERE name LIKE ? OR category = ? OR description LIKE ?";
 
         try {
             conn = connector.getConn();
@@ -107,7 +107,7 @@ public class ProductDAO {
                 currentProduct.setStock(rs.getInt("stock"));
                 currentProduct.setProductionCost(rs.getDouble("production_cost"));
                 currentProduct.setSellingPrice(rs.getDouble("selling_price"));
-                currentProduct.setCategoryId(rs.getInt("id_category"));
+                currentProduct.setCategoryId(rs.getInt("category"));
 
                 EProductStatus status = EProductStatus.valueOf(rs.getString("status"));
                 currentProduct.setStatus(status);
