@@ -1,6 +1,7 @@
 package views;
 
 import controllers.CategoryController;
+import controllers.CompanyController;
 import controllers.ConfigController;
 import controllers.CustomerController;
 import controllers.ProductController;
@@ -10,6 +11,7 @@ import controllers.SupplierController;
 import controllers.UserController;
 import model.Category;
 import dao.CategoryDAO;
+import dao.CompanyDAO;
 import model.Customer;
 import dao.CustomerDAO;
 import model.Product;
@@ -22,6 +24,7 @@ import model.User;
 import dao.UserDAO;
 import java.awt.Font;
 import javax.swing.table.JTableHeader;
+import model.Company;
 import model.Purchase;
 import model.Sale;
 
@@ -45,17 +48,20 @@ public class AdminPanel extends javax.swing.JFrame {
     PurchaseDAO purchaseDAO = new PurchaseDAO();
     Sale sale = new Sale();
     SaleDAO saleDAO = new SaleDAO();
+    Company company = new Company();
+    CompanyDAO companyDAO = new CompanyDAO();
 
     public AdminPanel() {
         initComponents();
         ConfigController configController = new ConfigController(this);
+        CompanyController companyController = new CompanyController(company, companyDAO, this);
         UserController userController = new UserController(user, userDAO, this);
         CustomerController customerController = new CustomerController(customer, customerDAO, this);
         ProductController productController = new ProductController(product, productDAO, this);
         CategoryController categoryController = new CategoryController(category, categoryDAO, productController, this);
         SupplierController supplierController = new SupplierController(supplier, supplierDAO, this);
         PurchaseController purchaseController = new PurchaseController(purchase, purchaseDAO, this);
-        SaleController saleController = new SaleController(sale, saleDAO, this);
+        SaleController saleController = new SaleController(sale, saleDAO, productController, this);
     }
 
     /**
@@ -278,7 +284,7 @@ public class AdminPanel extends javax.swing.JFrame {
         lblBusinessAddress = new javax.swing.JLabel();
         inputBusinessOwnerName = new javax.swing.JTextField();
         inputBusinessOwnerLastName = new javax.swing.JTextField();
-        inputCustomerPhone1 = new javax.swing.JTextField();
+        inputBusinessPhone = new javax.swing.JTextField();
         inputBusinessAddress = new javax.swing.JTextField();
         btnNewBusiness = new javax.swing.JButton();
         btnRegisterBusiness = new javax.swing.JButton();
@@ -1713,7 +1719,7 @@ public class AdminPanel extends javax.swing.JFrame {
                         .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(inputBusinessOwnerName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputBusinessOwnerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputCustomerPhone1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputBusinessPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputBusinessAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel20Layout.createSequentialGroup()
                         .addComponent(btnNewBusiness)
@@ -1760,7 +1766,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBusinessPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputCustomerPhone1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputBusinessPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBusinessAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1779,7 +1785,7 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jPanel12.add(jPanel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 19, 330, -1));
 
-        jTabs.addTab("tab9", jPanel12);
+        jTabs.addTab("Empresa", jPanel12);
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -1932,13 +1938,13 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JButton btnDeleteProductFromNewSale;
     public javax.swing.JButton btnEditNewSaleInfo;
     public javax.swing.JButton btnGenerateNewSale;
-    private javax.swing.JButton btnNewBusiness;
+    public javax.swing.JButton btnNewBusiness;
     public javax.swing.JButton btnNewCategory;
     public javax.swing.JButton btnNewCustomer;
     public javax.swing.JButton btnNewProduct;
     public javax.swing.JButton btnNewSupplier;
     public javax.swing.JButton btnNewUser;
-    private javax.swing.JButton btnRegisterBusiness;
+    public javax.swing.JButton btnRegisterBusiness;
     public javax.swing.JButton btnRegisterCategory;
     public javax.swing.JButton btnRegisterCustomer;
     public javax.swing.JButton btnRegisterProduct;
@@ -1947,7 +1953,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JButton btnRegisterUser;
     public javax.swing.JButton btnRemoveStock;
     public javax.swing.JButton btnSaveNewSaleInfo;
-    private javax.swing.JButton btnUpdateBusiness;
+    public javax.swing.JButton btnUpdateBusiness;
     public javax.swing.JButton btnUpdateCategory;
     public javax.swing.JButton btnUpdateCustomer;
     public javax.swing.JButton btnUpdateProduct;
@@ -1975,12 +1981,13 @@ public class AdminPanel extends javax.swing.JFrame {
     private javax.swing.JLabel iconProductSearch1;
     private javax.swing.JLabel iconPurchaseSearch;
     private javax.swing.JLabel iconSupplierSearch;
-    private javax.swing.JTextField inputBusinessAddress;
-    private javax.swing.JTextField inputBusinessCUIT;
-    private javax.swing.JTextField inputBusinessExtras;
-    private javax.swing.JTextField inputBusinessName;
-    private javax.swing.JTextField inputBusinessOwnerLastName;
-    private javax.swing.JTextField inputBusinessOwnerName;
+    public javax.swing.JTextField inputBusinessAddress;
+    public javax.swing.JTextField inputBusinessCUIT;
+    public javax.swing.JTextField inputBusinessExtras;
+    public javax.swing.JTextField inputBusinessName;
+    public javax.swing.JTextField inputBusinessOwnerLastName;
+    public javax.swing.JTextField inputBusinessOwnerName;
+    public javax.swing.JTextField inputBusinessPhone;
     public javax.swing.JTextField inputCategoryId;
     public javax.swing.JTextField inputCategoryName;
     public javax.swing.JTextField inputCategorySearch;
@@ -1989,7 +1996,6 @@ public class AdminPanel extends javax.swing.JFrame {
     public javax.swing.JTextField inputCustomerId;
     public javax.swing.JTextField inputCustomerLastName;
     public javax.swing.JTextField inputCustomerPhone;
-    private javax.swing.JTextField inputCustomerPhone1;
     public javax.swing.JTextField inputCustomerSearch;
     public javax.swing.JTextField inputNewSaleQty;
     public javax.swing.JTextField inputNewSaleTotal;

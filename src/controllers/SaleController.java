@@ -8,12 +8,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import utils.ComboBoxUtils;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import listeners.IPrintCloseListener;
+import listeners.IStockListener;
 import model.EPaymentMethod;
 import model.Sale;
 import repositories.CustomerRepository;
@@ -21,9 +24,10 @@ import repositories.ProductRepository;
 import repositories.SaleRepository;
 import utils.TableUtils;
 import views.AdminPanel;
+import views.Print;
 import views.Table;
 
-public class SaleController implements ActionListener, MouseListener, KeyListener {
+public class SaleController implements ActionListener, MouseListener, KeyListener, IPrintCloseListener {
 
     private Sale finalSale;
     private SaleDAO saleDAO;
@@ -34,13 +38,15 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private final Table color = new Table();
     private DefaultTableModel newSaleTable = new DefaultTableModel();
     private List<Sale> tempSales = new ArrayList<>();
+    private IStockListener stockUpdateListener;
 
     public SaleController() {
     }
 
-    public SaleController(Sale sale, SaleDAO saleDAO, AdminPanel adminView) {
+    public SaleController(Sale sale, SaleDAO saleDAO, ProductController productController, AdminPanel adminView) {
         this.finalSale = sale;
         this.saleDAO = saleDAO;
+        this.stockUpdateListener = productController;
         this.adminView = adminView;
         this.adminView.btnAddProductToNewSale.addActionListener(this);
         this.adminView.btnDeleteProductFromNewSale.addActionListener(this);
@@ -78,27 +84,54 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private Sale setupTempSale() {
         Sale tempSale = new Sale();
 
-        tempSale.setId(finalSale.getId());
-
-        int productId = getSaleProductId();
-        if (productId != -1) {
-            tempSale.setProduct(productId);
-        }
-
-        tempSale.setQuantity(Integer.parseInt(adminView.inputNewSaleQty.getText()));
-
         try {
-            tempSale.setTotal(tempSale.getQuantity() * productRepository.retrieveProductPrice(tempSale.getProduct()));
+            if (checkAvailableStock() && checkDuplicateProduct(getSaleProductId()) && getSaleProductId() != -1) {
+
+                tempSale.setId(finalSale.getId());
+
+                int productId = getSaleProductId();
+                if (productId != -1) {
+                    tempSale.setProduct(productId);
+                }
+
+                tempSale.setQuantity(Integer.parseInt(adminView.inputNewSaleQty.getText()));
+
+                tempSale.setTotal(tempSale.getQuantity() * productRepository.getProductPrice(tempSale.getProduct()));
+
+                tempSale.setCustomer(finalSale.getCustomer());
+
+                tempSale.setPaymentMethod(finalSale.getPaymentMethod());
+
+                tempSales.add(tempSale);
+            } else {
+                JOptionPane.showMessageDialog(null, "Producto sin stock o repetido.");
+            }
         } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, "No se encontró el precio del producto de la venta.");
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-
-        tempSale.setCustomer(finalSale.getCustomer());
-
-        tempSale.setPaymentMethod(finalSale.getPaymentMethod());
-
-        tempSales.add(tempSale);
         return tempSale;
+    }
+
+    public boolean checkDuplicateProduct(int id) {
+        boolean check = true;
+        for (Sale temp : tempSales) {
+            if (temp.getProduct() == id) {
+                check = false;
+            }
+        }
+        return check;
+    }
+
+    public boolean checkAvailableStock() {
+        boolean check = true;
+        try {
+            if (productRepository.getProductStock(getSaleProductId()) < Integer.parseInt(adminView.inputNewSaleQty.getText())) {
+                check = false;
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        return check;
     }
 
     private void deleteTempSale(Sale sale) {
@@ -154,9 +187,9 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private Object[] tempSaleToObject(Sale sale) {
         Object[] tempSaleCol = new Object[3];
         try {
-            tempSaleCol[0] = productRepository.retrieveProductNameById(sale.getProduct());
+            tempSaleCol[0] = productRepository.getProductNameById(sale.getProduct());
             tempSaleCol[1] = sale.getQuantity();
-            tempSaleCol[2] = sale.getQuantity() * productRepository.retrieveProductPrice(sale.getProduct());
+            tempSaleCol[2] = sale.getQuantity() * productRepository.getProductPrice(sale.getProduct());
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -182,12 +215,22 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
 
                 for (Sale tempSale : tempSales) {
                     saleRepository.generate(tempSale);
+                    updateProductStock(tempSale);
+                    stockUpdateListener.onSale();
                 }
 
-                JOptionPane.showMessageDialog(null, "¡Venta registrada con éxito!");
                 resetView();
+                showPrintScreen(finalSale);
             }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
 
+    private void updateProductStock(Sale tempSale) {
+        try {
+            int soldStock = (int) (tempSale.getTotal() / productRepository.getProductPrice(tempSale.getProduct()));
+            productRepository.updateStock(productRepository.getProductById(tempSale.getProduct()).getId(), soldStock);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -196,17 +239,17 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private int getSaleProductId() {
         int productId = -1;
         try {
-            productId = productRepository.retrieveProductIdByName(adminView.cbxNewSaleProduct.getSelectedItem().toString());
+            productId = productRepository.getProductIdByName(adminView.cbxNewSaleProduct.getSelectedItem().toString());
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
         return productId;
     }
-    
-    private void setFinalSaleId(){
+
+    private void setFinalSaleId() {
         try {
-            if(saleRepository.getLastId() != -1){
+            if (saleRepository.getLastId() != -1) {
                 finalSale.setId(saleRepository.getLastId() + 1);
             }
         } catch (DBException ex) {
@@ -253,6 +296,20 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         dataFieldsEnabled(true);
     }
 
+    private void showPrintScreen(Sale finalSale) throws DBException {
+        try {
+            Print printView = new Print(finalSale.getId(), this);
+            printView.setVisible(true);
+        } catch (DBException | IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    @Override
+    public void onPrintWindowClosed() {
+        tempSales.clear();
+    }
+
     private void calculateFinalTotal() {
         int subtotalColumn = 2;
         double total = 0;
@@ -284,7 +341,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private void setProductIndex(int row) {
         int index;
         try {
-            index = productRepository.retrieveProductIdByName(adminView.newSaleTable.getValueAt(row, 0).toString());
+            index = productRepository.getProductIdByName(adminView.newSaleTable.getValueAt(row, 0).toString());
             if ((index - 1) < adminView.cbxNewSaleProduct.getItemCount()) {
                 adminView.cbxNewSaleProduct.setSelectedIndex(index - 1);
             }
@@ -296,7 +353,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private void loadProductsComboBox() {
         List<String> products;
         try {
-            products = productRepository.retrieveProductNames();
+            products = productRepository.getProductNames();
             adminView.cbxNewSaleProduct.removeAllItems();
 
             for (String product : products) {
