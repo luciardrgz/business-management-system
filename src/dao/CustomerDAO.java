@@ -117,9 +117,9 @@ public class CustomerDAO {
         return customersList;
     }
     
-    public String retrieveCustomerNameById(int customerId) throws DBException {
-        String foundCustomerName = null;
-        String sql = "SELECT first_name FROM customers WHERE id = ?";
+    public String[] retrieveCustomerNameById(int customerId) throws DBException {
+        String[] foundCustomerName = new String[2];
+        String sql = "SELECT first_name, last_name FROM customers WHERE id = ?";
 
         try {
             conn = connector.getConn();
@@ -128,7 +128,8 @@ public class CustomerDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                foundCustomerName = rs.getString("name");
+                foundCustomerName[0] = rs.getString("first_name");
+                foundCustomerName[1] = rs.getString("last_name");
             }
         } catch (SQLException e) {
             throw new DBException();

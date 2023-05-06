@@ -20,10 +20,11 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import repositories.CategoryRepository;
 import views.AdminPanel;
 import listeners.ICategoryUpdateListener;
+import listeners.IStockListener;
 import repositories.ProductRepository;
 import utils.TableUtils;
 
-public class ProductController implements ActionListener, MouseListener, KeyListener, ICategoryUpdateListener {
+public class ProductController implements ActionListener, MouseListener, KeyListener, ICategoryUpdateListener, IStockListener {
 
     private Product product;
     private ProductDAO productDAO;
@@ -268,6 +269,12 @@ public class ProductController implements ActionListener, MouseListener, KeyList
 
     @Override
     public void onCategoryUpdate() {
+        loadCategoriesComboBox();
+        resetView();
+    }
+    
+    @Override
+    public void onSale() {
         loadCategoriesComboBox();
         resetView();
     }
