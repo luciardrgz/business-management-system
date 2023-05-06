@@ -50,10 +50,9 @@ public class SaleDAO {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
 
-            ps.setString(1, productRepository.getProductNameById(sale.getProduct()));
+            ps.setString(1, productRepository.retrieveProductNameById(sale.getProduct()));
             ps.setInt(2, sale.getQuantity());
-            String[] customerName = customerRepository.getCustomerNameById(sale.getCustomer());
-            ps.setString(3, customerName[0] + " " + customerName[1]);
+            ps.setString(3, customerRepository.getCustomerNameById(sale.getCustomer()));
             ps.setString(4, sale.getPaymentMethod().toString());
             ps.setDouble(5, sale.getTotal());
             ps.setInt(6, sale.getId());
@@ -121,24 +120,5 @@ public class SaleDAO {
         }
 
         return salesList;
-    }
-    
-    public int retrieveSaleCustomer(int saleId) throws DBException{
-        int customerId = -1;
-        
-        String sql = "SELECT DISTINCT customer FROM sales WHERE id = ?";
-        try {
-            conn = connector.getConn();
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, saleId);
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                customerId = rs.getInt("customer");
-            }
-        } catch (SQLException ex) {
-            throw new DBException();
-        }
-        return customerId;
     }
 }
