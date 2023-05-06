@@ -1,0 +1,7 @@
+socialName=OsoPanda
+CUIT=20163338884
+firstName=Maria
+lastName=Rosales
+phone=2235888888
+address=Falucho 1960
+extras=-
