@@ -3793,8 +3793,8 @@
         <Container class="javax.swing.JPanel" name="jPanel12">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="tab9">
-                <Property name="tabTitle" type="java.lang.String" value="tab9"/>
+              <JTabbedPaneConstraints tabName="Empresa">
+                <Property name="tabTitle" type="java.lang.String" value="Empresa"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -3838,7 +3838,7 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="inputBusinessOwnerName" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                                       <Component id="inputBusinessOwnerLastName" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                                      <Component id="inputCustomerPhone1" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                                      <Component id="inputBusinessPhone" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                                       <Component id="inputBusinessAddress" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -3901,7 +3901,7 @@
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblBusinessPhone" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="inputCustomerPhone1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="inputBusinessPhone" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -3958,12 +3958,24 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="inputBusinessOwnerName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="inputBusinessOwnerLastName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JTextField" name="inputCustomerPhone1">
+                <Component class="javax.swing.JTextField" name="inputBusinessPhone">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="inputBusinessAddress">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnNewBusiness">
                   <Properties>
@@ -3975,6 +3987,9 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNewBusinessActionPerformed"/>
                   </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnRegisterBusiness">
                   <Properties>
@@ -3983,6 +3998,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Registrar"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnUpdateBusiness">
                   <Properties>
@@ -3991,6 +4009,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Modificar"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblBusinessSocial">
                   <Properties>
@@ -4009,8 +4030,14 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="inputBusinessCUIT">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="inputBusinessName">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblBusinessExtras">
                   <Properties>
@@ -4021,6 +4048,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="inputBusinessExtras">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
