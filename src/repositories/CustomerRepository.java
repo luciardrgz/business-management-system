@@ -52,7 +52,7 @@ public class CustomerRepository {
         return customers;
     }
 
-    public String getCustomerNameById(int customerId) throws DBException {
+    public String[] getCustomerNameById(int customerId) throws DBException {
         return customerDAO.retrieveCustomerNameById(customerId);
     }
 

@@ -1,13 +1,15 @@
 package controllers;
 
+import dao.CompanyDAO;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JLabel;
+import model.Company;
 import views.AdminPanel;
 
 public class ConfigController implements MouseListener {
-
+   
     private final AdminPanel adminView;
 
     public ConfigController(AdminPanel adminView) {
@@ -25,6 +27,7 @@ public class ConfigController implements MouseListener {
     private final Color hoverColor = new Color(255, 51, 51);
     private final Color noHoverColor = new Color(102, 255, 153);
 
+    
     @Override
     public void mouseEntered(MouseEvent e) {
 
@@ -75,19 +78,15 @@ public class ConfigController implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getSource() == adminView.lblProducts){
+        if (e.getSource() == adminView.lblProducts) {
             adminView.jTabs.setSelectedIndex(0);
-        }
-        else if (e.getSource() == adminView.lblCategories){
+        } else if (e.getSource() == adminView.lblCategories) {
             adminView.jTabs.setSelectedIndex(1);
-        }
-         else if (e.getSource() == adminView.lblCustomers){
+        } else if (e.getSource() == adminView.lblCustomers) {
             adminView.jTabs.setSelectedIndex(2);
-        }
-        else if (e.getSource() == adminView.lblSuppliers){
+        } else if (e.getSource() == adminView.lblSuppliers) {
             adminView.jTabs.setSelectedIndex(3);
-        }
-        else if (e.getSource() == adminView.lblUsers){
+        } else if (e.getSource() == adminView.lblUsers) {
             adminView.jTabs.setSelectedIndex(4);
         }
     }
