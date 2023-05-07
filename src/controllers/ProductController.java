@@ -10,7 +10,6 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import model.Product;
 import dao.ProductDAO;
 import model.ECategoryType;
@@ -21,6 +20,7 @@ import repositories.CategoryRepository;
 import views.AdminPanel;
 import listeners.ICategoryUpdateListener;
 import listeners.IStockListener;
+import model.Sale;
 import repositories.ProductRepository;
 import utils.TableUtils;
 
@@ -68,9 +68,9 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         } else if (e.getSource() == adminView.jMenuItemReenterProduct) {
             recoverProduct();
         } else if (e.getSource() == adminView.btnAddStock) {
-            addStockInInput();
+            updateStockInput("add");
         } else if (e.getSource() == adminView.btnRemoveStock) {
-            removeStockInInput();
+            updateStockInput("remove");
         } else {
             clearProductsInput();
         }
@@ -182,9 +182,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             productsTable.setRowCount(0);
             productListToObjectArray(productsList);
 
-            adminView.productsTable.setModel(productsTable);
-            JTableHeader header = adminView.productsTable.getTableHeader();
-            TableUtils.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(adminView.productsTable, productsTable);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -272,27 +270,31 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         loadCategoriesComboBox();
         resetView();
     }
-    
+
     @Override
     public void onSale() {
         loadCategoriesComboBox();
         resetView();
     }
 
-    private void addStockInInput() {
+    private void updateStockInput(String operation) {
         String currentStock = adminView.inputProductStock.getText();
-
+        
         if (!currentStock.isEmpty()) {
-            adminView.inputProductStock.setText(String.valueOf(Integer.parseInt(currentStock) + 1));
+            if (operation.equals("add")) {
+                adminView.inputProductStock.setText(String.valueOf(Integer.parseInt(currentStock) + 1));
+            } else if (operation.equals("remove")) {
+                adminView.inputProductStock.setText(String.valueOf(Integer.parseInt(currentStock) - 1));
+            }
         }
     }
-
-    private void removeStockInInput() {
-        String currentStock = adminView.inputProductStock.getText();
-
-        if (!currentStock.isEmpty()) {
-            int newStock = Integer.parseInt(currentStock) - 1;
-            adminView.inputProductStock.setText(String.valueOf(newStock));
+    
+    public void updateProductStock(Sale tempSale) {
+        try {
+            int soldStock = (int) (tempSale.getTotal() / productRepository.getProductPrice(tempSale.getProduct()));
+            productRepository.updateStock(productRepository.getProductById(tempSale.getProduct()).getId(), soldStock);
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 

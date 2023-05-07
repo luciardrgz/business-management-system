@@ -10,7 +10,6 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import model.Category;
 import dao.CategoryDAO;
 import model.ECategoryType;
@@ -110,18 +109,14 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     private void listCategories() {
         adminView.categoriesTable.setDefaultRenderer(adminView.categoriesTable.getColumnClass(0), color);
 
-        
-        categoriesTable.setRowCount(0);
-
         try {
             List<Category> categoriesList = categoryRepository.getAllCategories(adminView.inputCategorySearch.getText());
             categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
-            
+
+            categoriesTable.setRowCount(0);
             categoryListToObjectArray(categoriesList);
-            
-            adminView.categoriesTable.setModel(categoriesTable);
-            JTableHeader header = adminView.categoriesTable.getTableHeader();
-            TableUtils.changeHeaderColors(header);
+
+            TableUtils.changeHeaderColors(adminView.categoriesTable, categoriesTable);
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());

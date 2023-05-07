@@ -1,7 +1,6 @@
 package controllers;
 
 import dao.PurchaseDAO;
-import dao.SupplierDAO;
 import exceptions.DBException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import utils.ComboBoxUtils;
 import model.EPaymentMethod;
 import model.EPurchaseStatus;
@@ -102,8 +100,6 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
         EPurchaseStatus status = EPurchaseStatus.nameForUserToConstant(adminView.cbxPurchaseStatus.getSelectedItem().toString());
         purchase.setEStatus(status);
-
-        System.out.println("SETUP PURCHASE: " + purchase.toString());
     }
 
     private void resetView() {
@@ -167,9 +163,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             purchaseListToObjectArray(purchasesList);
             
 
-            adminView.purchasesTable.setModel(purchasesTable);
-            JTableHeader header = adminView.purchasesTable.getTableHeader();
-            TableUtils.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(adminView.purchasesTable, purchasesTable);
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
