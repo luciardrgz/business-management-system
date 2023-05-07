@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import views.Table;
 import model.User;
 import dao.UserDAO;
@@ -165,9 +164,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             usersTable.setRowCount(0);
             usersListToObjectArray(usersList);
 
-            adminView.usersTable.setModel(usersTable);
-            JTableHeader header = adminView.usersTable.getTableHeader();
-            TableUtils.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(adminView.usersTable, usersTable);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

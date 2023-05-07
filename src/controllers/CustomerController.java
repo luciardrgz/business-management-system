@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import model.Customer;
 import dao.CustomerDAO;
 import exceptions.DBException;
@@ -131,9 +130,8 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
 
             customersListToObjectArray(customersList);
 
-            adminView.customersTable.setModel(customersTable);
-            JTableHeader header = adminView.customersTable.getTableHeader();
-            TableUtils.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(adminView.customersTable, customersTable);
+
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

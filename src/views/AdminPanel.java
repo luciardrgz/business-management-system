@@ -1406,16 +1406,16 @@ public class AdminPanel extends javax.swing.JFrame {
         jTabNewSale.add(inputNewSaleQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 40, 71, 30));
 
         btnDeleteProductFromNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        btnDeleteProductFromNewSale.setText("Quitar");
-        jTabNewSale.add(btnDeleteProductFromNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, 100, 30));
+        btnDeleteProductFromNewSale.setText("Quitar de esta venta");
+        jTabNewSale.add(btnDeleteProductFromNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 50, 200, 30));
 
         btnGenerateNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnGenerateNewSale.setText("Generar factura");
         jTabNewSale.add(btnGenerateNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 530, 140, 30));
 
         btnAddProductToNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        btnAddProductToNewSale.setText("Agregar");
-        jTabNewSale.add(btnAddProductToNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, 100, 30));
+        btnAddProductToNewSale.setText("Agregar a esta venta");
+        jTabNewSale.add(btnAddProductToNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 10, 200, 30));
 
         btnEditNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnEditNewSaleInfo.setText("Editar");
@@ -1424,7 +1424,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 btnEditNewSaleInfoActionPerformed(evt);
             }
         });
-        jTabNewSale.add(btnEditNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, 100, 30));
+        jTabNewSale.add(btnEditNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 100, 30));
 
         btnSaveNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnSaveNewSaleInfo.setText("Guardar");
@@ -1433,7 +1433,7 @@ public class AdminPanel extends javax.swing.JFrame {
                 btnSaveNewSaleInfoActionPerformed(evt);
             }
         });
-        jTabNewSale.add(btnSaveNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 100, 30));
+        jTabNewSale.add(btnSaveNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 100, 30));
 
         jTabs.addTab("Vender", jTabNewSale);
 

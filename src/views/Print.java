@@ -1,5 +1,6 @@
 package views;
 
+import controllers.SaleController;
 import exceptions.DBException;
 import java.awt.Graphics;
 import java.awt.PrintJob;
@@ -8,8 +9,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import listeners.IPrintCloseListener;
 import model.Sale;
 import repositories.CompanyRepository;
@@ -18,7 +20,7 @@ import repositories.ProductRepository;
 import repositories.SaleRepository;
 import utils.TableUtils;
 
-public class Print extends javax.swing.JFrame {
+public class Print extends JFrame {
 
     private SaleRepository saleRepository = new SaleRepository();
     private ProductRepository productRepository = new ProductRepository();
@@ -71,9 +73,7 @@ public class Print extends javax.swing.JFrame {
             lblCustomerName.setText(getCustomerNameOfSale(id));
             lblTotalContainer.setText(String.valueOf(total + 1));
 
-            finalSaleTable.setModel(table);
-            JTableHeader header = finalSaleTable.getTableHeader();
-            TableUtils.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(finalSaleTable, table);
         } catch (DBException ex) {
             throw ex;
         }
@@ -131,6 +131,25 @@ public class Print extends javax.swing.JFrame {
         }
     }
 
+    public static void showPrintScreen(Sale finalSale, SaleController controller, AdminPanel adminView) throws DBException {
+        try {
+            Print printView = new Print(finalSale.getId(), controller);
+
+            printView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    adminView.setEnabled(true);
+                    adminView.toFront();
+                }
+            });
+            
+            printView.setVisible(true);
+            adminView.setEnabled(false);
+        } catch (DBException | IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
     private void listAllFinishedSales() throws DBException {
         List<Sale> sales = saleRepository.getSales();
         table = (DefaultTableModel) finalSaleTable.getModel();
@@ -139,9 +158,7 @@ public class Print extends javax.swing.JFrame {
         try {
             salesListToObjectArray(sales);
 
-            finalSaleTable.setModel(table);
-            JTableHeader header = finalSaleTable.getTableHeader();
-            TableUtils.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(finalSaleTable, table);
         } catch (DBException ex) {
             throw ex;
         }

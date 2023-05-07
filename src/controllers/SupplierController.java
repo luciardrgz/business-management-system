@@ -9,11 +9,11 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import views.Table;
 import model.Supplier;
 import dao.SupplierDAO;
 import exceptions.DBException;
+import model.EPersonStatus;
 import repositories.SupplierRepository;
 import utils.TableUtils;
 import views.AdminPanel;
@@ -110,7 +110,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputSupplierId.getText());
 
             try {
-                supplierRepository.changeStatus("Inactivo", id);
+                supplierRepository.changeStatus(EPersonStatus.INACTIVE, id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Proveedor dado de baja exitosamente.");
             } catch (DBException ex) {
@@ -126,7 +126,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             int id = Integer.parseInt(adminView.inputSupplierId.getText());
 
             try {
-                supplierRepository.changeStatus("Activo", id);
+                supplierRepository.changeStatus(EPersonStatus.ACTIVE, id);
                 resetView();
                 JOptionPane.showMessageDialog(null, "Proveedor dado de alta exitosamente.");
             } catch (DBException ex) {
@@ -147,9 +147,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             suppliersTable.setRowCount(0);
             suppliersListToObjectArray(suppliersList);
 
-            adminView.suppliersTable.setModel(suppliersTable);
-            JTableHeader header = adminView.suppliersTable.getTableHeader();
-            TableUtils.changeHeaderColors(header);
+            TableUtils.changeHeaderColors(adminView.suppliersTable, suppliersTable);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

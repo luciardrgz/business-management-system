@@ -8,13 +8,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import utils.ComboBoxUtils;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import listeners.IPrintCloseListener;
 import listeners.IStockListener;
 import model.EPaymentMethod;
@@ -55,9 +53,10 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         this.adminView.btnGenerateNewSale.addActionListener(this);
         this.adminView.newSaleTable.addMouseListener(this);
 
-        JTableHeader header = adminView.newSaleTable.getTableHeader();
-        TableUtils.changeHeaderColors(header);
+        newSaleTable = (DefaultTableModel) adminView.newSaleTable.getModel();
+        TableUtils.changeHeaderColors(adminView.newSaleTable, newSaleTable);
 
+        dataFieldsEnabled(true);
         productFieldsEnabled(false);
 
         loadProductsComboBox();
@@ -134,16 +133,9 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         return check;
     }
 
-    private void deleteTempSale(Sale sale) {
-        for (Sale tempSale : tempSales) {
-            if (sale.getProduct() == tempSale.getProduct() && sale.getQuantity() == tempSale.getQuantity() && sale.getCustomer() == tempSale.getCustomer()) {
-                tempSales.remove(tempSale);
-            }
-        }
-    }
-
     private void addTempSaleToTable() {
         adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0), color);
+
         if (adminView.cbxNewSaleProduct.getSelectedItem() == null || adminView.inputNewSaleQty.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Producto y cantidad a vender son obligatorios.");
         } else {
@@ -182,6 +174,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
                 newSaleTable.addRow(currentTempSale);
             }
         }
+
     }
 
     private Object[] tempSaleToObject(Sale sale) {
@@ -207,30 +200,44 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         dataFieldsEnabled(false);
         productFieldsEnabled(true);
     }
-
-    private void generateSale() {
+    
+    private void setFinalSaleId() {
         try {
-            if (!adminView.cbxNewSaleCustomer.isEnabled() && !adminView.cbxNewSalePaymentMethod.isEnabled()) {
-                calculateFinalTotal();
+            if (saleRepository.getLastId() != -1) {
+                finalSale.setId(saleRepository.getLastId() + 1);
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+    
+    private void setFinalSaleCustomerId() {
+        int customerId;
 
-                for (Sale tempSale : tempSales) {
-                    saleRepository.generate(tempSale);
-                    updateProductStock(tempSale);
-                    stockUpdateListener.onSale();
-                }
-
-                resetView();
-                showPrintScreen(finalSale);
+        try {
+            customerId = customerRepository.getCustomerIdByName(adminView.cbxNewSaleCustomer.getSelectedItem().toString());
+            if (customerId != -1) {
+                finalSale.setCustomer(customerId);
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
-    private void updateProductStock(Sale tempSale) {
+    private void generateSale() {
         try {
-            int soldStock = (int) (tempSale.getTotal() / productRepository.getProductPrice(tempSale.getProduct()));
-            productRepository.updateStock(productRepository.getProductById(tempSale.getProduct()).getId(), soldStock);
+            if (!adminView.cbxNewSaleCustomer.isEnabled() && !adminView.cbxNewSalePaymentMethod.isEnabled()) {
+                ProductController productController = new ProductController();
+                calculateFinalTotal();
+
+                for (Sale tempSale : tempSales) {
+                    saleRepository.generate(tempSale);
+                    productController.updateProductStock(tempSale);
+                    stockUpdateListener.onSale();
+                }
+                resetView();
+                Print.showPrintScreen(finalSale, this, adminView);
+            }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -247,37 +254,26 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         return productId;
     }
 
-    private void setFinalSaleId() {
-        try {
-            if (saleRepository.getLastId() != -1) {
-                finalSale.setId(saleRepository.getLastId() + 1);
-            }
-        } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
-
-    private void setFinalSaleCustomerId() {
-        int customerId;
-
-        try {
-            customerId = customerRepository.getCustomerIdByName(adminView.cbxNewSaleCustomer.getSelectedItem().toString());
-            if (customerId != -1) {
-                finalSale.setCustomer(customerId);
-            }
-        } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
-
     private void dataFieldsEnabled(boolean value) {
+        setDataFieldsEditable(value);
         adminView.cbxNewSaleCustomer.setEnabled(value);
         adminView.cbxNewSalePaymentMethod.setEnabled(value);
     }
 
     private void productFieldsEnabled(boolean value) {
+        setDataFieldsEditable(value);
         adminView.cbxNewSaleProduct.setEnabled(value);
         adminView.inputNewSaleQty.setEnabled(value);
+    }
+
+    private void setDataFieldsEditable(boolean value) {
+        if (value == true) {
+            adminView.btnEditNewSaleInfo.setVisible(true);
+            adminView.btnSaveNewSaleInfo.setVisible(false);
+        } else {
+            adminView.btnEditNewSaleInfo.setVisible(false);
+            adminView.btnSaveNewSaleInfo.setVisible(true);
+        }
     }
 
     private void clearSalesInput() {
@@ -296,18 +292,11 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         dataFieldsEnabled(true);
     }
 
-    private void showPrintScreen(Sale finalSale) throws DBException {
-        try {
-            Print printView = new Print(finalSale.getId(), this);
-            printView.setVisible(true);
-        } catch (DBException | IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
-
     @Override
     public void onPrintWindowClosed() {
         tempSales.clear();
+        dataFieldsEnabled(true);
+        productFieldsEnabled(false);
     }
 
     private void calculateFinalTotal() {
@@ -328,28 +317,6 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         adminView.inputNewSaleTotal.setText(String.valueOf(currentTotal - rowSubtotal));
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getSource() == adminView.newSaleTable) {
-            int row = adminView.newSaleTable.rowAtPoint(e.getPoint());
-
-            setProductIndex(row);
-            adminView.inputNewSaleQty.setText(adminView.newSaleTable.getValueAt(row, 1).toString());
-        }
-    }
-
-    private void setProductIndex(int row) {
-        int index;
-        try {
-            index = productRepository.getProductIdByName(adminView.newSaleTable.getValueAt(row, 0).toString());
-            if ((index - 1) < adminView.cbxNewSaleProduct.getItemCount()) {
-                adminView.cbxNewSaleProduct.setSelectedIndex(index - 1);
-            }
-        } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
-
     private void loadProductsComboBox() {
         List<String> products;
         try {
@@ -360,7 +327,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
                 adminView.cbxNewSaleProduct.addItem(product);
             }
         } catch (DBException ex) {
-            JOptionPane.showMessageDialog(null, "LOAD PRODUCTSCOMBOBOX EXC");
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
@@ -377,9 +344,27 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
+    
+    private void setProductIndex(int row) {
+        int index;
+        try {
+            index = productRepository.getProductIdByName(adminView.newSaleTable.getValueAt(row, 0).toString());
+            if ((index - 1) < adminView.cbxNewSaleProduct.getItemCount()) {
+                adminView.cbxNewSaleProduct.setSelectedIndex(index - 1);
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == adminView.newSaleTable) {
+            int row = adminView.newSaleTable.rowAtPoint(e.getPoint());
+
+            setProductIndex(row);
+            adminView.inputNewSaleQty.setText(adminView.newSaleTable.getValueAt(row, 1).toString());
+        }
     }
 
     @Override
@@ -396,6 +381,10 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 
     @Override
