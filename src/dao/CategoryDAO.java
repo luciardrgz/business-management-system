@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Category;
 import model.Connector;
-import model.ECategoryType;
 
 public class CategoryDAO {
 
@@ -28,14 +27,13 @@ public class CategoryDAO {
     }
 
     public void add(Category category) throws DBException {
-        String sql = "INSERT INTO categories (name, type) VALUES (?, ?)";
-
+        String sql = "INSERT INTO categories (name) VALUES (?)";
+        
         try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, category.getName());
-            ps.setString(2, category.getCategoryType().toString());
             ps.execute();
 
         } catch (SQLException e) {
@@ -44,15 +42,14 @@ public class CategoryDAO {
     }
 
     public void update(Category category) throws DBException {
-        String sql = "UPDATE categories SET name = ?, type = ? WHERE id = ?";
+        String sql = "UPDATE categories SET name = ? WHERE id = ?";
 
         try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, category.getName());
-            ps.setString(2, category.getCategoryType().toString());
-            ps.setInt(3, category.getId());
+            ps.setInt(2, category.getId());
 
             ps.execute();
 
@@ -84,10 +81,6 @@ public class CategoryDAO {
                 Category currentCategory = new Category();
                 currentCategory.setId(rs.getInt("id"));
                 currentCategory.setName(rs.getString("name"));
-
-                ECategoryType categoryType = ECategoryType.valueOf(rs.getString("type"));
-                currentCategory.setCategoryType(categoryType);
-
                 categoriesList.add(currentCategory);
             }
         } catch (SQLException e) {
@@ -146,14 +139,13 @@ public class CategoryDAO {
         return foundCategoryName;
     }
 
-    public List<String> retrieveCategoryNames(ECategoryType categoryType) throws DBException {
-        String sql = "SELECT name FROM categories WHERE type LIKE ?";
+    public List<String> retrieveCategoryNames() throws DBException {
+        String sql = "SELECT name FROM categories";
         List<String> categoryNames = new ArrayList<>();
 
         try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
-            ps.setString(1, "%" + categoryType.toString() + "%");
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -167,27 +159,5 @@ public class CategoryDAO {
         }
 
         return categoryNames;
-    }
-
-    public List<String> retrieveCategoryTypes() throws DBException {
-        String sql = "SELECT type FROM categories";
-        List<String> categoryTypes = new ArrayList<>();
-
-        try {
-            conn = connector.getConn();
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                categoryTypes.add(rs.getString("type"));
-            }
-
-        } catch (SQLException e) {
-            throw new DBException(e);
-        } finally {
-            connector.closeConn(conn);
-        }
-
-        return categoryTypes;
     }
 }

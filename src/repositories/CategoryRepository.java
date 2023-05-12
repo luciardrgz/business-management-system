@@ -5,7 +5,6 @@ import exceptions.DBException;
 import java.sql.SQLException;
 import java.util.List;
 import model.Category;
-import model.ECategoryType;
 
 public class CategoryRepository {
 
@@ -47,11 +46,7 @@ public class CategoryRepository {
         return categoryDAO.retrieveCategoryIdByName(categoryName);
     }
 
-    public List<String> getCategoryNames(ECategoryType categoryType) throws DBException {
-        return categoryDAO.retrieveCategoryNames(categoryType);
-    }
-
-    public List<String> getCategoryTypes() throws DBException {
-        return categoryDAO.retrieveCategoryTypes();
+    public List<String> getCategoryNames() throws DBException {
+        return categoryDAO.retrieveCategoryNames();
     }
 }

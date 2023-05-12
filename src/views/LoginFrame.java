@@ -64,9 +64,11 @@ public class LoginFrame extends javax.swing.JFrame {
         inputPass.setBackground(new java.awt.Color(204, 204, 204));
         inputPass.setBorder(null);
 
+        btnExit.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnExit.setText("Salir");
         btnExit.setFocusable(false);
 
+        btnEnter.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         btnEnter.setText("Ingresar");
         btnEnter.setFocusable(false);
 

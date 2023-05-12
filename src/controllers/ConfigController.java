@@ -22,8 +22,8 @@ public class ConfigController implements MouseListener {
         this.adminView.lblCustomers.addMouseListener(this);
     }
 
-    private final Color hoverColor = new Color(255, 51, 51);
-    private final Color noHoverColor = new Color(102, 255, 153);
+    private final Color defaultColor = new Color(102, 255, 153);
+    private final Color hoverColor = new Color(71, 174, 105);
 
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -50,21 +50,21 @@ public class ConfigController implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         if (e.getSource() == adminView.lblCategories) {
-            setBg(adminView.lblCategories, noHoverColor);
+            setBg(adminView.lblCategories, defaultColor);
         } else if (e.getSource() == adminView.lblCustomers) {
-            setBg(adminView.lblCustomers, noHoverColor);
+            setBg(adminView.lblCustomers, defaultColor);
         } else if (e.getSource() == adminView.lblConfiguration) {
-            setBg(adminView.lblConfiguration, noHoverColor);
+            setBg(adminView.lblConfiguration, defaultColor);
         } else if (e.getSource() == adminView.lblNewBuy) {
-            setBg(adminView.lblNewBuy, noHoverColor);
+            setBg(adminView.lblNewBuy, defaultColor);
         } else if (e.getSource() == adminView.lblNewSale) {
-            setBg(adminView.lblNewSale, noHoverColor);
+            setBg(adminView.lblNewSale, defaultColor);
         } else if (e.getSource() == adminView.lblSuppliers) {
-            setBg(adminView.lblSuppliers, noHoverColor);
+            setBg(adminView.lblSuppliers, defaultColor);
         } else if (e.getSource() == adminView.lblUsers) {
-            setBg(adminView.lblUsers, noHoverColor);
+            setBg(adminView.lblUsers, defaultColor);
         } else {
-            setBg(adminView.lblProducts, noHoverColor);
+            setBg(adminView.lblProducts, defaultColor);
         }
     }
 

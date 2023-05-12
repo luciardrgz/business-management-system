@@ -11,6 +11,7 @@ public class Purchase {
     private int id;
     private String name;
     private String quantity;
+    private Enum EUnit;
     private double unitaryPrice;
     private String date;
     private int supplier;

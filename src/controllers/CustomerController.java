@@ -14,7 +14,6 @@ import dao.CustomerDAO;
 import exceptions.DBException;
 import model.EPersonStatus;
 import repositories.CustomerRepository;
-import views.Table;
 import views.AdminPanel;
 import utils.TableUtils;
 
@@ -24,7 +23,6 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
     private final CustomerDAO customerDAO;
     private final AdminPanel adminView;
     private final CustomerRepository customerRepository = new CustomerRepository();
-    private final Table color = new Table();
 
     private DefaultTableModel customersTable = new DefaultTableModel();
 
@@ -121,16 +119,16 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
     }
 
     private void listCustomers() {
-        adminView.customersTable.setDefaultRenderer(adminView.customersTable.getColumnClass(0), color);
+        adminView.customersTable.setDefaultRenderer(adminView.customersTable.getColumnClass(0), new TableUtils());
 
         try {
             List<Customer> customersList = customerRepository.getCustomersList(adminView.inputCustomerSearch.getText());
             customersTable = (DefaultTableModel) adminView.customersTable.getModel();
             customersTable.setRowCount(0);
-
+            TableUtils.centerTableContent(adminView.customersTable);
             customersListToObjectArray(customersList);
 
-            TableUtils.changeHeaderColors(adminView.customersTable, customersTable);
+            TableUtils.setUpTableStyle(adminView.customersTable, customersTable);
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
