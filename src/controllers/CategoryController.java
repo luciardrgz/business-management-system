@@ -12,9 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Category;
 import dao.CategoryDAO;
-import model.ECategoryType;
 import repositories.CategoryRepository;
-import views.Table;
 import views.AdminPanel;
 import listeners.ICategoryUpdateListener;
 import utils.TableUtils;
@@ -25,7 +23,6 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     private final CategoryDAO categoryDAO;
     private final CategoryRepository categoryRepository = new CategoryRepository();
     private final AdminPanel adminView;
-    private final Table color = new Table();
     private DefaultTableModel categoriesTable = new DefaultTableModel();
     private final ICategoryUpdateListener categoryUpdateListener;
 
@@ -43,7 +40,6 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         this.adminView.categoriesTable.addMouseListener(this);
 
         listCategories();
-        loadTypesComboBox();
     }
 
     @Override
@@ -66,9 +62,6 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     }
 
     private void setupCategory() {
-        ECategoryType type = ECategoryType.nameForUserToConstant(adminView.cbxCategoryTypes.getSelectedItem().toString());
-        category.setCategoryType(type);
-
         category.setName(adminView.inputCategoryName.getText());
     }
 
@@ -107,16 +100,18 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     }
 
     private void listCategories() {
-        adminView.categoriesTable.setDefaultRenderer(adminView.categoriesTable.getColumnClass(0), color);
+        adminView.categoriesTable.setDefaultRenderer(adminView.categoriesTable.getColumnClass(0),  new TableUtils());
 
         try {
             List<Category> categoriesList = categoryRepository.getAllCategories(adminView.inputCategorySearch.getText());
             categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
-
             categoriesTable.setRowCount(0);
+            
+            TableUtils.centerTableContent(adminView.categoriesTable);
+            
             categoryListToObjectArray(categoriesList);
 
-            TableUtils.changeHeaderColors(adminView.categoriesTable, categoriesTable);
+            TableUtils.setUpTableStyle(adminView.categoriesTable, categoriesTable);
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -124,34 +119,18 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     }
 
     private void categoryListToObjectArray(List<Category> categoriesList) {
-        Object[] currentCategory = new Object[3];
+        Object[] currentCategory = new Object[2];
 
         for (int i = 0; i < categoriesList.size(); i++) {
             currentCategory[0] = categoriesList.get(i).getId();
-
             currentCategory[1] = categoriesList.get(i).getName();
-
-            Enum currentTypeEnum = categoriesList.get(i).getCategoryType();
-            ECategoryType currentType = ECategoryType.valueOf(currentTypeEnum.name());
-            currentCategory[2] = currentType.getNameForUser();
 
             categoriesTable.addRow(currentCategory);
         }
     }
 
-    private void loadTypesComboBox() {
-        ECategoryType[] types;
-
-        types = ECategoryType.class.getEnumConstants();
-        adminView.cbxCategoryTypes.removeAllItems();
-        for (ECategoryType type : types) {
-            adminView.cbxCategoryTypes.addItem(type.getNameForUser());
-        }
-    }
-
     private void clearCategoriesInput() {
         adminView.inputCategoryId.setText("");
-        adminView.cbxCategoryTypes.setSelectedIndex(-1);
         adminView.inputCategoryName.setText("");
     }
 
@@ -162,23 +141,6 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
 
             adminView.inputCategoryId.setText(adminView.categoriesTable.getValueAt(row, 0).toString());
             adminView.inputCategoryName.setText(adminView.categoriesTable.getValueAt(row, 1).toString());
-            setTypeIndex(adminView.categoriesTable.getValueAt(row, 2).toString());
-
-        }
-    }
-
-    private void setTypeIndex(String categoryType) {
-        ECategoryType[] types = ECategoryType.values();
-        int categoryTypesIndex = -1;
-
-        for (int i = 0; i < types.length; i++) {
-            if (types[i].getNameForUser().equals(categoryType)) {
-                categoryTypesIndex = i;
-                break;
-            }
-        }
-        if (categoryTypesIndex != -1) {
-            adminView.cbxCategoryTypes.setSelectedIndex(categoryTypesIndex);
         }
     }
 

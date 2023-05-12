@@ -12,9 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Product;
 import dao.ProductDAO;
-import model.ECategoryType;
 import model.EProductStatus;
-import views.Table;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import repositories.CategoryRepository;
 import views.AdminPanel;
@@ -31,7 +29,6 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     public AdminPanel adminView;
     private ProductRepository productRepository = new ProductRepository();
     private CategoryRepository categoryRepository = new CategoryRepository();
-    private final Table color = new Table();
     private DefaultTableModel productsTable = new DefaultTableModel();
 
     public ProductController() {
@@ -173,16 +170,18 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     }
 
     private void listProducts() {
-        adminView.productsTable.setDefaultRenderer(adminView.productsTable.getColumnClass(0), color);
+        adminView.productsTable.setDefaultRenderer(adminView.productsTable.getColumnClass(0),  new TableUtils());
 
         try {
             List<Product> productsList = productRepository.getProductsList(adminView.inputProductSearch.getText());
             productsTable = (DefaultTableModel) adminView.productsTable.getModel();
-
             productsTable.setRowCount(0);
+            
+            TableUtils.centerTableContent(adminView.productsTable);
+            
             productListToObjectArray(productsList);
 
-            TableUtils.changeHeaderColors(adminView.productsTable, productsTable);
+            TableUtils.setUpTableStyle(adminView.productsTable, productsTable);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -253,7 +252,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         List<String> categories;
 
         try {
-            categories = categoryRepository.getCategoryNames(ECategoryType.PRODUCT);
+            categories = categoryRepository.getCategoryNames();
             adminView.cbxProductCategories.removeAllItems();
 
             for (String category : categories) {

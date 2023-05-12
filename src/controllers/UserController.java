@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import views.Table;
 import model.User;
 import dao.UserDAO;
 import exceptions.DBException;
@@ -154,17 +153,16 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     }
 
     private void listUsers() {
-        Table color = new Table();
-        adminView.usersTable.setDefaultRenderer(adminView.usersTable.getColumnClass(0), color);
+        adminView.usersTable.setDefaultRenderer(adminView.usersTable.getColumnClass(0),  new TableUtils());
 
         try {
             List<User> usersList = userRepository.getUsersList(adminView.inputUserSearch.getText());
             usersTable = (DefaultTableModel) adminView.usersTable.getModel();
-
             usersTable.setRowCount(0);
+            TableUtils.centerTableContent(adminView.usersTable);
             usersListToObjectArray(usersList);
 
-            TableUtils.changeHeaderColors(adminView.usersTable, usersTable);
+            TableUtils.setUpTableStyle(adminView.usersTable, usersTable);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import views.Table;
 import model.Supplier;
 import dao.SupplierDAO;
 import exceptions.DBException;
@@ -24,8 +23,6 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     private final SupplierDAO supplierDAO;
     private final SupplierRepository supplierRepository = new SupplierRepository();
     private final AdminPanel adminView;
-    private final Table color = new Table();
-
     private DefaultTableModel suppliersTable = new DefaultTableModel();
 
     public SupplierController(Supplier supplier, SupplierDAO supplierDAO, AdminPanel adminView) {
@@ -138,16 +135,16 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     }
 
     private void listSuppliers() {
-        adminView.suppliersTable.setDefaultRenderer(adminView.suppliersTable.getColumnClass(0), color);
+        adminView.suppliersTable.setDefaultRenderer(adminView.suppliersTable.getColumnClass(0),  new TableUtils());
 
         try {
             List<Supplier> suppliersList = supplierRepository.getSuppliersList(adminView.inputSupplierSearch.getText());
             suppliersTable = (DefaultTableModel) adminView.suppliersTable.getModel();
-
             suppliersTable.setRowCount(0);
+            TableUtils.centerTableContent(adminView.suppliersTable);
             suppliersListToObjectArray(suppliersList);
 
-            TableUtils.changeHeaderColors(adminView.suppliersTable, suppliersTable);
+            TableUtils.setUpTableStyle(adminView.suppliersTable, suppliersTable);
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

@@ -23,7 +23,6 @@ import repositories.SaleRepository;
 import utils.TableUtils;
 import views.AdminPanel;
 import views.Print;
-import views.Table;
 
 public class SaleController implements ActionListener, MouseListener, KeyListener, IPrintCloseListener {
 
@@ -33,7 +32,6 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private ProductRepository productRepository = new ProductRepository();
     private CustomerRepository customerRepository = new CustomerRepository();
     private SaleRepository saleRepository = new SaleRepository();
-    private final Table color = new Table();
     private DefaultTableModel newSaleTable = new DefaultTableModel();
     private List<Sale> tempSales = new ArrayList<>();
     private IStockListener stockUpdateListener;
@@ -54,7 +52,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         this.adminView.newSaleTable.addMouseListener(this);
 
         newSaleTable = (DefaultTableModel) adminView.newSaleTable.getModel();
-        TableUtils.changeHeaderColors(adminView.newSaleTable, newSaleTable);
+        TableUtils.setUpTableStyle(adminView.newSaleTable, newSaleTable);
 
         dataFieldsEnabled(true);
         productFieldsEnabled(false);
@@ -134,7 +132,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     }
 
     private void addTempSaleToTable() {
-        adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0), color);
+        adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0),  new TableUtils());
 
         if (adminView.cbxNewSaleProduct.getSelectedItem() == null || adminView.inputNewSaleQty.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Producto y cantidad a vender son obligatorios.");
@@ -153,7 +151,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
             int selectedRow = adminView.newSaleTable.getSelectedRow();
 
             if (selectedRow == -1) {
-                JOptionPane.showMessageDialog(null, "Seleccione una venta para eliminar.");
+                JOptionPane.showMessageDialog(null, "Seleccione un producto a eliminar de la venta.");
             } else {
                 calculateNewTotal(selectedRow);
                 tempSales.remove(selectedRow);
@@ -163,11 +161,12 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     }
 
     private void listTempSale() {
-        adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0), color);
+        adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0),  new TableUtils());
 
         newSaleTable = (DefaultTableModel) adminView.newSaleTable.getModel();
         newSaleTable.setRowCount(0);
-
+        TableUtils.centerTableContent(adminView.newSaleTable);
+        
         for (Sale tempSale : tempSales) {
             if (finalSale.getId() == tempSale.getId()) {
                 Object[] currentTempSale = tempSaleToObject(tempSale);
