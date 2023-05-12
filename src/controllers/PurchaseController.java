@@ -9,19 +9,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utils.ComboBoxUtils;
 import model.EPaymentMethod;
 import model.EPurchaseStatus;
+import model.EUnit;
 import model.Purchase;
 import repositories.PurchaseRepository;
 import repositories.SupplierRepository;
 import utils.TableUtils;
 import views.AdminPanel;
-import views.Table;
 
 public class PurchaseController implements ActionListener, MouseListener, KeyListener {
 
@@ -30,7 +28,6 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     public AdminPanel adminView;
     private PurchaseRepository purchaseRepository = new PurchaseRepository();
     private SupplierRepository supplierRepository = new SupplierRepository();
-    private final Table color = new Table();
     private DefaultTableModel purchasesTable = new DefaultTableModel();
 
     public PurchaseController() {
@@ -49,6 +46,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         this.adminView.purchasesTable.addMouseListener(this);
 
         loadSuppliersComboBox();
+        loadUnitsComboBox();
         ComboBoxUtils.loadPaymentMethodsComboBox(adminView.cbxPurchasePaymentMethod);
         ComboBoxUtils.loadStatusesComboBox(adminView.cbxPurchaseStatus);
         listPurchases();
@@ -72,6 +70,9 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     private void setupPurchase() {
         purchase.setName(adminView.inputPurchaseName.getText());
         purchase.setQuantity(adminView.inputPurchaseQty.getText());
+
+        EUnit unit = EUnit.nameForUserToConstant(adminView.cbxUnit.getSelectedItem().toString());
+        purchase.setEUnit(unit);
 
         if (!adminView.inputPurchasePrice.getText().equals("")) {
             purchase.setUnitaryPrice(Double.parseDouble(adminView.inputPurchasePrice.getText()));
@@ -98,8 +99,13 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         EPaymentMethod paymentMethod = EPaymentMethod.nameForUserToConstant(adminView.cbxPurchasePaymentMethod.getSelectedItem().toString());
         purchase.setEPaymentMethod(paymentMethod);
 
-        EPurchaseStatus status = EPurchaseStatus.nameForUserToConstant(adminView.cbxPurchaseStatus.getSelectedItem().toString());
-        purchase.setEStatus(status);
+        if (adminView.cbxPurchaseStatus.getSelectedIndex() != -1) {
+            EPurchaseStatus status = EPurchaseStatus.nameForUserToConstant(adminView.cbxPurchaseStatus.getSelectedItem().toString());
+            purchase.setEStatus(status);
+        } else {
+            purchase.setEStatus(EPurchaseStatus.DONE);
+        }
+
     }
 
     private void resetView() {
@@ -110,7 +116,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
     private void registerPurchase() {
         if (checkNullFields() == false) {
-            JOptionPane.showMessageDialog(null, "Ingrese al menos producto, cantidad, proveedor y método de pago.");
+            JOptionPane.showMessageDialog(null, "Ingrese al menos producto, cantidad, unidad, proveedor y método de pago.");
         } else {
             setupPurchase();
             try {
@@ -127,6 +133,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         boolean check = true;
         if (adminView.inputPurchaseName.getText().equals("")
                 || adminView.inputPurchaseQty.getText().equals("")
+                || adminView.cbxUnit.getSelectedIndex() == -1
                 || adminView.cbxPurchaseSupplier.getSelectedIndex() == -1
                 || adminView.cbxPurchasePaymentMethod.getSelectedIndex() == -1) {
             check = false;
@@ -153,17 +160,17 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     }
 
     private void listPurchases() {
-        adminView.purchasesTable.setDefaultRenderer(adminView.purchasesTable.getColumnClass(0), color);
+        adminView.purchasesTable.setDefaultRenderer(adminView.purchasesTable.getColumnClass(0),  new TableUtils());
 
         try {
             List<Purchase> purchasesList = purchaseRepository.getPurchasesList(adminView.inputPurchaseSearch.getText());
             purchasesTable = (DefaultTableModel) adminView.purchasesTable.getModel();
             purchasesTable.setRowCount(0);
+            TableUtils.centerTableContent(adminView.purchasesTable);
 
             purchaseListToObjectArray(purchasesList);
-            
 
-            TableUtils.changeHeaderColors(adminView.purchasesTable, purchasesTable);
+            TableUtils.setUpTableStyle(adminView.purchasesTable, purchasesTable);
 
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -171,52 +178,43 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     }
 
     private void purchaseListToObjectArray(List<Purchase> purchasesList) {
-        Object[] currentPurchase = new Object[9];
-        
+        Object[] currentPurchase = new Object[10];
+
         for (int i = 0; i < purchasesList.size(); i++) {
             currentPurchase[0] = purchasesList.get(i).getId();
             currentPurchase[1] = purchasesList.get(i).getName();
             currentPurchase[2] = purchasesList.get(i).getQuantity();
-            currentPurchase[3] = purchasesList.get(i).getUnitaryPrice();
-            currentPurchase[4] = purchasesList.get(i).getDate();
+
+            Enum currentUnitEnum = purchasesList.get(i).getEUnit();
+            EUnit currentUnit = EUnit.valueOf(currentUnitEnum.name());
+            currentPurchase[3] = currentUnit.getNameForUser();
+
+            currentPurchase[4] = purchasesList.get(i).getUnitaryPrice();
+            currentPurchase[5] = purchasesList.get(i).getDate();
             try {
-                currentPurchase[5] = supplierRepository.getSupplierNameById(purchasesList.get(i).getSupplier());
+                currentPurchase[6] = supplierRepository.getSupplierNameById(purchasesList.get(i).getSupplier());
             } catch (DBException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
 
             Enum currentPaymentMethodEnum = purchasesList.get(i).getEPaymentMethod();
             EPaymentMethod currentPaymentMethod = EPaymentMethod.valueOf(currentPaymentMethodEnum.name());
-            currentPurchase[6] = currentPaymentMethod.getNameForUser();
+            currentPurchase[7] = currentPaymentMethod.getNameForUser();
 
             Enum currentStatusEnum = purchasesList.get(i).getEStatus();
             EPurchaseStatus currentStatus = EPurchaseStatus.valueOf(currentStatusEnum.name());
-            currentPurchase[7] = currentStatus.getNameForUser();
-            currentPurchase[8] = takeNumbersIn(purchasesList.get(i).getQuantity()) * purchasesList.get(i).getUnitaryPrice();
-            
+            currentPurchase[8] = currentStatus.getNameForUser();
+            currentPurchase[9] = Integer.parseInt(purchasesList.get(i).getQuantity()) * purchasesList.get(i).getUnitaryPrice();
+
             purchasesTable.addRow(currentPurchase);
         }
-    }
-
-    private Double takeNumbersIn(String purchaseQty) {
-        String pattern = "\\d+";
-
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(purchaseQty);
-
-        String numbers = "";
-
-        while (m.find()) {
-            numbers = m.group();
-        }
-
-        return Double.valueOf(numbers);
     }
 
     private void clearPurchasesInput() {
         adminView.inputPurchaseId.setText("");
         adminView.inputPurchaseName.setText("");
         adminView.inputPurchaseQty.setText("");
+        adminView.cbxUnit.setSelectedIndex(-1);
         adminView.inputPurchasePrice.setText("");
         adminView.inputPurchaseDate.setText("");
         adminView.cbxPurchaseSupplier.setSelectedIndex(-1);
@@ -232,11 +230,27 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             adminView.inputPurchaseId.setText(adminView.purchasesTable.getValueAt(row, 0).toString());
             adminView.inputPurchaseName.setText(adminView.purchasesTable.getValueAt(row, 1).toString());
             adminView.inputPurchaseQty.setText(adminView.purchasesTable.getValueAt(row, 2).toString());
-            adminView.inputPurchasePrice.setText(adminView.purchasesTable.getValueAt(row, 3).toString());
-            adminView.inputPurchaseDate.setText(adminView.purchasesTable.getValueAt(row, 4).toString());
-            setSupplierIndex(row, 5);
-            setPaymentMethodIndex(adminView.purchasesTable.getValueAt(row, 6).toString());
-            setStatusIndex(adminView.purchasesTable.getValueAt(row, 7).toString());
+            setUnitIndex(adminView.purchasesTable.getValueAt(row, 3).toString());
+            adminView.inputPurchasePrice.setText(adminView.purchasesTable.getValueAt(row, 4).toString());
+            adminView.inputPurchaseDate.setText(adminView.purchasesTable.getValueAt(row, 5).toString());
+            setSupplierIndex(row, 6);
+            setPaymentMethodIndex(adminView.purchasesTable.getValueAt(row, 7).toString());
+            setStatusIndex(adminView.purchasesTable.getValueAt(row, 8).toString());
+        }
+    }
+
+    private void setUnitIndex(String unit) {
+        EUnit[] units = EUnit.values();
+        int purchaseUnitIndex = -1;
+
+        for (int i = 0; i < units.length; i++) {
+            if (units[i].getNameForUser().equals(unit)) {
+                purchaseUnitIndex = i;
+                break;
+            }
+        }
+        if (purchaseUnitIndex != -1) {
+            adminView.cbxUnit.setSelectedIndex(purchaseUnitIndex);
         }
     }
 
@@ -279,6 +293,15 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         }
         if (purchaseStatusIndex != -1) {
             adminView.cbxPurchaseStatus.setSelectedIndex(purchaseStatusIndex);
+        }
+    }
+
+    private void loadUnitsComboBox() {
+        EUnit[] units = EUnit.class.getEnumConstants();
+        adminView.cbxUnit.removeAllItems();
+
+        for (EUnit unit : units) {
+            adminView.cbxUnit.addItem(unit.getNameForUser());
         }
     }
 
