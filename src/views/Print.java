@@ -2,6 +2,7 @@ package views;
 
 import controllers.SaleController;
 import exceptions.DBException;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.PrintJob;
 import java.awt.Toolkit;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import listeners.IPrintCloseListener;
 import model.Sale;
 import repositories.CompanyRepository;
@@ -58,6 +60,7 @@ public class Print extends JFrame {
 
         table = (DefaultTableModel) finalSaleTable.getModel();
         table.setRowCount(0);
+        TableUtils.centerTableContent(finalSaleTable);
 
         try {
             lblSaleNo.setText(String.valueOf(id));
@@ -73,7 +76,7 @@ public class Print extends JFrame {
             lblCustomerName.setText(getCustomerNameOfSale(id));
             lblTotalContainer.setText(String.valueOf(total + 1));
 
-            TableUtils.changeHeaderColors(finalSaleTable, table);
+            TableUtils.setUpTableStyle(finalSaleTable, table);
         } catch (DBException ex) {
             throw ex;
         }
@@ -142,7 +145,9 @@ public class Print extends JFrame {
                     adminView.toFront();
                 }
             });
-            
+
+            printView.setLocationRelativeTo(null); 
+
             printView.setVisible(true);
             adminView.setEnabled(false);
         } catch (DBException | IOException ex) {
@@ -158,7 +163,7 @@ public class Print extends JFrame {
         try {
             salesListToObjectArray(sales);
 
-            TableUtils.changeHeaderColors(finalSaleTable, table);
+            TableUtils.setUpTableStyle(finalSaleTable, table);
         } catch (DBException ex) {
             throw ex;
         }
@@ -180,7 +185,7 @@ public class Print extends JFrame {
         lblCustomerName = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
         lblTotalContainer = new javax.swing.JLabel();
-        btnPrint = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         lblSale = new javax.swing.JLabel();
         lblSaleNo = new javax.swing.JLabel();
         lblCompanyOwner = new javax.swing.JLabel();
@@ -191,6 +196,12 @@ public class Print extends JFrame {
 
         printPanel.setBackground(new java.awt.Color(255, 255, 255));
 
+        Font headerFont = new Font("Montserrat", Font.BOLD, 14);
+        finalSaleTable.setRowHeight(30);
+        finalSaleTable.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
+        JTableHeader finalSaleHeader = finalSaleTable.getTableHeader();
+
+        finalSaleHeader.setFont(headerFont);
         finalSaleTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -201,35 +212,58 @@ public class Print extends JFrame {
             new String [] {
                 "Producto", "Precio unitario", "Cantidad", "Subtotal"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(finalSaleTable);
         if (finalSaleTable.getColumnModel().getColumnCount() > 0) {
-            finalSaleTable.getColumnModel().getColumn(2).setMinWidth(60);
-            finalSaleTable.getColumnModel().getColumn(2).setPreferredWidth(60);
-            finalSaleTable.getColumnModel().getColumn(2).setMaxWidth(60);
+            finalSaleTable.getColumnModel().getColumn(2).setMinWidth(80);
+            finalSaleTable.getColumnModel().getColumn(2).setPreferredWidth(80);
+            finalSaleTable.getColumnModel().getColumn(2).setMaxWidth(80);
+            finalSaleTable.getColumnModel().getColumn(3).setMinWidth(80);
+            finalSaleTable.getColumnModel().getColumn(3).setPreferredWidth(80);
+            finalSaleTable.getColumnModel().getColumn(3).setMaxWidth(80);
         }
 
+        lblCustomer.setFont(new java.awt.Font("Montserrat SemiBold", 0, 12)); // NOI18N
         lblCustomer.setForeground(new java.awt.Color(0, 0, 0));
         lblCustomer.setText("Cliente:");
 
+        lblCustomerName.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+
+        lblTotal.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblTotal.setForeground(new java.awt.Color(0, 0, 0));
         lblTotal.setText("Total:");
 
+        lblTotalContainer.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblTotalContainer.setForeground(new java.awt.Color(0, 0, 0));
         lblTotalContainer.setText("----");
 
-        btnPrint.setText("Imprimir");
-        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+        btnSave.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pdf.png"))); // NOI18N
+        btnSave.setText("Guardar");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrintActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
 
+        lblSale.setFont(new java.awt.Font("Montserrat SemiBold", 0, 12)); // NOI18N
         lblSale.setForeground(new java.awt.Color(0, 0, 0));
         lblSale.setText("Venta #");
 
+        lblSaleNo.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+
+        lblCompanyOwner.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
         lblCompanyOwner.setForeground(new java.awt.Color(0, 0, 0));
 
+        lblCompanyMainData.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCompanyMainData.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout printPanelLayout = new javax.swing.GroupLayout(printPanel);
@@ -237,27 +271,24 @@ public class Print extends JFrame {
         printPanelLayout.setHorizontalGroup(
             printPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(printPanelLayout.createSequentialGroup()
-                .addGroup(printPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(16, 16, 16)
+                .addGroup(printPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(printPanelLayout.createSequentialGroup()
-                        .addGap(120, 120, 120)
                         .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTotalContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblTotalContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(printPanelLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(printPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(printPanelLayout.createSequentialGroup()
-                                .addComponent(lblCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(printPanelLayout.createSequentialGroup()
-                                .addComponent(lblSale, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblSaleNo, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblCompanyOwner, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(lblCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(printPanelLayout.createSequentialGroup()
+                        .addComponent(lblSale, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblSaleNo, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCompanyOwner, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
             .addGroup(printPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(printPanelLayout.createSequentialGroup()
@@ -282,7 +313,7 @@ public class Print extends JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(printPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTotalContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21))
@@ -298,7 +329,7 @@ public class Print extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         Toolkit toolkit = printPanel.getToolkit();
         PrintJob printJob = toolkit.getPrintJob(this, null, null);
         Graphics graphics = printJob.getGraphics();
@@ -306,7 +337,7 @@ public class Print extends JFrame {
         printPanel.print(graphics);
         graphics.dispose();
         printJob.end();
-    }//GEN-LAST:event_btnPrintActionPerformed
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -337,7 +368,7 @@ public class Print extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnPrint;
+    public javax.swing.JButton btnSave;
     public javax.swing.JTable finalSaleTable;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel lblCompanyMainData;
