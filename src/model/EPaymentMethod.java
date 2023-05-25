@@ -6,7 +6,7 @@ public enum EPaymentMethod {
     MP("Mercado Pago"),
     CREDIT("Tarjeta de Crédito"),
     DEBIT("Tarjeta de Débito"),
-    BANK_TRANSFER("Transferencia Bancaria");
+    BANK_TRANSFER("Transf. Bancaria");
 
     private final String nameForUser;
 

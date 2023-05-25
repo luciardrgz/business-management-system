@@ -125,7 +125,6 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             List<Customer> customersList = customerRepository.getCustomersList(adminView.inputCustomerSearch.getText());
             customersTable = (DefaultTableModel) adminView.customersTable.getModel();
             customersTable.setRowCount(0);
-            TableUtils.centerTableContent(adminView.customersTable);
             customersListToObjectArray(customersList);
 
             TableUtils.setUpTableStyle(adminView.customersTable, customersTable);
