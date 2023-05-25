@@ -12,8 +12,10 @@ import javax.swing.table.DefaultTableModel;
 import model.Supplier;
 import dao.SupplierDAO;
 import exceptions.DBException;
+import javax.swing.JButton;
 import model.EPersonStatus;
 import repositories.SupplierRepository;
+import utils.ButtonUtils;
 import utils.TableUtils;
 import views.AdminPanel;
 
@@ -24,6 +26,8 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     private final SupplierRepository supplierRepository = new SupplierRepository();
     private final AdminPanel adminView;
     private DefaultTableModel suppliersTable = new DefaultTableModel();
+    private JButton UPDATE_BTN;
+    private JButton REGISTER_BTN;
 
     public SupplierController(Supplier supplier, SupplierDAO supplierDAO, AdminPanel adminView) {
         this.supplier = supplier;
@@ -36,6 +40,10 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         this.adminView.btnNewSupplier.addActionListener(this);
         this.adminView.inputSupplierSearch.addKeyListener(this);
         this.adminView.suppliersTable.addMouseListener(this);
+        this.UPDATE_BTN = adminView.btnUpdateSupplier;
+        this.REGISTER_BTN = adminView.btnRegisterSupplier;
+
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
         listSuppliers();
     }
 
@@ -89,6 +97,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         if (adminView.inputSupplierSocial.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
             setupSupplier();
             supplier.setId(Integer.parseInt(adminView.inputSupplierId.getText()));
 
@@ -135,7 +144,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
     }
 
     private void listSuppliers() {
-        adminView.suppliersTable.setDefaultRenderer(adminView.suppliersTable.getColumnClass(0),  new TableUtils());
+        adminView.suppliersTable.setDefaultRenderer(adminView.suppliersTable.getColumnClass(0), new TableUtils());
 
         try {
             List<Supplier> suppliersList = supplierRepository.getSuppliersList(adminView.inputSupplierSearch.getText());
@@ -173,6 +182,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
         adminView.inputSupplierCUIT.setText("");
         adminView.inputSupplierPhone.setText("");
         adminView.inputSupplierAddress.setText("");
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
     }
 
     @Override
@@ -187,6 +197,7 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             adminView.inputSupplierCUIT.setText(adminView.suppliersTable.getValueAt(row, 4).toString());
             adminView.inputSupplierPhone.setText(adminView.suppliersTable.getValueAt(row, 5).toString());
             adminView.inputSupplierAddress.setText(adminView.suppliersTable.getValueAt(row, 6).toString());
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
         }
     }
 

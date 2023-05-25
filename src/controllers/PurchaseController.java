@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utils.ComboBoxUtils;
@@ -18,6 +19,7 @@ import model.EUnit;
 import model.Purchase;
 import repositories.PurchaseRepository;
 import repositories.SupplierRepository;
+import utils.ButtonUtils;
 import utils.TableUtils;
 import views.AdminPanel;
 
@@ -29,6 +31,8 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     private PurchaseRepository purchaseRepository = new PurchaseRepository();
     private SupplierRepository supplierRepository = new SupplierRepository();
     private DefaultTableModel purchasesTable = new DefaultTableModel();
+    private JButton UPDATE_BTN;
+    private JButton REGISTER_BTN;
 
     public PurchaseController() {
     }
@@ -44,11 +48,14 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         this.adminView.jMenuItemReenterPurchase.addActionListener(this);
         this.adminView.inputPurchaseSearch.addKeyListener(this);
         this.adminView.purchasesTable.addMouseListener(this);
+        this.UPDATE_BTN = adminView.btnUpdatePurchase;
+        this.REGISTER_BTN = adminView.btnRegisterPurchase;
 
         loadSuppliersComboBox();
         loadUnitsComboBox();
         ComboBoxUtils.loadPaymentMethodsComboBox(adminView.cbxPurchasePaymentMethod);
         ComboBoxUtils.loadStatusesComboBox(adminView.cbxPurchaseStatus);
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
         listPurchases();
     }
 
@@ -145,6 +152,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         if (adminView.inputPurchaseName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "El nombre del producto comprado es obligatorio.");
         } else {
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
             setupPurchase();
             purchase.setId(Integer.parseInt((adminView.inputPurchaseId.getText())));
 
@@ -219,6 +227,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
         adminView.cbxPurchaseSupplier.setSelectedIndex(-1);
         adminView.cbxPurchasePaymentMethod.setSelectedIndex(-1);
         adminView.cbxPurchaseStatus.setSelectedIndex(-1);
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
     }
 
     @Override
@@ -235,6 +244,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             setSupplierIndex(row, 6);
             setPaymentMethodIndex(adminView.purchasesTable.getValueAt(row, 7).toString());
             setStatusIndex(adminView.purchasesTable.getValueAt(row, 8).toString());
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
         }
     }
 
