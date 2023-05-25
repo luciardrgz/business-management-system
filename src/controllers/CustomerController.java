@@ -12,8 +12,10 @@ import javax.swing.table.DefaultTableModel;
 import model.Customer;
 import dao.CustomerDAO;
 import exceptions.DBException;
+import javax.swing.JButton;
 import model.EPersonStatus;
 import repositories.CustomerRepository;
+import utils.ButtonUtils;
 import views.AdminPanel;
 import utils.TableUtils;
 
@@ -23,8 +25,9 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
     private final CustomerDAO customerDAO;
     private final AdminPanel adminView;
     private final CustomerRepository customerRepository = new CustomerRepository();
-
     private DefaultTableModel customersTable = new DefaultTableModel();
+    private JButton UPDATE_BTN;
+    private JButton REGISTER_BTN;
 
     public CustomerController(Customer customer, CustomerDAO customerDAO, AdminPanel adminView) {
         this.customer = customer;
@@ -38,6 +41,10 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         this.adminView.jMenuItemReenterCustomer.addActionListener(this);
         this.adminView.inputCustomerSearch.addKeyListener(this);
         this.adminView.lblCustomers.addMouseListener(this);
+        this.UPDATE_BTN = adminView.btnUpdateCustomer;
+        this.REGISTER_BTN = adminView.btnRegisterCustomer;
+
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
         listCustomers();
     }
 
@@ -102,6 +109,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             if (checkNullFields() == false) {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
             } else {
+                ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
                 setupCustomer();
                 customer.setId(Integer.parseInt(adminView.inputCustomerId.getText()));
 
@@ -157,6 +165,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
         adminView.inputCustomerLastName.setText("");
         adminView.inputCustomerPhone.setText("");
         adminView.inputCustomerAddress.setText("");
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
     }
 
     private void deleteCustomer() {
@@ -201,6 +210,7 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             adminView.inputCustomerLastName.setText(adminView.customersTable.getValueAt(row, 2).toString());
             adminView.inputCustomerPhone.setText(adminView.customersTable.getValueAt(row, 3).toString());
             adminView.inputCustomerAddress.setText(adminView.customersTable.getValueAt(row, 4).toString());
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
         }
     }
 

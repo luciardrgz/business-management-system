@@ -12,9 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Category;
 import dao.CategoryDAO;
+import javax.swing.JButton;
 import repositories.CategoryRepository;
 import views.AdminPanel;
 import listeners.ICategoryUpdateListener;
+import utils.ButtonUtils;
 import utils.TableUtils;
 
 public class CategoryController implements ActionListener, MouseListener, KeyListener {
@@ -25,6 +27,8 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     private final AdminPanel adminView;
     private DefaultTableModel categoriesTable = new DefaultTableModel();
     private final ICategoryUpdateListener categoryUpdateListener;
+    private JButton UPDATE_BTN;
+    private JButton REGISTER_BTN;
 
     public CategoryController(Category category, CategoryDAO categoryDAO, ProductController productController, AdminPanel adminView) {
         this.category = category;
@@ -38,7 +42,10 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         this.adminView.btnNewCategory.addActionListener(this);
         this.adminView.inputCategorySearch.addKeyListener(this);
         this.adminView.categoriesTable.addMouseListener(this);
+        this.UPDATE_BTN = adminView.btnUpdateCategory;
+        this.REGISTER_BTN = adminView.btnRegisterCategory;
 
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
         listCategories();
     }
 
@@ -85,6 +92,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
         if (adminView.inputCategoryName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "No ingresaste ninguna categoría.");
         } else {
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
             category.setId(Integer.parseInt((adminView.inputCategoryId.getText())));
             setupCategory();
 
@@ -100,15 +108,15 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     }
 
     private void listCategories() {
-        adminView.categoriesTable.setDefaultRenderer(adminView.categoriesTable.getColumnClass(0),  new TableUtils());
+        adminView.categoriesTable.setDefaultRenderer(adminView.categoriesTable.getColumnClass(0), new TableUtils());
 
         try {
             List<Category> categoriesList = categoryRepository.getAllCategories(adminView.inputCategorySearch.getText());
             categoriesTable = (DefaultTableModel) adminView.categoriesTable.getModel();
             categoriesTable.setRowCount(0);
-            
+
             TableUtils.centerTableContent(adminView.categoriesTable);
-            
+
             categoryListToObjectArray(categoriesList);
 
             TableUtils.setUpTableStyle(adminView.categoriesTable, categoriesTable);
@@ -132,6 +140,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
     private void clearCategoriesInput() {
         adminView.inputCategoryId.setText("");
         adminView.inputCategoryName.setText("");
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
     }
 
     @Override
@@ -141,6 +150,7 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
 
             adminView.inputCategoryId.setText(adminView.categoriesTable.getValueAt(row, 0).toString());
             adminView.inputCategoryName.setText(adminView.categoriesTable.getValueAt(row, 1).toString());
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
         }
     }
 

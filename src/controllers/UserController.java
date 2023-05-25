@@ -12,9 +12,11 @@ import javax.swing.table.DefaultTableModel;
 import model.User;
 import dao.UserDAO;
 import exceptions.DBException;
+import javax.swing.JButton;
 import model.EPersonStatus;
 import model.ERole;
 import repositories.UserRepository;
+import utils.ButtonUtils;
 import utils.TableUtils;
 import views.AdminPanel;
 
@@ -25,6 +27,8 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     private final AdminPanel adminView;
     private final UserRepository userRepository = new UserRepository();
     private DefaultTableModel usersTable = new DefaultTableModel();
+    private JButton UPDATE_BTN;
+    private JButton REGISTER_BTN;
 
     public UserController(User user, UserDAO userDAO, AdminPanel adminView) {
         this.user = user;
@@ -38,8 +42,11 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         this.adminView.btnNewUser.addMouseListener(this);
         this.adminView.inputUserSearch.addKeyListener(this);
         this.adminView.usersTable.addMouseListener(this);
+        this.UPDATE_BTN = adminView.btnUpdateUser;
+        this.REGISTER_BTN = adminView.btnRegisterUser;
 
         loadRolesComboBox();
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
         listUsers();
     }
 
@@ -107,6 +114,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         if (checkNullFields() == false) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
             setupUser();
             user.setId(Integer.parseInt((adminView.inputUserId.getText())));
 
@@ -153,7 +161,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     }
 
     private void listUsers() {
-        adminView.usersTable.setDefaultRenderer(adminView.usersTable.getColumnClass(0),  new TableUtils());
+        adminView.usersTable.setDefaultRenderer(adminView.usersTable.getColumnClass(0), new TableUtils());
 
         try {
             List<User> usersList = userRepository.getUsersList(adminView.inputUserSearch.getText());
@@ -191,6 +199,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
         adminView.inputUserFirstName.setText("");
         adminView.inputUserLastName.setText("");
         adminView.inputUserPass.setText("");
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
     }
 
     @Override
@@ -205,11 +214,12 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             setRoleIndex(adminView.usersTable.getValueAt(row, 4).toString());
 
             adminView.inputUserPass.setEnabled(false);
-            adminView.btnRegisterUser.setEnabled(false);
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+
         }
         if (e.getSource() == adminView.btnNewUser) {
             adminView.inputUserPass.setEnabled(true);
-            adminView.btnRegisterUser.setEnabled(true);
+            ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
         }
     }
 
@@ -237,7 +247,7 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     private void loadRolesComboBox() {
         ERole[] roles = ERole.class.getEnumConstants();
         adminView.cbxUserRole.removeAllItems();
-        
+
         for (ERole role : roles) {
             adminView.cbxUserRole.addItem(role.getNameForUser());
         }

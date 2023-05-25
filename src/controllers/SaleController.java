@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JButton;
 import utils.ComboBoxUtils;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +21,7 @@ import model.Sale;
 import repositories.CustomerRepository;
 import repositories.ProductRepository;
 import repositories.SaleRepository;
+import utils.ButtonUtils;
 import utils.TableUtils;
 import views.AdminPanel;
 import views.Print;
@@ -35,6 +37,8 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private DefaultTableModel newSaleTable = new DefaultTableModel();
     private List<Sale> tempSales = new ArrayList<>();
     private IStockListener stockUpdateListener;
+    private JButton UPDATE_BTN;
+    private JButton REGISTER_BTN;
 
     public SaleController() {
     }
@@ -44,12 +48,14 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         this.saleDAO = saleDAO;
         this.stockUpdateListener = productController;
         this.adminView = adminView;
-        this.adminView.btnAddProductToNewSale.addActionListener(this);
+        this.adminView.btnRegisterProductInNewSale.addActionListener(this);
         this.adminView.btnDeleteProductFromNewSale.addActionListener(this);
         this.adminView.btnSaveNewSaleInfo.addActionListener(this);
-        this.adminView.btnEditNewSaleInfo.addActionListener(this);
+        this.adminView.btnUpdateNewSaleInfo.addActionListener(this);
         this.adminView.btnGenerateNewSale.addActionListener(this);
         this.adminView.newSaleTable.addMouseListener(this);
+        this.UPDATE_BTN = adminView.btnUpdateNewSaleInfo;
+        this.REGISTER_BTN = adminView.btnRegisterProductInNewSale;
 
         newSaleTable = (DefaultTableModel) adminView.newSaleTable.getModel();
         TableUtils.setUpTableStyle(adminView.newSaleTable, newSaleTable);
@@ -66,10 +72,10 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == adminView.btnSaveNewSaleInfo) {
             setupFinalSale();
-        } else if (e.getSource() == adminView.btnEditNewSaleInfo) {
+        } else if (e.getSource() == adminView.btnUpdateNewSaleInfo) {
             dataFieldsEnabled(true);
             productFieldsEnabled(false);
-        } else if (e.getSource() == adminView.btnAddProductToNewSale) {
+        } else if (e.getSource() == adminView.btnRegisterProductInNewSale) {
             addTempSaleToTable();
         } else if (e.getSource() == adminView.btnDeleteProductFromNewSale) {
             deleteTempSaleFromTable();
@@ -132,7 +138,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     }
 
     private void addTempSaleToTable() {
-        adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0),  new TableUtils());
+        adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0), new TableUtils());
 
         if (adminView.cbxNewSaleProduct.getSelectedItem() == null || adminView.inputNewSaleQty.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Producto y cantidad a vender son obligatorios.");
@@ -161,11 +167,11 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     }
 
     private void listTempSale() {
-        adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0),  new TableUtils());
+        adminView.newSaleTable.setDefaultRenderer(adminView.newSaleTable.getColumnClass(0), new TableUtils());
 
         newSaleTable = (DefaultTableModel) adminView.newSaleTable.getModel();
         newSaleTable.setRowCount(0);
-        
+
         for (Sale tempSale : tempSales) {
             if (finalSale.getId() == tempSale.getId()) {
                 Object[] currentTempSale = tempSaleToObject(tempSale);
@@ -198,7 +204,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         dataFieldsEnabled(false);
         productFieldsEnabled(true);
     }
-    
+
     private void setFinalSaleId() {
         try {
             if (saleRepository.getLastId() != -1) {
@@ -208,7 +214,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
-    
+
     private void setFinalSaleCustomerId() {
         int customerId;
 
@@ -253,30 +259,21 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     }
 
     private void dataFieldsEnabled(boolean value) {
-        setDataFieldsEditable(value);
+        ButtonUtils.setUpdateButtonVisible(value, UPDATE_BTN, REGISTER_BTN);
         adminView.cbxNewSaleCustomer.setEnabled(value);
         adminView.cbxNewSalePaymentMethod.setEnabled(value);
     }
 
     private void productFieldsEnabled(boolean value) {
-        setDataFieldsEditable(value);
+        ButtonUtils.setUpdateButtonVisible(value, UPDATE_BTN, REGISTER_BTN);
         adminView.cbxNewSaleProduct.setEnabled(value);
         adminView.inputNewSaleQty.setEnabled(value);
-    }
-
-    private void setDataFieldsEditable(boolean value) {
-        if (value == true) {
-            adminView.btnEditNewSaleInfo.setVisible(true);
-            adminView.btnSaveNewSaleInfo.setVisible(false);
-        } else {
-            adminView.btnEditNewSaleInfo.setVisible(false);
-            adminView.btnSaveNewSaleInfo.setVisible(true);
-        }
     }
 
     private void clearSalesInput() {
         adminView.cbxNewSaleProduct.setSelectedIndex(-1);
         adminView.inputNewSaleQty.setText("");
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
     }
 
     private void resetTempView() {
@@ -342,7 +339,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
-    
+
     private void setProductIndex(int row) {
         int index;
         try {
@@ -362,6 +359,8 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
 
             setProductIndex(row);
             adminView.inputNewSaleQty.setText(adminView.newSaleTable.getValueAt(row, 1).toString());
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+
         }
     }
 

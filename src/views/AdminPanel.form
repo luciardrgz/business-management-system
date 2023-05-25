@@ -270,7 +270,7 @@
     <Container class="javax.swing.JPanel" name="appTitle">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="99" green="99" red="99" type="rgb"/>
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
       </Properties>
       <Constraints>
@@ -292,11 +292,13 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="OsoPanda ByM"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/assets/logo.png"/>
+            </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="55" width="130" height="-1"/>
+              <AbsoluteConstraints x="20" y="30" width="130" height="60"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -1112,7 +1114,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="72" y="490" width="30" height="30"/>
+                      <AbsoluteConstraints x="50" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -1124,13 +1126,17 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/img/register.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Registrar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegisterProductActionPerformed"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="132" y="490" width="30" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -1146,7 +1152,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="210" y="490" width="100" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -1497,7 +1503,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="210" y="490" width="100" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -1577,7 +1583,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="90" y="490" width="-1" height="30"/>
+                      <AbsoluteConstraints x="50" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -1589,13 +1595,14 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/img/register.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Registrar"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="150" y="490" width="-1" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -1972,7 +1979,7 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JButton" name="btnAddProductToNewSale">
+            <Component class="javax.swing.JButton" name="btnRegisterProductInNewSale">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Montserrat" size="14" style="0"/>
@@ -1988,7 +1995,7 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JButton" name="btnEditNewSaleInfo">
+            <Component class="javax.swing.JButton" name="btnUpdateNewSaleInfo">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Montserrat" size="14" style="0"/>
@@ -1996,7 +2003,7 @@
                 <Property name="text" type="java.lang.String" value="Editar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditNewSaleInfoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateNewSaleInfoActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -2289,7 +2296,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="210" y="490" width="100" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -2369,7 +2376,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="90" y="490" width="-1" height="30"/>
+                      <AbsoluteConstraints x="50" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -2381,13 +2388,17 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/img/register.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Registrar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegisterCustomerActionPerformed"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="150" y="490" width="-1" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3336,7 +3347,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="210" y="490" width="100" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3463,13 +3474,14 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/img/register.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Registrar"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="150" y="490" width="-1" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3490,7 +3502,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="90" y="490" width="-1" height="30"/>
+                      <AbsoluteConstraints x="50" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3715,7 +3727,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="90" y="490" width="-1" height="30"/>
+                      <AbsoluteConstraints x="50" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3727,13 +3739,14 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/img/register.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Registrar"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="150" y="490" width="-1" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="150" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3749,7 +3762,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="210" y="490" width="100" height="30"/>
+                      <AbsoluteConstraints x="210" y="490" width="130" height="30"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -4028,7 +4041,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="222" max="32767" attributes="0"/>
+                          <EmptySpace pref="193" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="lblBusinessExtras" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblBusinessSocial" alignment="0" pref="102" max="32767" attributes="0"/>
@@ -4040,26 +4053,19 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="btnRegisterBusiness" min="-2" pref="140" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                                  <Component id="btnUpdateBusiness" min="-2" pref="140" max="-2" attributes="0"/>
+                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="inputBusinessOwnerName" max="32767" attributes="0"/>
+                                  <Component id="inputBusinessName" max="32767" attributes="0"/>
+                                  <Component id="inputBusinessCUIT" min="-2" pref="320" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="inputBusinessOwnerName" max="32767" attributes="0"/>
-                                      <Component id="inputBusinessName" max="32767" attributes="0"/>
-                                      <Component id="inputBusinessCUIT" min="-2" pref="320" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="inputBusinessOwnerLastName" max="32767" attributes="0"/>
-                                      <Component id="inputBusinessPhone" max="32767" attributes="0"/>
-                                      <Component id="inputBusinessAddress" max="32767" attributes="0"/>
-                                      <Component id="inputBusinessExtras" min="-2" pref="320" max="-2" attributes="0"/>
-                                  </Group>
+                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="inputBusinessOwnerLastName" max="32767" attributes="0"/>
+                                  <Component id="inputBusinessPhone" max="32767" attributes="0"/>
+                                  <Component id="inputBusinessAddress" max="32767" attributes="0"/>
+                                  <Component id="inputBusinessExtras" min="-2" pref="320" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="168" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="197" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -4101,12 +4107,7 @@
                               <Component id="lblBusinessExtras" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="inputBusinessExtras" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnRegisterBusiness" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="btnUpdateBusiness" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="11" max="32767" attributes="0"/>
+                          <EmptySpace pref="42" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -4184,28 +4185,6 @@
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnRegisterBusiness">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Montserrat" size="14" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Registrar"/>
-                  </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                  </AuxValues>
-                </Component>
-                <Component class="javax.swing.JButton" name="btnUpdateBusiness">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Montserrat" size="14" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Modificar"/>
-                  </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-                  </AuxValues>
-                </Component>
                 <Component class="javax.swing.JLabel" name="lblBusinessSocial">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -4262,6 +4241,41 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="btnUpdateBusiness">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Montserrat" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Guardar cambios"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="570" y="510" width="320" height="30"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnRegisterBusiness">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Montserrat" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Registrar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegisterBusinessActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                  <AbsoluteConstraints x="570" y="510" width="320" height="30"/>
+                </Constraint>
+              </Constraints>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jTabHelp">

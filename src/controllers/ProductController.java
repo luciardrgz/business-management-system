@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Product;
 import dao.ProductDAO;
+import javax.swing.JButton;
 import model.EProductStatus;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import repositories.CategoryRepository;
@@ -20,6 +21,7 @@ import listeners.ICategoryUpdateListener;
 import listeners.IStockListener;
 import model.Sale;
 import repositories.ProductRepository;
+import utils.ButtonUtils;
 import utils.TableUtils;
 
 public class ProductController implements ActionListener, MouseListener, KeyListener, ICategoryUpdateListener, IStockListener {
@@ -30,6 +32,8 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     private ProductRepository productRepository = new ProductRepository();
     private CategoryRepository categoryRepository = new CategoryRepository();
     private DefaultTableModel productsTable = new DefaultTableModel();
+    private JButton UPDATE_BTN;
+    private JButton REGISTER_BTN;
 
     public ProductController() {
     }
@@ -47,10 +51,13 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         this.adminView.jMenuItemReenterProduct.addActionListener(this);
         this.adminView.inputProductSearch.addKeyListener(this);
         this.adminView.productsTable.addMouseListener(this);
+        this.UPDATE_BTN = adminView.btnUpdateProduct;
+        this.REGISTER_BTN = adminView.btnRegisterProduct;
 
         AutoCompleteDecorator.decorate(adminView.cbxProductCategories);
 
         loadCategoriesComboBox();
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
         listProducts();
     }
 
@@ -125,6 +132,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         if (adminView.inputProductName.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
             setupProduct();
             product.setId(Integer.parseInt((adminView.inputProductId.getText())));
 
@@ -170,13 +178,13 @@ public class ProductController implements ActionListener, MouseListener, KeyList
     }
 
     private void listProducts() {
-        adminView.productsTable.setDefaultRenderer(adminView.productsTable.getColumnClass(0),  new TableUtils());
+        adminView.productsTable.setDefaultRenderer(adminView.productsTable.getColumnClass(0), new TableUtils());
 
         try {
             List<Product> productsList = productRepository.getProductsList(adminView.inputProductSearch.getText());
             productsTable = (DefaultTableModel) adminView.productsTable.getModel();
             productsTable.setRowCount(0);
-            
+
             productListToObjectArray(productsList);
 
             TableUtils.setUpTableStyle(adminView.productsTable, productsTable);
@@ -222,6 +230,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
         adminView.inputProductionCost.setText("");
         adminView.inputProductSellPrice.setText("");
         adminView.cbxProductCategories.setSelectedIndex(-1);
+        ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
     }
 
     @Override
@@ -236,6 +245,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             adminView.inputProductionCost.setText(adminView.productsTable.getValueAt(row, 4).toString());
             adminView.inputProductSellPrice.setText(adminView.productsTable.getValueAt(row, 5).toString());
             setProductCategoryIndex(row);
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
         }
     }
 
@@ -276,7 +286,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
 
     private void updateStockInput(String operation) {
         String currentStock = adminView.inputProductStock.getText();
-        
+
         if (!currentStock.isEmpty()) {
             if (operation.equals("add")) {
                 adminView.inputProductStock.setText(String.valueOf(Integer.parseInt(currentStock) + 1));
@@ -285,7 +295,7 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             }
         }
     }
-    
+
     public void updateProductStock(Sale tempSale) {
         try {
             int soldStock = (int) (tempSale.getTotal() / productRepository.getProductPrice(tempSale.getProduct()));

@@ -198,8 +198,8 @@ public class AdminPanel extends JFrame {
         inputNewSaleQty = new javax.swing.JTextField();
         btnDeleteProductFromNewSale = new javax.swing.JButton();
         btnGenerateNewSale = new javax.swing.JButton();
-        btnAddProductToNewSale = new javax.swing.JButton();
-        btnEditNewSaleInfo = new javax.swing.JButton();
+        btnRegisterProductInNewSale = new javax.swing.JButton();
+        btnUpdateNewSaleInfo = new javax.swing.JButton();
         btnSaveNewSaleInfo = new javax.swing.JButton();
         jTabSales = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -314,14 +314,14 @@ public class AdminPanel extends JFrame {
         inputBusinessOwnerLastName = new javax.swing.JTextField();
         inputBusinessPhone = new javax.swing.JTextField();
         inputBusinessAddress = new javax.swing.JTextField();
-        btnRegisterBusiness = new javax.swing.JButton();
-        btnUpdateBusiness = new javax.swing.JButton();
         lblBusinessSocial = new javax.swing.JLabel();
         lblBusinessCUIT = new javax.swing.JLabel();
         inputBusinessCUIT = new javax.swing.JTextField();
         inputBusinessName = new javax.swing.JTextField();
         lblBusinessExtras = new javax.swing.JLabel();
         inputBusinessExtras = new javax.swing.JTextField();
+        btnUpdateBusiness = new javax.swing.JButton();
+        btnRegisterBusiness = new javax.swing.JButton();
         jTabHelp = new javax.swing.JPanel();
 
         jMenuItemDeleteUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
@@ -411,14 +411,14 @@ public class AdminPanel extends JFrame {
         setMinimumSize(new java.awt.Dimension(1550, 800));
         getContentPane().setLayout(null);
 
-        appTitle.setBackground(new java.awt.Color(153, 153, 153));
+        appTitle.setBackground(new java.awt.Color(255, 255, 255));
         appTitle.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Montserrat Medium", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("OsoPanda ByM");
-        appTitle.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 55, 130, -1));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        appTitle.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 130, 60));
 
         getContentPane().add(appTitle);
         appTitle.setBounds(0, 0, 180, 130);
@@ -754,17 +754,23 @@ public class AdminPanel extends JFrame {
             }
         });
         jPanel15.add(btnNewProduct);
-        btnNewProduct.setBounds(72, 490, 30, 30);
+        btnNewProduct.setBounds(50, 490, 150, 30);
 
         btnRegisterProduct.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnRegisterProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/register.png"))); // NOI18N
+        btnRegisterProduct.setText("Registrar");
+        btnRegisterProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterProductActionPerformed(evt);
+            }
+        });
         jPanel15.add(btnRegisterProduct);
-        btnRegisterProduct.setBounds(132, 490, 30, 30);
+        btnRegisterProduct.setBounds(210, 490, 150, 30);
 
         btnUpdateProduct.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnUpdateProduct.setText("Modificar");
         jPanel15.add(btnUpdateProduct);
-        btnUpdateProduct.setBounds(210, 490, 100, 30);
+        btnUpdateProduct.setBounds(210, 490, 150, 30);
 
         lblProductName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductName.setText("Nombre");
@@ -897,7 +903,7 @@ public class AdminPanel extends JFrame {
         btnUpdateCategory.setText("Modificar");
         btnUpdateCategory.setBorderPainted(false);
         jPanel19.add(btnUpdateCategory);
-        btnUpdateCategory.setBounds(210, 490, 100, 30);
+        btnUpdateCategory.setBounds(210, 490, 150, 30);
 
         lblCategoryId.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCategoryId.setText("#");
@@ -926,12 +932,13 @@ public class AdminPanel extends JFrame {
             }
         });
         jPanel19.add(btnNewCategory);
-        btnNewCategory.setBounds(90, 490, 42, 30);
+        btnNewCategory.setBounds(50, 490, 150, 30);
 
         btnRegisterCategory.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnRegisterCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/register.png"))); // NOI18N
+        btnRegisterCategory.setText("Registrar");
         jPanel19.add(btnRegisterCategory);
-        btnRegisterCategory.setBounds(150, 490, 42, 30);
+        btnRegisterCategory.setBounds(210, 490, 150, 30);
 
         lblCategoryName1.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCategoryName1.setText("Nombre");
@@ -1063,18 +1070,18 @@ public class AdminPanel extends JFrame {
         btnGenerateNewSale.setText("Generar factura");
         jTabNewSale.add(btnGenerateNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 530, 140, 30));
 
-        btnAddProductToNewSale.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        btnAddProductToNewSale.setText("Agregar a esta venta");
-        jTabNewSale.add(btnAddProductToNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 10, 200, 30));
+        btnRegisterProductInNewSale.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        btnRegisterProductInNewSale.setText("Agregar a esta venta");
+        jTabNewSale.add(btnRegisterProductInNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 10, 200, 30));
 
-        btnEditNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        btnEditNewSaleInfo.setText("Editar");
-        btnEditNewSaleInfo.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdateNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        btnUpdateNewSaleInfo.setText("Editar");
+        btnUpdateNewSaleInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditNewSaleInfoActionPerformed(evt);
+                btnUpdateNewSaleInfoActionPerformed(evt);
             }
         });
-        jTabNewSale.add(btnEditNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 100, 30));
+        jTabNewSale.add(btnUpdateNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 100, 30));
 
         btnSaveNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnSaveNewSaleInfo.setText("Guardar");
@@ -1167,7 +1174,7 @@ public class AdminPanel extends JFrame {
         btnUpdateCustomer.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnUpdateCustomer.setText("Modificar");
         jPanel17.add(btnUpdateCustomer);
-        btnUpdateCustomer.setBounds(210, 490, 100, 30);
+        btnUpdateCustomer.setBounds(210, 490, 150, 30);
 
         inputCustomerSearch.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         jPanel17.add(inputCustomerSearch);
@@ -1196,12 +1203,18 @@ public class AdminPanel extends JFrame {
             }
         });
         jPanel17.add(btnNewCustomer);
-        btnNewCustomer.setBounds(90, 490, 42, 30);
+        btnNewCustomer.setBounds(50, 490, 150, 30);
 
         btnRegisterCustomer.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnRegisterCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/register.png"))); // NOI18N
+        btnRegisterCustomer.setText("Registrar");
+        btnRegisterCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterCustomerActionPerformed(evt);
+            }
+        });
         jPanel17.add(btnRegisterCustomer);
-        btnRegisterCustomer.setBounds(150, 490, 42, 30);
+        btnRegisterCustomer.setBounds(210, 490, 150, 30);
 
         jTabCustomers.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
@@ -1550,7 +1563,7 @@ public class AdminPanel extends JFrame {
         btnUpdateSupplier.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnUpdateSupplier.setText("Modificar");
         jPanel18.add(btnUpdateSupplier);
-        btnUpdateSupplier.setBounds(210, 490, 100, 30);
+        btnUpdateSupplier.setBounds(210, 490, 150, 30);
 
         lblSupplierSocial.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblSupplierSocial.setText("Razón Social");
@@ -1591,8 +1604,9 @@ public class AdminPanel extends JFrame {
 
         btnRegisterSupplier.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnRegisterSupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/register.png"))); // NOI18N
+        btnRegisterSupplier.setText("Registrar");
         jPanel18.add(btnRegisterSupplier);
-        btnRegisterSupplier.setBounds(150, 490, 42, 30);
+        btnRegisterSupplier.setBounds(210, 490, 150, 30);
 
         btnNewSupplier.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnNewSupplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clean.png"))); // NOI18N
@@ -1602,7 +1616,7 @@ public class AdminPanel extends JFrame {
             }
         });
         jPanel18.add(btnNewSupplier);
-        btnNewSupplier.setBounds(90, 490, 42, 30);
+        btnNewSupplier.setBounds(50, 490, 150, 30);
 
         jTabSuppliers.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
@@ -1687,17 +1701,18 @@ public class AdminPanel extends JFrame {
             }
         });
         jPanel22.add(btnNewUser);
-        btnNewUser.setBounds(90, 490, 42, 30);
+        btnNewUser.setBounds(50, 490, 150, 30);
 
         btnRegisterUser.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnRegisterUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/register.png"))); // NOI18N
+        btnRegisterUser.setText("Registrar");
         jPanel22.add(btnRegisterUser);
-        btnRegisterUser.setBounds(150, 490, 42, 30);
+        btnRegisterUser.setBounds(210, 490, 150, 30);
 
         btnUpdateUser.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnUpdateUser.setText("Modificar");
         jPanel22.add(btnUpdateUser);
-        btnUpdateUser.setBounds(210, 490, 100, 30);
+        btnUpdateUser.setBounds(210, 490, 130, 30);
 
         lblUserFirstName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblUserFirstName.setText("Nombre");
@@ -1817,12 +1832,6 @@ public class AdminPanel extends JFrame {
 
         inputBusinessAddress.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
 
-        btnRegisterBusiness.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        btnRegisterBusiness.setText("Registrar");
-
-        btnUpdateBusiness.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        btnUpdateBusiness.setText("Modificar");
-
         lblBusinessSocial.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblBusinessSocial.setText("Razón Social");
 
@@ -1843,7 +1852,7 @@ public class AdminPanel extends JFrame {
         jPanelBusinessLayout.setHorizontalGroup(
             jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBusinessLayout.createSequentialGroup()
-                .addContainerGap(222, Short.MAX_VALUE)
+                .addContainerGap(193, Short.MAX_VALUE)
                 .addGroup(jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lblBusinessExtras, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblBusinessSocial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
@@ -1854,21 +1863,16 @@ public class AdminPanel extends JFrame {
                     .addComponent(lblBusinessAddress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelBusinessLayout.createSequentialGroup()
-                        .addComponent(btnRegisterBusiness, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(btnUpdateBusiness, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(inputBusinessOwnerName)
-                            .addComponent(inputBusinessName)
-                            .addComponent(inputBusinessCUIT, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(inputBusinessOwnerLastName)
-                            .addComponent(inputBusinessPhone)
-                            .addComponent(inputBusinessAddress)
-                            .addComponent(inputBusinessExtras, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(168, 168, 168))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(inputBusinessOwnerName)
+                        .addComponent(inputBusinessName)
+                        .addComponent(inputBusinessCUIT, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(inputBusinessOwnerLastName)
+                        .addComponent(inputBusinessPhone)
+                        .addComponent(inputBusinessAddress)
+                        .addComponent(inputBusinessExtras, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(197, 197, 197))
         );
         jPanelBusinessLayout.setVerticalGroup(
             jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1901,14 +1905,23 @@ public class AdminPanel extends JFrame {
                 .addGroup(jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBusinessExtras, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(inputBusinessExtras, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegisterBusiness, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUpdateBusiness, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         jTabCompany.add(jPanelBusiness, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 840, -1));
+
+        btnUpdateBusiness.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        btnUpdateBusiness.setText("Guardar cambios");
+        jTabCompany.add(btnUpdateBusiness, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 510, 320, 30));
+
+        btnRegisterBusiness.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        btnRegisterBusiness.setText("Registrar");
+        btnRegisterBusiness.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterBusinessActionPerformed(evt);
+            }
+        });
+        jTabCompany.add(btnRegisterBusiness, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 510, 320, 30));
 
         jTabs.addTab("Empresa", jTabCompany);
 
@@ -1986,9 +1999,9 @@ public class AdminPanel extends JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItemReenterCategoryActionPerformed
 
-    private void btnEditNewSaleInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditNewSaleInfoActionPerformed
+    private void btnUpdateNewSaleInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateNewSaleInfoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditNewSaleInfoActionPerformed
+    }//GEN-LAST:event_btnUpdateNewSaleInfoActionPerformed
 
     private void btnSaveNewSaleInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveNewSaleInfoActionPerformed
         // TODO add your handling code here:
@@ -2005,6 +2018,18 @@ public class AdminPanel extends JFrame {
     private void btnNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNewProductActionPerformed
+
+    private void btnRegisterProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterProductActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegisterProductActionPerformed
+
+    private void btnRegisterBusinessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterBusinessActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegisterBusinessActionPerformed
+
+    private void btnRegisterCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterCustomerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegisterCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2043,12 +2068,10 @@ public class AdminPanel extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel appTitle;
-    public javax.swing.JButton btnAddProductToNewSale;
     public javax.swing.JButton btnAddStock;
     private javax.swing.JButton btnCleanPurchaseSearch;
     public javax.swing.JButton btnClearPurchase;
     public javax.swing.JButton btnDeleteProductFromNewSale;
-    public javax.swing.JButton btnEditNewSaleInfo;
     public javax.swing.JButton btnGenerateNewSale;
     public javax.swing.JButton btnNewCategory;
     public javax.swing.JButton btnNewCustomer;
@@ -2059,6 +2082,7 @@ public class AdminPanel extends JFrame {
     public javax.swing.JButton btnRegisterCategory;
     public javax.swing.JButton btnRegisterCustomer;
     public javax.swing.JButton btnRegisterProduct;
+    public javax.swing.JButton btnRegisterProductInNewSale;
     public javax.swing.JButton btnRegisterPurchase;
     public javax.swing.JButton btnRegisterSupplier;
     public javax.swing.JButton btnRegisterUser;
@@ -2067,6 +2091,7 @@ public class AdminPanel extends JFrame {
     public javax.swing.JButton btnUpdateBusiness;
     public javax.swing.JButton btnUpdateCategory;
     public javax.swing.JButton btnUpdateCustomer;
+    public javax.swing.JButton btnUpdateNewSaleInfo;
     public javax.swing.JButton btnUpdateProduct;
     public javax.swing.JButton btnUpdatePurchase;
     public javax.swing.JButton btnUpdateSupplier;

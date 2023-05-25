@@ -4,17 +4,21 @@ import dao.CompanyDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import model.Company;
 import repositories.CompanyRepository;
+import utils.ButtonUtils;
 import views.AdminPanel;
 
-public class CompanyController implements ActionListener{
+public class CompanyController implements ActionListener {
 
     private Company company;
     private CompanyDAO companyDAO;
     private CompanyRepository companyRepository = new CompanyRepository();
     private final AdminPanel adminView;
+    private JButton UPDATE_BTN;
+    private JButton REGISTER_BTN;
 
     public CompanyController(Company company, CompanyDAO companyDAO, AdminPanel adminView) {
         this.adminView = adminView;
@@ -22,6 +26,9 @@ public class CompanyController implements ActionListener{
         this.companyDAO = companyDAO;
         this.adminView.btnRegisterBusiness.addActionListener(this);
         this.adminView.btnUpdateBusiness.addActionListener(this);
+        this.UPDATE_BTN = adminView.btnUpdateBusiness;
+        this.REGISTER_BTN = adminView.btnRegisterBusiness;
+        isCompanyRegistered();
         setupCompanyFields();
     }
 
@@ -68,6 +75,7 @@ public class CompanyController implements ActionListener{
             try {
                 companyRepository.setupData(company);
                 JOptionPane.showMessageDialog(null, "Empresa registrada exitosamente.");
+                ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -78,6 +86,7 @@ public class CompanyController implements ActionListener{
         if (checkNullFields() == false) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
         } else {
+            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
             setupCompany();
 
             try {
@@ -104,6 +113,17 @@ public class CompanyController implements ActionListener{
         }
 
         return check;
+    }
+
+    private void isCompanyRegistered() {
+        try {
+            if (companyRepository.getData() != null) {
+                ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+            }
+        } catch (IOException ex) {
+            ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
     }
 
 }
