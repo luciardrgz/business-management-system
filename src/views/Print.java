@@ -60,7 +60,6 @@ public class Print extends JFrame {
 
         table = (DefaultTableModel) finalSaleTable.getModel();
         table.setRowCount(0);
-        TableUtils.centerTableContent(finalSaleTable);
 
         try {
             lblSaleNo.setText(String.valueOf(id));

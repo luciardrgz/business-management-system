@@ -166,7 +166,6 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             List<Purchase> purchasesList = purchaseRepository.getPurchasesList(adminView.inputPurchaseSearch.getText());
             purchasesTable = (DefaultTableModel) adminView.purchasesTable.getModel();
             purchasesTable.setRowCount(0);
-            TableUtils.centerTableContent(adminView.purchasesTable);
 
             purchaseListToObjectArray(purchasesList);
 

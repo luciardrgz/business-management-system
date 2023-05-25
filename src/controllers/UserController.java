@@ -159,7 +159,6 @@ public class UserController implements ActionListener, MouseListener, KeyListene
             List<User> usersList = userRepository.getUsersList(adminView.inputUserSearch.getText());
             usersTable = (DefaultTableModel) adminView.usersTable.getModel();
             usersTable.setRowCount(0);
-            TableUtils.centerTableContent(adminView.usersTable);
             usersListToObjectArray(usersList);
 
             TableUtils.setUpTableStyle(adminView.usersTable, usersTable);

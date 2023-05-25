@@ -26,11 +26,7 @@ public class TableUtils extends DefaultTableCellRenderer {
         header.setBackground(Color.decode("#47AE69"));
         header.setForeground(Color.white);
 
-        TableCellRenderer renderer = createTableCellRenderer();
-        TableColumnModel columnModel = table.getColumnModel();
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            columnModel.getColumn(i).setCellRenderer(renderer);
-        }
+        centerTableContent(table);
     }
 
     private static TableCellRenderer createTableCellRenderer() {

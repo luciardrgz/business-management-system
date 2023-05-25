@@ -177,8 +177,6 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             productsTable = (DefaultTableModel) adminView.productsTable.getModel();
             productsTable.setRowCount(0);
             
-            TableUtils.centerTableContent(adminView.productsTable);
-            
             productListToObjectArray(productsList);
 
             TableUtils.setUpTableStyle(adminView.productsTable, productsTable);

@@ -141,7 +141,6 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             List<Supplier> suppliersList = supplierRepository.getSuppliersList(adminView.inputSupplierSearch.getText());
             suppliersTable = (DefaultTableModel) adminView.suppliersTable.getModel();
             suppliersTable.setRowCount(0);
-            TableUtils.centerTableContent(adminView.suppliersTable);
             suppliersListToObjectArray(suppliersList);
 
             TableUtils.setUpTableStyle(adminView.suppliersTable, suppliersTable);

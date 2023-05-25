@@ -165,7 +165,6 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
 
         newSaleTable = (DefaultTableModel) adminView.newSaleTable.getModel();
         newSaleTable.setRowCount(0);
-        TableUtils.centerTableContent(adminView.newSaleTable);
         
         for (Sale tempSale : tempSales) {
             if (finalSale.getId() == tempSale.getId()) {
