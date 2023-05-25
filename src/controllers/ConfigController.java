@@ -13,82 +13,60 @@ public class ConfigController implements MouseListener {
     public ConfigController(AdminPanel adminView) {
         this.adminView = adminView;
         this.adminView.lblNewSale.addMouseListener(this);
-        this.adminView.lblNewBuy.addMouseListener(this);
+        this.adminView.lblNewPurchase.addMouseListener(this);
+        this.adminView.lblSales.addMouseListener(this);
         this.adminView.lblProducts.addMouseListener(this);
         this.adminView.lblSuppliers.addMouseListener(this);
         this.adminView.lblCategories.addMouseListener(this);
-        this.adminView.lblConfiguration.addMouseListener(this);
+        this.adminView.lblHelp.addMouseListener(this);
         this.adminView.lblUsers.addMouseListener(this);
         this.adminView.lblCustomers.addMouseListener(this);
+        this.adminView.lblCompany.addMouseListener(this);
     }
 
-    private final Color defaultColor = new Color(102, 255, 153);
-    private final Color hoverColor = new Color(71, 174, 105);
+    private final Color defaultColor = new Color(71, 174, 105);
+    private final Color hoverColor = new Color(102, 255, 153);
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
-        if (e.getSource() == adminView.lblCategories) {
-            setBg(adminView.lblCategories, hoverColor);
-        } else if (e.getSource() == adminView.lblCustomers) {
-            setBg(adminView.lblCustomers, hoverColor);
-        } else if (e.getSource() == adminView.lblConfiguration) {
-            setBg(adminView.lblConfiguration, hoverColor);
-        } else if (e.getSource() == adminView.lblNewBuy) {
-            setBg(adminView.lblNewBuy, hoverColor);
-        } else if (e.getSource() == adminView.lblNewSale) {
-            setBg(adminView.lblNewSale, hoverColor);
-        } else if (e.getSource() == adminView.lblSuppliers) {
-            setBg(adminView.lblSuppliers, hoverColor);
-        } else if (e.getSource() == adminView.lblUsers) {
-            setBg(adminView.lblUsers, hoverColor);
-        } else {
-            setBg(adminView.lblProducts, hoverColor);
-        }
+        setAppearance(e.getSource(), defaultColor, hoverColor);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if (e.getSource() == adminView.lblCategories) {
-            setBg(adminView.lblCategories, defaultColor);
-        } else if (e.getSource() == adminView.lblCustomers) {
-            setBg(adminView.lblCustomers, defaultColor);
-        } else if (e.getSource() == adminView.lblConfiguration) {
-            setBg(adminView.lblConfiguration, defaultColor);
-        } else if (e.getSource() == adminView.lblNewBuy) {
-            setBg(adminView.lblNewBuy, defaultColor);
-        } else if (e.getSource() == adminView.lblNewSale) {
-            setBg(adminView.lblNewSale, defaultColor);
-        } else if (e.getSource() == adminView.lblSuppliers) {
-            setBg(adminView.lblSuppliers, defaultColor);
-        } else if (e.getSource() == adminView.lblUsers) {
-            setBg(adminView.lblUsers, defaultColor);
-        } else {
-            setBg(adminView.lblProducts, defaultColor);
-        }
+        setAppearance(e.getSource(), defaultColor, Color.WHITE);
     }
 
-    public void setBg(JLabel jLabel, Color color) {
-        jLabel.setOpaque(true);
-        jLabel.setBackground(color);
+    private void setAppearance(Object source, Color backgroundColor, Color textColor) {
+        if (source instanceof JLabel label) {
+            label.setOpaque(true);
+            label.setBackground(backgroundColor);
+            label.setForeground(textColor);
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getSource() == adminView.lblProducts){
+        if (e.getSource() == adminView.lblProducts) {
             adminView.jTabs.setSelectedIndex(0);
-        }
-        else if (e.getSource() == adminView.lblCategories){
+        } else if (e.getSource() == adminView.lblCategories) {
             adminView.jTabs.setSelectedIndex(1);
-        }
-         else if (e.getSource() == adminView.lblCustomers){
+        } else if (e.getSource() == adminView.lblNewSale) {
             adminView.jTabs.setSelectedIndex(2);
-        }
-        else if (e.getSource() == adminView.lblSuppliers){
+        } else if (e.getSource() == adminView.lblSales) {
             adminView.jTabs.setSelectedIndex(3);
-        }
-        else if (e.getSource() == adminView.lblUsers){
+        } else if (e.getSource() == adminView.lblCustomers) {
             adminView.jTabs.setSelectedIndex(4);
+        } else if (e.getSource() == adminView.lblNewPurchase) {
+            adminView.jTabs.setSelectedIndex(5);
+        } else if (e.getSource() == adminView.lblSuppliers) {
+            adminView.jTabs.setSelectedIndex(6);
+        } else if (e.getSource() == adminView.lblUsers) {
+            adminView.jTabs.setSelectedIndex(7);
+        } else if (e.getSource() == adminView.lblCompany) {
+            adminView.jTabs.setSelectedIndex(8);
+        } else if (e.getSource() == adminView.lblHelp) {
+            adminView.jTabs.setSelectedIndex(9);
         }
     }
 

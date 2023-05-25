@@ -122,8 +122,8 @@ public class AdminPanel extends JFrame {
         sideMenu = new javax.swing.JPanel();
         jPanelNewSale = new javax.swing.JPanel();
         lblNewSale = new javax.swing.JLabel();
-        jPanelNewBuy = new javax.swing.JPanel();
-        lblNewBuy = new javax.swing.JLabel();
+        jPanelNewPurchase = new javax.swing.JPanel();
+        lblNewPurchase = new javax.swing.JLabel();
         jPanelProducts = new javax.swing.JPanel();
         lblProducts = new javax.swing.JLabel();
         jPanelCustomers = new javax.swing.JPanel();
@@ -132,12 +132,14 @@ public class AdminPanel extends JFrame {
         lblSuppliers = new javax.swing.JLabel();
         jPanelCategories = new javax.swing.JPanel();
         lblCategories = new javax.swing.JLabel();
-        jPanelConfiguration = new javax.swing.JPanel();
-        lblConfiguration = new javax.swing.JLabel();
+        jPanelHelp = new javax.swing.JPanel();
+        lblHelp = new javax.swing.JLabel();
         jPanelUsers = new javax.swing.JPanel();
         lblUsers = new javax.swing.JLabel();
         jPanelCompany = new javax.swing.JPanel();
         lblCompany = new javax.swing.JLabel();
+        jPanelSales = new javax.swing.JPanel();
+        lblSales = new javax.swing.JLabel();
         header = new javax.swing.JPanel();
         jTabs = new javax.swing.JTabbedPane();
         jTabProducts = new javax.swing.JPanel();
@@ -232,6 +234,7 @@ public class AdminPanel extends JFrame {
         inputPurchaseName = new javax.swing.JTextField();
         lblPurchaseQty = new javax.swing.JLabel();
         inputPurchaseQty = new javax.swing.JTextField();
+        cbxUnit = new javax.swing.JComboBox<>();
         lblPurchasePrice = new javax.swing.JLabel();
         inputPurchasePrice = new javax.swing.JTextField();
         lblPurchaseDate = new javax.swing.JLabel();
@@ -249,7 +252,12 @@ public class AdminPanel extends JFrame {
         btnRegisterPurchase = new javax.swing.JButton();
         btnUpdatePurchase = new javax.swing.JButton();
         btnClearPurchase = new javax.swing.JButton();
-        cbxUnit = new javax.swing.JComboBox<>();
+        jPanelAddPurchase = new javax.swing.JPanel();
+        lblAddPurchase = new javax.swing.JLabel();
+        jPanelMyPurchases = new javax.swing.JPanel();
+        lblMyPurchases = new javax.swing.JLabel();
+        jPanelModifyCleanPurchase = new javax.swing.JPanel();
+        lblModifyCleanPurchase = new javax.swing.JLabel();
         jTabSuppliers = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         lblSupplierFirstName = new javax.swing.JLabel();
@@ -315,7 +323,6 @@ public class AdminPanel extends JFrame {
         lblBusinessExtras = new javax.swing.JLabel();
         inputBusinessExtras = new javax.swing.JTextField();
         jTabHelp = new javax.swing.JPanel();
-        buysPagination = new javax.swing.JPanel();
 
         jMenuItemDeleteUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
         jMenuItemDeleteUser.setText("Eliminar");
@@ -399,8 +406,8 @@ public class AdminPanel extends JFrame {
         jPopupPurchases.add(jMenuItemReenterPurchase);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 204, 153));
         setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        setMaximumSize(new java.awt.Dimension(1550, 800));
         setMinimumSize(new java.awt.Dimension(1550, 800));
         getContentPane().setLayout(null);
 
@@ -416,15 +423,15 @@ public class AdminPanel extends JFrame {
         getContentPane().add(appTitle);
         appTitle.setBounds(0, 0, 180, 130);
 
-        sideMenu.setBackground(new java.awt.Color(204, 204, 204));
+        sideMenu.setBackground(new java.awt.Color(102, 255, 153));
         sideMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanelNewSale.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelNewSale.setBackground(new java.awt.Color(71, 174, 105));
         jPanelNewSale.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        lblNewSale.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblNewSale.setForeground(new java.awt.Color(0, 0, 0));
-        lblNewSale.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNewSale.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblNewSale.setForeground(new java.awt.Color(255, 255, 255));
+        lblNewSale.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblNewSale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/new-sale.png"))); // NOI18N
         lblNewSale.setText("Nueva venta");
 
@@ -432,42 +439,48 @@ public class AdminPanel extends JFrame {
         jPanelNewSale.setLayout(jPanelNewSaleLayout);
         jPanelNewSaleLayout.setHorizontalGroup(
             jPanelNewSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblNewSale, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addGroup(jPanelNewSaleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblNewSale, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanelNewSaleLayout.setVerticalGroup(
             jPanelNewSaleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblNewSale, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        sideMenu.add(jPanelNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 40));
+        sideMenu.add(jPanelNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 180, 40));
 
-        jPanelNewBuy.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelNewPurchase.setBackground(new java.awt.Color(71, 174, 105));
 
-        lblNewBuy.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblNewBuy.setForeground(new java.awt.Color(0, 0, 0));
-        lblNewBuy.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNewBuy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/shopping-cart.png"))); // NOI18N
-        lblNewBuy.setText("Nueva compra");
-        lblNewBuy.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblNewPurchase.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblNewPurchase.setForeground(new java.awt.Color(255, 255, 255));
+        lblNewPurchase.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblNewPurchase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/shopping-cart.png"))); // NOI18N
+        lblNewPurchase.setText("Nueva compra");
+        lblNewPurchase.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        javax.swing.GroupLayout jPanelNewBuyLayout = new javax.swing.GroupLayout(jPanelNewBuy);
-        jPanelNewBuy.setLayout(jPanelNewBuyLayout);
-        jPanelNewBuyLayout.setHorizontalGroup(
-            jPanelNewBuyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblNewBuy, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanelNewPurchaseLayout = new javax.swing.GroupLayout(jPanelNewPurchase);
+        jPanelNewPurchase.setLayout(jPanelNewPurchaseLayout);
+        jPanelNewPurchaseLayout.setHorizontalGroup(
+            jPanelNewPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelNewPurchaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblNewPurchase, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        jPanelNewBuyLayout.setVerticalGroup(
-            jPanelNewBuyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblNewBuy, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+        jPanelNewPurchaseLayout.setVerticalGroup(
+            jPanelNewPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblNewPurchase, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        sideMenu.add(jPanelNewBuy, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 180, 40));
+        sideMenu.add(jPanelNewPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 180, 40));
 
-        jPanelProducts.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelProducts.setBackground(new java.awt.Color(71, 174, 105));
 
-        lblProducts.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblProducts.setForeground(new java.awt.Color(0, 0, 0));
-        lblProducts.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblProducts.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblProducts.setForeground(new java.awt.Color(255, 255, 255));
+        lblProducts.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblProducts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/product.png"))); // NOI18N
         lblProducts.setText("Productos");
         lblProducts.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -477,21 +490,22 @@ public class AdminPanel extends JFrame {
         jPanelProductsLayout.setHorizontalGroup(
             jPanelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelProductsLayout.createSequentialGroup()
-                .addComponent(lblProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanelProductsLayout.setVerticalGroup(
             jPanelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblProducts, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        sideMenu.add(jPanelProducts, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 180, 40));
+        sideMenu.add(jPanelProducts, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 180, 40));
 
-        jPanelCustomers.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelCustomers.setBackground(new java.awt.Color(71, 174, 105));
 
-        lblCustomers.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblCustomers.setForeground(new java.awt.Color(0, 0, 0));
-        lblCustomers.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCustomers.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblCustomers.setForeground(new java.awt.Color(255, 255, 255));
+        lblCustomers.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblCustomers.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/customers.png"))); // NOI18N
         lblCustomers.setText("Clientes");
         lblCustomers.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -500,20 +514,23 @@ public class AdminPanel extends JFrame {
         jPanelCustomers.setLayout(jPanelCustomersLayout);
         jPanelCustomersLayout.setHorizontalGroup(
             jPanelCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addGroup(jPanelCustomersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblCustomers, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanelCustomersLayout.setVerticalGroup(
             jPanelCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        sideMenu.add(jPanelCustomers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 180, 40));
+        sideMenu.add(jPanelCustomers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 180, 40));
 
-        jPanelSuppliers.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelSuppliers.setBackground(new java.awt.Color(71, 174, 105));
 
-        lblSuppliers.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblSuppliers.setForeground(new java.awt.Color(0, 0, 0));
-        lblSuppliers.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSuppliers.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblSuppliers.setForeground(new java.awt.Color(255, 255, 255));
+        lblSuppliers.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblSuppliers.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/supplier.png"))); // NOI18N
         lblSuppliers.setText("Proveedores");
         lblSuppliers.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -522,20 +539,23 @@ public class AdminPanel extends JFrame {
         jPanelSuppliers.setLayout(jPanelSuppliersLayout);
         jPanelSuppliersLayout.setHorizontalGroup(
             jPanelSuppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addGroup(jPanelSuppliersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanelSuppliersLayout.setVerticalGroup(
             jPanelSuppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        sideMenu.add(jPanelSuppliers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 180, 40));
+        sideMenu.add(jPanelSuppliers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 180, 40));
 
-        jPanelCategories.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelCategories.setBackground(new java.awt.Color(71, 174, 105));
 
-        lblCategories.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblCategories.setForeground(new java.awt.Color(0, 0, 0));
-        lblCategories.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCategories.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblCategories.setForeground(new java.awt.Color(255, 255, 255));
+        lblCategories.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblCategories.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/categories.png"))); // NOI18N
         lblCategories.setText("Categorías");
         lblCategories.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -544,9 +564,10 @@ public class AdminPanel extends JFrame {
         jPanelCategories.setLayout(jPanelCategoriesLayout);
         jPanelCategoriesLayout.setHorizontalGroup(
             jPanelCategoriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCategoriesLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanelCategoriesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanelCategoriesLayout.setVerticalGroup(
             jPanelCategoriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,37 +576,40 @@ public class AdminPanel extends JFrame {
                 .addComponent(lblCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        sideMenu.add(jPanelCategories, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 180, 40));
+        sideMenu.add(jPanelCategories, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 180, 40));
 
-        jPanelConfiguration.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelHelp.setBackground(new java.awt.Color(71, 174, 105));
 
-        lblConfiguration.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblConfiguration.setForeground(new java.awt.Color(0, 0, 0));
-        lblConfiguration.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblConfiguration.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/help.png"))); // NOI18N
-        lblConfiguration.setText("Ayuda");
-        lblConfiguration.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblHelp.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblHelp.setForeground(new java.awt.Color(255, 255, 255));
+        lblHelp.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/help.png"))); // NOI18N
+        lblHelp.setText("Ayuda");
+        lblHelp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        javax.swing.GroupLayout jPanelConfigurationLayout = new javax.swing.GroupLayout(jPanelConfiguration);
-        jPanelConfiguration.setLayout(jPanelConfigurationLayout);
-        jPanelConfigurationLayout.setHorizontalGroup(
-            jPanelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanelHelpLayout = new javax.swing.GroupLayout(jPanelHelp);
+        jPanelHelp.setLayout(jPanelHelpLayout);
+        jPanelHelpLayout.setHorizontalGroup(
+            jPanelHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHelpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
-        jPanelConfigurationLayout.setVerticalGroup(
-            jPanelConfigurationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConfigurationLayout.createSequentialGroup()
+        jPanelHelpLayout.setVerticalGroup(
+            jPanelHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelHelpLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblConfiguration, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        sideMenu.add(jPanelConfiguration, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 180, 40));
+        sideMenu.add(jPanelHelp, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 570, 180, 40));
 
-        jPanelUsers.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelUsers.setBackground(new java.awt.Color(71, 174, 105));
 
-        lblUsers.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblUsers.setForeground(new java.awt.Color(0, 0, 0));
-        lblUsers.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblUsers.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblUsers.setForeground(new java.awt.Color(255, 255, 255));
+        lblUsers.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblUsers.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/users.png"))); // NOI18N
         lblUsers.setText("Usuarios");
         lblUsers.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -594,22 +618,25 @@ public class AdminPanel extends JFrame {
         jPanelUsers.setLayout(jPanelUsersLayout);
         jPanelUsersLayout.setHorizontalGroup(
             jPanelUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblUsers, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addGroup(jPanelUsersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanelUsersLayout.setVerticalGroup(
             jPanelUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelUsersLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUsersLayout.createSequentialGroup()
                 .addComponent(lblUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        sideMenu.add(jPanelUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 180, 40));
+        sideMenu.add(jPanelUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 180, 40));
 
-        jPanelCompany.setBackground(new java.awt.Color(102, 255, 153));
+        jPanelCompany.setBackground(new java.awt.Color(71, 174, 105));
 
-        lblCompany.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        lblCompany.setForeground(new java.awt.Color(0, 0, 0));
-        lblCompany.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCompany.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblCompany.setForeground(new java.awt.Color(255, 255, 255));
+        lblCompany.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblCompany.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/business.png"))); // NOI18N
         lblCompany.setText("Empresa");
         lblCompany.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -618,9 +645,10 @@ public class AdminPanel extends JFrame {
         jPanelCompany.setLayout(jPanelCompanyLayout);
         jPanelCompanyLayout.setHorizontalGroup(
             jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCompanyLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblCompany, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanelCompanyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblCompany, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanelCompanyLayout.setVerticalGroup(
             jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -629,7 +657,32 @@ public class AdminPanel extends JFrame {
                 .addComponent(lblCompany, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        sideMenu.add(jPanelCompany, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 180, 40));
+        sideMenu.add(jPanelCompany, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 510, 180, 40));
+
+        jPanelSales.setBackground(new java.awt.Color(71, 174, 105));
+        jPanelSales.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        lblSales.setFont(new java.awt.Font("Montserrat Medium", 0, 16)); // NOI18N
+        lblSales.setForeground(new java.awt.Color(255, 255, 255));
+        lblSales.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblSales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/new-sale.png"))); // NOI18N
+        lblSales.setText("Ventas");
+
+        javax.swing.GroupLayout jPanelSalesLayout = new javax.swing.GroupLayout(jPanelSales);
+        jPanelSales.setLayout(jPanelSalesLayout);
+        jPanelSalesLayout.setHorizontalGroup(
+            jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelSalesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSales, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
+        jPanelSalesLayout.setVerticalGroup(
+            jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblSales, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+        );
+
+        sideMenu.add(jPanelSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 180, 40));
 
         getContentPane().add(sideMenu);
         sideMenu.setBounds(0, 130, 180, 660);
@@ -637,8 +690,10 @@ public class AdminPanel extends JFrame {
         header.setBackground(new java.awt.Color(102, 255, 153));
         header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(header);
-        header.setBounds(180, 0, 1350, 130);
+        header.setBounds(180, 0, 1370, 130);
 
+        jTabs.setBackground(new java.awt.Color(255, 255, 255));
+        jTabs.setForeground(new java.awt.Color(51, 51, 51));
         jTabs.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         jTabs.setMinimumSize(new java.awt.Dimension(1300, 1080));
         jTabs.setPreferredSize(new java.awt.Dimension(1300, 1080));
@@ -648,22 +703,22 @@ public class AdminPanel extends JFrame {
         jTabProducts.setPreferredSize(new java.awt.Dimension(1920, 1080));
         jTabProducts.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Producto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat ExtraBold", 0, 14))); // NOI18N
+        jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Producto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat SemiBold", 0, 14))); // NOI18N
         jPanel15.setFont(new java.awt.Font("Montserrat SemiBold", 0, 12)); // NOI18N
         jPanel15.setPreferredSize(new java.awt.Dimension(410, 600));
         jPanel15.setLayout(null);
 
-        lblProductDescription.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductDescription.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductDescription.setText("Descripción");
         jPanel15.add(lblProductDescription);
         lblProductDescription.setBounds(20, 180, 87, 30);
 
-        lblProductionCost.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductionCost.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductionCost.setText("Costo producción");
         jPanel15.add(lblProductionCost);
         lblProductionCost.setBounds(20, 300, 130, 30);
 
-        lblProductSellPrice.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductSellPrice.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductSellPrice.setText("Precio de venta");
         jPanel15.add(lblProductSellPrice);
         lblProductSellPrice.setBounds(20, 360, 120, 30);
@@ -682,7 +737,7 @@ public class AdminPanel extends JFrame {
         jPanel15.add(inputProductSellPrice);
         inputProductSellPrice.setBounds(160, 360, 225, 30);
 
-        lblProductCategory.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductCategory.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductCategory.setText("Categoría");
         jPanel15.add(lblProductCategory);
         lblProductCategory.setBounds(20, 420, 74, 30);
@@ -711,7 +766,7 @@ public class AdminPanel extends JFrame {
         jPanel15.add(btnUpdateProduct);
         btnUpdateProduct.setBounds(210, 490, 100, 30);
 
-        lblProductName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductName.setText("Nombre");
         jPanel15.add(lblProductName);
         lblProductName.setBounds(20, 123, 60, 30);
@@ -725,7 +780,7 @@ public class AdminPanel extends JFrame {
         jPanel15.add(inputProductId);
         inputProductId.setBounds(47, 75, 60, 30);
 
-        lblProductId.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductId.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductId.setText("#");
         jPanel15.add(lblProductId);
         lblProductId.setBounds(30, 75, 10, 30);
@@ -739,16 +794,17 @@ public class AdminPanel extends JFrame {
         jPanel15.add(iconProductSearch);
         iconProductSearch.setBounds(11, 39, 30, 30);
 
-        lblProductStock.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductStock.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductStock.setText("Stock");
         jPanel15.add(lblProductStock);
-        lblProductStock.setBounds(20, 240, 40, 30);
+        lblProductStock.setBounds(20, 240, 60, 30);
 
         inputProductStock.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         InputUtils.checkNumbersInput(inputProductStock);
         jPanel15.add(inputProductStock);
         inputProductStock.setBounds(158, 240, 80, 30);
 
+        btnRemoveStock.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnRemoveStock.setText("-");
         btnRemoveStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -759,6 +815,7 @@ public class AdminPanel extends JFrame {
         btnRemoveStock.setBounds(320, 240, 60, 30);
         btnRemoveStock.getAccessibleContext().setAccessibleDescription("");
 
+        btnAddStock.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnAddStock.setText("+");
         btnAddStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -829,7 +886,7 @@ public class AdminPanel extends JFrame {
         jTabCategories.setBackground(new java.awt.Color(102, 255, 153));
         jTabCategories.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nueva Categoría", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Categoría", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat SemiBold", 0, 14))); // NOI18N
         jPanel19.setLayout(null);
 
         inputCategoryName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
@@ -842,7 +899,7 @@ public class AdminPanel extends JFrame {
         jPanel19.add(btnUpdateCategory);
         btnUpdateCategory.setBounds(210, 490, 100, 30);
 
-        lblCategoryId.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblCategoryId.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCategoryId.setText("#");
         jPanel19.add(lblCategoryId);
         lblCategoryId.setBounds(30, 75, 10, 30);
@@ -876,7 +933,7 @@ public class AdminPanel extends JFrame {
         jPanel19.add(btnRegisterCategory);
         btnRegisterCategory.setBounds(150, 490, 42, 30);
 
-        lblCategoryName1.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblCategoryName1.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCategoryName1.setText("Nombre");
         jPanel19.add(lblCategoryName1);
         lblCategoryName1.setBounds(20, 123, 60, 30);
@@ -944,15 +1001,17 @@ public class AdminPanel extends JFrame {
 
         jTabNewSale.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 89, 1260, 400));
 
-        lblQtyNewSaleProduct.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblQtyNewSaleProduct.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblQtyNewSaleProduct.setForeground(new java.awt.Color(51, 51, 51));
         lblQtyNewSaleProduct.setText("Cantidad");
-        jTabNewSale.add(lblQtyNewSaleProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, 60, -1));
+        jTabNewSale.add(lblQtyNewSaleProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, 70, -1));
 
-        lblNewSaleProduct.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblNewSaleProduct.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblNewSaleProduct.setForeground(new java.awt.Color(51, 51, 51));
         lblNewSaleProduct.setText("Producto");
         jTabNewSale.add(lblNewSaleProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 84, -1));
 
-        cbxNewSaleProduct.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        cbxNewSaleProduct.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         cbxNewSaleProduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jTabNewSale.add(cbxNewSaleProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 40, 240, 30));
 
@@ -965,19 +1024,21 @@ public class AdminPanel extends JFrame {
         InputUtils.checkNumbersInput(inputNewSaleTotal);
         jTabNewSale.add(inputNewSaleTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 530, 71, 30));
 
-        lblNewSaleCustomer.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblNewSaleCustomer.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblNewSaleCustomer.setForeground(new java.awt.Color(51, 51, 51));
         lblNewSaleCustomer.setText("Cliente");
         jTabNewSale.add(lblNewSaleCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 84, -1));
 
-        cbxNewSalePaymentMethod.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        cbxNewSalePaymentMethod.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         cbxNewSalePaymentMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jTabNewSale.add(cbxNewSalePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, 153, 30));
 
-        lblNewSalePaymentMethod.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblNewSalePaymentMethod.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblNewSalePaymentMethod.setForeground(new java.awt.Color(51, 51, 51));
         lblNewSalePaymentMethod.setText("Paga con");
-        jTabNewSale.add(lblNewSalePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 60, -1));
+        jTabNewSale.add(lblNewSalePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 80, -1));
 
-        cbxNewSaleCustomer.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        cbxNewSaleCustomer.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         cbxNewSaleCustomer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jTabNewSale.add(cbxNewSaleCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 153, 30));
 
@@ -985,7 +1046,7 @@ public class AdminPanel extends JFrame {
         lblNewSaleTotal.setText("TOTAL");
         jTabNewSale.add(lblNewSaleTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 510, -1, -1));
 
-        inputNewSaleQty.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        inputNewSaleQty.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         inputNewSaleQty.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputNewSaleQtyActionPerformed(evt);
@@ -994,19 +1055,19 @@ public class AdminPanel extends JFrame {
         InputUtils.checkNumbersInput(inputNewSaleQty);
         jTabNewSale.add(inputNewSaleQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 40, 71, 30));
 
-        btnDeleteProductFromNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        btnDeleteProductFromNewSale.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnDeleteProductFromNewSale.setText("Quitar de esta venta");
         jTabNewSale.add(btnDeleteProductFromNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 50, 200, 30));
 
-        btnGenerateNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        btnGenerateNewSale.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnGenerateNewSale.setText("Generar factura");
         jTabNewSale.add(btnGenerateNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 530, 140, 30));
 
-        btnAddProductToNewSale.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        btnAddProductToNewSale.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnAddProductToNewSale.setText("Agregar a esta venta");
         jTabNewSale.add(btnAddProductToNewSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 10, 200, 30));
 
-        btnEditNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        btnEditNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnEditNewSaleInfo.setText("Editar");
         btnEditNewSaleInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1015,7 +1076,7 @@ public class AdminPanel extends JFrame {
         });
         jTabNewSale.add(btnEditNewSaleInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 100, 30));
 
-        btnSaveNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        btnSaveNewSaleInfo.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnSaveNewSaleInfo.setText("Guardar");
         btnSaveNewSaleInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1029,6 +1090,7 @@ public class AdminPanel extends JFrame {
         jTabSales.setBackground(new java.awt.Color(102, 255, 153));
         jTabSales.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        salesTable.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         salesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -1042,7 +1104,7 @@ public class AdminPanel extends JFrame {
         ));
         jScrollPane7.setViewportView(salesTable);
 
-        jTabSales.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1030, 390));
+        jTabSales.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 1030, 390));
 
         javax.swing.GroupLayout salesPaginationLayout = new javax.swing.GroupLayout(salesPagination);
         salesPagination.setLayout(salesPaginationLayout);
@@ -1055,36 +1117,36 @@ public class AdminPanel extends JFrame {
             .addGap(0, 80, Short.MAX_VALUE)
         );
 
-        jTabSales.add(salesPagination, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 1030, 80));
+        jTabSales.add(salesPagination, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 1030, 80));
 
         jTabs.addTab("Mis Ventas", jTabSales);
 
         jTabCustomers.setBackground(new java.awt.Color(102, 255, 153));
         jTabCustomers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat SemiBold", 0, 14))); // NOI18N
         jPanel17.setPreferredSize(new java.awt.Dimension(410, 600));
         jPanel17.setLayout(null);
 
-        lblCustomerFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblCustomerFirstName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCustomerFirstName.setText("Nombre");
         jPanel17.add(lblCustomerFirstName);
         lblCustomerFirstName.setBounds(20, 123, 70, 30);
 
-        lblCustomerLastName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblCustomerLastName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCustomerLastName.setText("Apellido");
         jPanel17.add(lblCustomerLastName);
         lblCustomerLastName.setBounds(20, 180, 60, 30);
 
-        lblCustomerPhone.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblCustomerPhone.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCustomerPhone.setText("Teléfono");
         jPanel17.add(lblCustomerPhone);
         lblCustomerPhone.setBounds(20, 240, 70, 30);
 
-        lblCustomerAddress.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblCustomerAddress.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblCustomerAddress.setText("Dirección");
         jPanel17.add(lblCustomerAddress);
-        lblCustomerAddress.setBounds(20, 300, 68, 30);
+        lblCustomerAddress.setBounds(20, 300, 90, 30);
 
         inputCustomerFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         jPanel17.add(inputCustomerFirstName);
@@ -1121,7 +1183,7 @@ public class AdminPanel extends JFrame {
         jPanel17.add(iconCustomerSearch);
         iconCustomerSearch.setBounds(11, 39, 30, 30);
 
-        jLabel3.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         jLabel3.setText("#");
         jPanel17.add(jLabel3);
         jLabel3.setBounds(30, 80, 10, 18);
@@ -1143,10 +1205,10 @@ public class AdminPanel extends JFrame {
 
         jTabCustomers.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 410, 550));
 
-        lblInstructions2.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblInstructions2.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         lblInstructions2.setForeground(new java.awt.Color(0, 0, 0));
         lblInstructions2.setText("Haz clic y luego clic derecho en cualquier elemento para eliminarlo o reingresarlo.");
-        jTabCustomers.add(lblInstructions2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 500, -1));
+        jTabCustomers.add(lblInstructions2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, 640, -1));
 
         customersTable.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
         customersTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -1189,7 +1251,7 @@ public class AdminPanel extends JFrame {
         jTabNewPurchase.setBackground(new java.awt.Color(102, 255, 153));
         jTabNewPurchase.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        purchasesTable.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        purchasesTable.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
         purchasesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null},
@@ -1221,6 +1283,9 @@ public class AdminPanel extends JFrame {
             purchasesTable.getColumnModel().getColumn(3).setMinWidth(60);
             purchasesTable.getColumnModel().getColumn(3).setPreferredWidth(60);
             purchasesTable.getColumnModel().getColumn(3).setMaxWidth(60);
+            purchasesTable.getColumnModel().getColumn(4).setMinWidth(120);
+            purchasesTable.getColumnModel().getColumn(4).setPreferredWidth(120);
+            purchasesTable.getColumnModel().getColumn(4).setMaxWidth(120);
             purchasesTable.getColumnModel().getColumn(5).setMinWidth(80);
             purchasesTable.getColumnModel().getColumn(5).setPreferredWidth(80);
             purchasesTable.getColumnModel().getColumn(5).setMaxWidth(80);
@@ -1232,110 +1297,114 @@ public class AdminPanel extends JFrame {
             purchasesTable.getColumnModel().getColumn(9).setMaxWidth(80);
         }
 
-        jTabNewPurchase.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 1280, 430));
+        jTabNewPurchase.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 1280, 400));
 
         lblPurchaseId.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
         lblPurchaseId.setForeground(new java.awt.Color(0, 0, 0));
         lblPurchaseId.setText("#");
-        jTabNewPurchase.add(lblPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 10, 10));
+        jTabNewPurchase.add(lblPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 10, 10));
 
-        inputPurchaseId.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        inputPurchaseId.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         inputPurchaseId.setEnabled(false);
         inputPurchaseId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputPurchaseIdActionPerformed(evt);
             }
         });
-        jTabNewPurchase.add(inputPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 50, 30));
+        jTabNewPurchase.add(inputPurchaseId, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 50, 30));
 
-        lblPurchaseName.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        lblPurchaseName.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchaseName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblPurchaseName.setForeground(new java.awt.Color(51, 51, 51));
         lblPurchaseName.setText("Producto");
-        jTabNewPurchase.add(lblPurchaseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 60, -1));
+        jTabNewPurchase.add(lblPurchaseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 80, -1));
 
-        inputPurchaseName.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        inputPurchaseName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         inputPurchaseName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputPurchaseNameActionPerformed(evt);
             }
         });
-        jTabNewPurchase.add(inputPurchaseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 140, 30));
+        jTabNewPurchase.add(inputPurchaseName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 170, 30));
 
-        lblPurchaseQty.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        lblPurchaseQty.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchaseQty.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblPurchaseQty.setForeground(new java.awt.Color(51, 51, 51));
         lblPurchaseQty.setText("Cantidad");
-        jTabNewPurchase.add(lblPurchaseQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, 60, -1));
+        jTabNewPurchase.add(lblPurchaseQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 40, 80, -1));
 
-        inputPurchaseQty.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        inputPurchaseQty.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         inputPurchaseQty.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputPurchaseQtyActionPerformed(evt);
             }
         });
         InputUtils.checkNumbersInput(inputPurchaseQty);
-        jTabNewPurchase.add(inputPurchaseQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 80, 30));
+        jTabNewPurchase.add(inputPurchaseQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 60, 70, 30));
 
-        lblPurchasePrice.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        lblPurchasePrice.setForeground(new java.awt.Color(0, 0, 0));
-        lblPurchasePrice.setText("Precio unitario");
-        jTabNewPurchase.add(lblPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 90, -1));
+        cbxUnit.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        cbxUnit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabNewPurchase.add(cbxUnit, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 100, 30));
 
-        inputPurchasePrice.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        lblPurchasePrice.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblPurchasePrice.setForeground(new java.awt.Color(51, 51, 51));
+        lblPurchasePrice.setText("P. Unitario");
+        jTabNewPurchase.add(lblPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 90, -1));
+
+        inputPurchasePrice.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         inputPurchasePrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputPurchasePriceActionPerformed(evt);
             }
         });
         InputUtils.checkNumbersInput(inputPurchasePrice);
-        jTabNewPurchase.add(inputPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, 90, 30));
+        jTabNewPurchase.add(inputPurchasePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 60, 90, 30));
 
-        lblPurchaseDate.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        lblPurchaseDate.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchaseDate.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblPurchaseDate.setForeground(new java.awt.Color(51, 51, 51));
         lblPurchaseDate.setText("Fecha");
-        jTabNewPurchase.add(lblPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 20, 85, -1));
+        jTabNewPurchase.add(lblPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 40, 85, -1));
 
-        inputPurchaseDate.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        inputPurchaseDate.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         inputPurchaseDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputPurchaseDateActionPerformed(evt);
             }
         });
-        jTabNewPurchase.add(inputPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, 94, 30));
+        jTabNewPurchase.add(inputPurchaseDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 60, 94, 30));
 
-        lblNewPurchaseSupplier.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        lblNewPurchaseSupplier.setForeground(new java.awt.Color(0, 0, 0));
+        lblNewPurchaseSupplier.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblNewPurchaseSupplier.setForeground(new java.awt.Color(51, 51, 51));
         lblNewPurchaseSupplier.setText("Proveedor");
-        jTabNewPurchase.add(lblNewPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 70, -1));
+        jTabNewPurchase.add(lblNewPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 40, 90, -1));
 
-        cbxPurchaseSupplier.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        cbxPurchaseSupplier.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         cbxPurchaseSupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTabNewPurchase.add(cbxPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 40, 170, 30));
+        jTabNewPurchase.add(cbxPurchaseSupplier, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 60, 170, 30));
 
-        lblNewPurchasePaymentMethod.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        lblNewPurchasePaymentMethod.setForeground(new java.awt.Color(0, 0, 0));
+        lblNewPurchasePaymentMethod.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblNewPurchasePaymentMethod.setForeground(new java.awt.Color(51, 51, 51));
         lblNewPurchasePaymentMethod.setText("Pagué con");
-        jTabNewPurchase.add(lblNewPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 20, 70, -1));
+        jTabNewPurchase.add(lblNewPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 40, 90, -1));
 
-        cbxPurchasePaymentMethod.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        cbxPurchasePaymentMethod.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         cbxPurchasePaymentMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTabNewPurchase.add(cbxPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 40, 153, 30));
+        jTabNewPurchase.add(cbxPurchasePaymentMethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 60, 150, 30));
 
-        lblPurchaseStatus.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
-        lblPurchaseStatus.setForeground(new java.awt.Color(0, 0, 0));
+        lblPurchaseStatus.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblPurchaseStatus.setForeground(new java.awt.Color(51, 51, 51));
         lblPurchaseStatus.setText("Estado");
-        jTabNewPurchase.add(lblPurchaseStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 20, 85, -1));
+        jTabNewPurchase.add(lblPurchaseStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 40, 85, -1));
 
-        cbxPurchaseStatus.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        cbxPurchaseStatus.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         cbxPurchaseStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTabNewPurchase.add(cbxPurchaseStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 40, 110, 30));
+        jTabNewPurchase.add(cbxPurchaseStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 60, 100, 30));
 
         searchPurchasePanel.setBackground(new java.awt.Color(204, 204, 204));
-        searchPurchasePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Buscar según Producto / Proveedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat Medium", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+        searchPurchasePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Buscar una compra según Producto / Proveedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat Medium", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
         searchPurchasePanel.setForeground(new java.awt.Color(0, 0, 0));
         searchPurchasePanel.setLayout(null);
 
         inputPurchaseSearch.setBackground(new java.awt.Color(255, 255, 255));
-        inputPurchaseSearch.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
+        inputPurchaseSearch.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         searchPurchasePanel.add(inputPurchaseSearch);
         inputPurchaseSearch.setBounds(50, 20, 296, 30);
 
@@ -1344,19 +1413,20 @@ public class AdminPanel extends JFrame {
         searchPurchasePanel.add(iconPurchaseSearch);
         iconPurchaseSearch.setBounds(10, 20, 30, 30);
 
-        btnCleanPurchaseSearch.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        btnCleanPurchaseSearch.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
         btnCleanPurchaseSearch.setText("Limpiar");
         searchPurchasePanel.add(btnCleanPurchaseSearch);
         btnCleanPurchaseSearch.setBounds(350, 20, 90, 30);
 
-        jTabNewPurchase.add(searchPurchasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 520, 450, 60));
+        jTabNewPurchase.add(searchPurchasePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 550, 450, 60));
 
-        btnRegisterPurchase.setFont(new java.awt.Font("Montserrat Medium", 0, 12)); // NOI18N
+        btnRegisterPurchase.setFont(new java.awt.Font("Montserrat Medium", 0, 14)); // NOI18N
         btnRegisterPurchase.setText("Agregar");
-        jTabNewPurchase.add(btnRegisterPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 40, 110, 30));
+        jTabNewPurchase.add(btnRegisterPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 60, 110, 30));
 
+        btnUpdatePurchase.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnUpdatePurchase.setText("Modificar");
-        jTabNewPurchase.add(btnUpdatePurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 100, 30));
+        jTabNewPurchase.add(btnUpdatePurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 60, 110, 30));
 
         btnClearPurchase.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnClearPurchase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clean.png"))); // NOI18N
@@ -1365,39 +1435,101 @@ public class AdminPanel extends JFrame {
                 btnClearPurchaseActionPerformed(evt);
             }
         });
-        jTabNewPurchase.add(btnClearPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 520, 70, 30));
+        jTabNewPurchase.add(btnClearPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 580, 70, 30));
 
-        cbxUnit.setFont(new java.awt.Font("Montserrat", 0, 12)); // NOI18N
-        cbxUnit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTabNewPurchase.add(cbxUnit, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 100, 30));
+        jPanelAddPurchase.setBackground(new java.awt.Color(71, 174, 105));
 
-        jTabs.addTab("Comprar", jTabNewPurchase);
+        lblAddPurchase.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblAddPurchase.setForeground(new java.awt.Color(255, 255, 255));
+        lblAddPurchase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAddPurchase.setText("Agregar / Modificar compra");
+
+        javax.swing.GroupLayout jPanelAddPurchaseLayout = new javax.swing.GroupLayout(jPanelAddPurchase);
+        jPanelAddPurchase.setLayout(jPanelAddPurchaseLayout);
+        jPanelAddPurchaseLayout.setHorizontalGroup(
+            jPanelAddPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblAddPurchase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
+        );
+        jPanelAddPurchaseLayout.setVerticalGroup(
+            jPanelAddPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAddPurchaseLayout.createSequentialGroup()
+                .addComponent(lblAddPurchase)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jTabNewPurchase.add(jPanelAddPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 1280, 20));
+
+        jPanelMyPurchases.setBackground(new java.awt.Color(71, 174, 105));
+
+        lblMyPurchases.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblMyPurchases.setForeground(new java.awt.Color(255, 255, 255));
+        lblMyPurchases.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblMyPurchases.setText("Mis compras");
+
+        javax.swing.GroupLayout jPanelMyPurchasesLayout = new javax.swing.GroupLayout(jPanelMyPurchases);
+        jPanelMyPurchases.setLayout(jPanelMyPurchasesLayout);
+        jPanelMyPurchasesLayout.setHorizontalGroup(
+            jPanelMyPurchasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblMyPurchases, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
+        );
+        jPanelMyPurchasesLayout.setVerticalGroup(
+            jPanelMyPurchasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelMyPurchasesLayout.createSequentialGroup()
+                .addComponent(lblMyPurchases)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jTabNewPurchase.add(jPanelMyPurchases, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 1280, 20));
+
+        jPanelModifyCleanPurchase.setBackground(new java.awt.Color(71, 174, 105));
+
+        lblModifyCleanPurchase.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
+        lblModifyCleanPurchase.setForeground(new java.awt.Color(255, 255, 255));
+        lblModifyCleanPurchase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblModifyCleanPurchase.setText("Limpiar campos");
+
+        javax.swing.GroupLayout jPanelModifyCleanPurchaseLayout = new javax.swing.GroupLayout(jPanelModifyCleanPurchase);
+        jPanelModifyCleanPurchase.setLayout(jPanelModifyCleanPurchaseLayout);
+        jPanelModifyCleanPurchaseLayout.setHorizontalGroup(
+            jPanelModifyCleanPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblModifyCleanPurchase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE)
+        );
+        jPanelModifyCleanPurchaseLayout.setVerticalGroup(
+            jPanelModifyCleanPurchaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelModifyCleanPurchaseLayout.createSequentialGroup()
+                .addComponent(lblModifyCleanPurchase)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jTabNewPurchase.add(jPanelModifyCleanPurchase, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, 790, 20));
+
+        jTabs.addTab("Compras", jTabNewPurchase);
 
         jTabSuppliers.setBackground(new java.awt.Color(102, 255, 153));
         jTabSuppliers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Proveedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Proveedor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat SemiBold", 0, 14))); // NOI18N
         jPanel18.setLayout(null);
 
-        lblSupplierFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierFirstName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblSupplierFirstName.setText("Nombre");
         jPanel18.add(lblSupplierFirstName);
         lblSupplierFirstName.setBounds(20, 123, 70, 30);
 
-        lblSupplierLastName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierLastName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblSupplierLastName.setText("Apellido");
         jPanel18.add(lblSupplierLastName);
         lblSupplierLastName.setBounds(20, 180, 70, 30);
 
-        lblSupplierCUIT.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierCUIT.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblSupplierCUIT.setText("CUIT");
         jPanel18.add(lblSupplierCUIT);
         lblSupplierCUIT.setBounds(20, 300, 50, 30);
 
-        lblSupplierAddress.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierAddress.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblSupplierAddress.setText("Dirección");
         jPanel18.add(lblSupplierAddress);
-        lblSupplierAddress.setBounds(20, 420, 68, 30);
+        lblSupplierAddress.setBounds(20, 420, 90, 30);
 
         inputSupplierFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         jPanel18.add(inputSupplierFirstName);
@@ -1420,7 +1552,7 @@ public class AdminPanel extends JFrame {
         jPanel18.add(btnUpdateSupplier);
         btnUpdateSupplier.setBounds(210, 490, 100, 30);
 
-        lblSupplierSocial.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierSocial.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblSupplierSocial.setText("Razón Social");
         jPanel18.add(lblSupplierSocial);
         lblSupplierSocial.setBounds(20, 240, 100, 30);
@@ -1429,7 +1561,7 @@ public class AdminPanel extends JFrame {
         jPanel18.add(inputSupplierSocial);
         inputSupplierSocial.setBounds(158, 240, 225, 30);
 
-        lblSupplierPhone.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierPhone.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblSupplierPhone.setText("Teléfono");
         jPanel18.add(lblSupplierPhone);
         lblSupplierPhone.setBounds(20, 360, 70, 30);
@@ -1452,7 +1584,7 @@ public class AdminPanel extends JFrame {
         jPanel18.add(inputSupplierId);
         inputSupplierId.setBounds(47, 75, 60, 30);
 
-        lblSupplierId.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblSupplierId.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblSupplierId.setText("#");
         jPanel18.add(lblSupplierId);
         lblSupplierId.setBounds(30, 75, 10, 30);
@@ -1525,11 +1657,11 @@ public class AdminPanel extends JFrame {
         jTabUsers.setPreferredSize(new java.awt.Dimension(1500, 514));
         jTabUsers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel22.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Nuevo Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanel22.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat SemiBold", 0, 14))); // NOI18N
         jPanel22.setPreferredSize(new java.awt.Dimension(410, 550));
         jPanel22.setLayout(null);
 
-        lblUserLastName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblUserLastName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblUserLastName.setText("Apellido");
         jPanel22.add(lblUserLastName);
         lblUserLastName.setBounds(20, 240, 60, 30);
@@ -1538,7 +1670,7 @@ public class AdminPanel extends JFrame {
         jPanel22.add(inputUserLastName);
         inputUserLastName.setBounds(158, 240, 225, 30);
 
-        lblProductCategory1.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductCategory1.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductCategory1.setText("Rol");
         jPanel22.add(lblProductCategory1);
         lblProductCategory1.setBounds(20, 360, 74, 30);
@@ -1567,7 +1699,7 @@ public class AdminPanel extends JFrame {
         jPanel22.add(btnUpdateUser);
         btnUpdateUser.setBounds(210, 490, 100, 30);
 
-        lblUserFirstName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblUserFirstName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblUserFirstName.setText("Nombre");
         jPanel22.add(lblUserFirstName);
         lblUserFirstName.setBounds(20, 180, 70, 30);
@@ -1581,7 +1713,7 @@ public class AdminPanel extends JFrame {
         jPanel22.add(inputUserId);
         inputUserId.setBounds(47, 75, 60, 30);
 
-        lblProductId1.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblProductId1.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblProductId1.setText("#");
         jPanel22.add(lblProductId1);
         lblProductId1.setBounds(30, 75, 10, 30);
@@ -1595,15 +1727,15 @@ public class AdminPanel extends JFrame {
         jPanel22.add(iconProductSearch1);
         iconProductSearch1.setBounds(11, 39, 30, 30);
 
-        lblUserPass.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblUserPass.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblUserPass.setText("Contraseña");
         jPanel22.add(lblUserPass);
         lblUserPass.setBounds(20, 300, 90, 30);
 
-        lblUserName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblUserName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblUserName.setText("Usuario");
         jPanel22.add(lblUserName);
-        lblUserName.setBounds(20, 123, 54, 30);
+        lblUserName.setBounds(20, 123, 90, 30);
 
         inputUserName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         jPanel22.add(inputUserName);
@@ -1663,19 +1795,27 @@ public class AdminPanel extends JFrame {
         jTabCompany.setBackground(new java.awt.Color(102, 255, 153));
         jTabCompany.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanelBusiness.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Mi Empresa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 0, 14))); // NOI18N
+        jPanelBusiness.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 43, 45)), "Mi Empresa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat SemiBold", 0, 14))); // NOI18N
 
-        lblBusinessOwnerName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblBusinessOwnerName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblBusinessOwnerName.setText("Nombre");
 
-        lblBusinessOwnerLastName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblBusinessOwnerLastName.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblBusinessOwnerLastName.setText("Apellido");
 
-        lblBusinessPhone.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblBusinessPhone.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblBusinessPhone.setText("Teléfono");
 
-        lblBusinessAddress.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblBusinessAddress.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblBusinessAddress.setText("Dirección");
+
+        inputBusinessOwnerName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+
+        inputBusinessOwnerLastName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+
+        inputBusinessPhone.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+
+        inputBusinessAddress.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
 
         btnRegisterBusiness.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnRegisterBusiness.setText("Registrar");
@@ -1683,14 +1823,20 @@ public class AdminPanel extends JFrame {
         btnUpdateBusiness.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         btnUpdateBusiness.setText("Modificar");
 
-        lblBusinessSocial.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblBusinessSocial.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblBusinessSocial.setText("Razón Social");
 
-        lblBusinessCUIT.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        lblBusinessCUIT.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblBusinessCUIT.setText("CUIT");
 
-        lblBusinessExtras.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        inputBusinessCUIT.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+
+        inputBusinessName.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+
+        lblBusinessExtras.setFont(new java.awt.Font("Montserrat SemiBold", 0, 14)); // NOI18N
         lblBusinessExtras.setText("Extras");
+
+        inputBusinessExtras.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanelBusinessLayout = new javax.swing.GroupLayout(jPanelBusiness);
         jPanelBusiness.setLayout(jPanelBusinessLayout);
@@ -1698,14 +1844,14 @@ public class AdminPanel extends JFrame {
             jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBusinessLayout.createSequentialGroup()
                 .addContainerGap(222, Short.MAX_VALUE)
-                .addGroup(jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lblBusinessExtras, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblBusinessAddress, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblBusinessPhone, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblBusinessOwnerName, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblBusinessSocial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBusinessOwnerLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBusinessCUIT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblBusinessSocial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                    .addComponent(lblBusinessCUIT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBusinessOwnerName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBusinessOwnerLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBusinessPhone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblBusinessAddress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelBusinessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelBusinessLayout.createSequentialGroup()
@@ -1768,24 +1914,10 @@ public class AdminPanel extends JFrame {
 
         jTabHelp.setBackground(new java.awt.Color(102, 255, 153));
         jTabHelp.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        javax.swing.GroupLayout buysPaginationLayout = new javax.swing.GroupLayout(buysPagination);
-        buysPagination.setLayout(buysPaginationLayout);
-        buysPaginationLayout.setHorizontalGroup(
-            buysPaginationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1030, Short.MAX_VALUE)
-        );
-        buysPaginationLayout.setVerticalGroup(
-            buysPaginationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 80, Short.MAX_VALUE)
-        );
-
-        jTabHelp.add(buysPagination, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 1030, 80));
-
         jTabs.addTab("Ayuda", jTabHelp);
 
         getContentPane().add(jTabs);
-        jTabs.setBounds(180, 130, 1340, 660);
+        jTabs.setBounds(180, 130, 1380, 660);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1939,7 +2071,6 @@ public class AdminPanel extends JFrame {
     public javax.swing.JButton btnUpdatePurchase;
     public javax.swing.JButton btnUpdateSupplier;
     public javax.swing.JButton btnUpdateUser;
-    private javax.swing.JPanel buysPagination;
     public javax.swing.JTable categoriesTable;
     public javax.swing.JComboBox<String> cbxNewSaleCustomer;
     public javax.swing.JComboBox<String> cbxNewSalePaymentMethod;
@@ -2022,14 +2153,18 @@ public class AdminPanel extends JFrame {
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanelAddPurchase;
     private javax.swing.JPanel jPanelBusiness;
     public javax.swing.JPanel jPanelCategories;
     public javax.swing.JPanel jPanelCompany;
-    public javax.swing.JPanel jPanelConfiguration;
     public javax.swing.JPanel jPanelCustomers;
-    public javax.swing.JPanel jPanelNewBuy;
+    public javax.swing.JPanel jPanelHelp;
+    private javax.swing.JPanel jPanelModifyCleanPurchase;
+    private javax.swing.JPanel jPanelMyPurchases;
+    public javax.swing.JPanel jPanelNewPurchase;
     public javax.swing.JPanel jPanelNewSale;
     public javax.swing.JPanel jPanelProducts;
+    public javax.swing.JPanel jPanelSales;
     public javax.swing.JPanel jPanelSuppliers;
     public javax.swing.JPanel jPanelUsers;
     private javax.swing.JPopupMenu jPopupCategories;
@@ -2057,6 +2192,7 @@ public class AdminPanel extends JFrame {
     private javax.swing.JPanel jTabSuppliers;
     private javax.swing.JPanel jTabUsers;
     public javax.swing.JTabbedPane jTabs;
+    private javax.swing.JLabel lblAddPurchase;
     private javax.swing.JLabel lblBusinessAddress;
     private javax.swing.JLabel lblBusinessCUIT;
     private javax.swing.JLabel lblBusinessExtras;
@@ -2068,19 +2204,21 @@ public class AdminPanel extends JFrame {
     private javax.swing.JLabel lblCategoryId;
     private javax.swing.JLabel lblCategoryName1;
     public javax.swing.JLabel lblCompany;
-    public javax.swing.JLabel lblConfiguration;
     private javax.swing.JLabel lblCustomerAddress;
     private javax.swing.JLabel lblCustomerFirstName;
     private javax.swing.JLabel lblCustomerLastName;
     private javax.swing.JLabel lblCustomerPhone;
     public javax.swing.JLabel lblCustomers;
+    public javax.swing.JLabel lblHelp;
     private javax.swing.JLabel lblInstructions1;
     private javax.swing.JLabel lblInstructions2;
     private javax.swing.JLabel lblInstructions3;
     private javax.swing.JLabel lblInstructions4;
     private javax.swing.JLabel lblInstructionsD_R;
     private javax.swing.JLabel lblInstructionsModify;
-    public javax.swing.JLabel lblNewBuy;
+    private javax.swing.JLabel lblModifyCleanPurchase;
+    private javax.swing.JLabel lblMyPurchases;
+    public javax.swing.JLabel lblNewPurchase;
     private javax.swing.JLabel lblNewPurchasePaymentMethod;
     private javax.swing.JLabel lblNewPurchaseSupplier;
     public javax.swing.JLabel lblNewSale;
@@ -2105,6 +2243,7 @@ public class AdminPanel extends JFrame {
     private javax.swing.JLabel lblPurchaseQty;
     private javax.swing.JLabel lblPurchaseStatus;
     private javax.swing.JLabel lblQtyNewSaleProduct;
+    public javax.swing.JLabel lblSales;
     private javax.swing.JLabel lblSupplierAddress;
     private javax.swing.JLabel lblSupplierCUIT;
     private javax.swing.JLabel lblSupplierFirstName;
