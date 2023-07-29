@@ -9,7 +9,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.JButton;
 import utils.ComboBoxUtils;
 import javax.swing.JOptionPane;
@@ -18,6 +22,7 @@ import listeners.IPrintCloseListener;
 import listeners.IStockListener;
 import model.EPaymentMethod;
 import model.Sale;
+import model.Product;
 import repositories.CustomerRepository;
 import repositories.ProductRepository;
 import repositories.SaleRepository;
@@ -35,6 +40,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     private CustomerRepository customerRepository = new CustomerRepository();
     private SaleRepository saleRepository = new SaleRepository();
     private DefaultTableModel newSaleTable = new DefaultTableModel();
+    private DefaultTableModel salesTable = new DefaultTableModel();
     private List<Sale> tempSales = new ArrayList<>();
     private IStockListener stockUpdateListener;
     private JButton UPDATE_BTN;
@@ -55,7 +61,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         this.adminView.btnGenerateNewSale.addActionListener(this);
         this.adminView.newSaleTable.addMouseListener(this);
         this.UPDATE_BTN = adminView.btnUpdateNewSaleInfo;
-        this.REGISTER_BTN = adminView.btnRegisterProductInNewSale;
+        this.REGISTER_BTN = adminView.btnSaveNewSaleInfo;
 
         newSaleTable = (DefaultTableModel) adminView.newSaleTable.getModel();
         TableUtils.setUpTableStyle(adminView.newSaleTable, newSaleTable);
@@ -66,6 +72,8 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         loadProductsComboBox();
         loadCustomersComboBox();
         ComboBoxUtils.loadPaymentMethodsComboBox(adminView.cbxNewSalePaymentMethod);
+
+        listSales();
     }
 
     @Override
@@ -193,9 +201,91 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         return tempSaleCol;
     }
 
+    private void listSales() {
+        if (adminView.salesTable.getColumnCount() > 0) {
+            adminView.salesTable.setDefaultRenderer(adminView.salesTable.getColumnClass(0), new TableUtils());
+        }
+
+        try {
+            List<Sale> salesList = saleRepository.getSales();
+            salesTable = (DefaultTableModel) adminView.salesTable.getModel();
+            salesTable.setRowCount(0);
+
+            salesListToObjectArray(salesList);
+
+            TableUtils.setUpTableStyle(adminView.salesTable, salesTable);
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    private void salesListToObjectArray(List<Sale> salesList) {
+        Object[] currentSale = new Object[5];
+        Set<Integer> processedSaleIds = new HashSet<>();
+
+        for (Sale sale : salesList) {
+            int saleId = sale.getId();
+
+            if (processedSaleIds.contains(saleId)) {
+                continue;
+            }
+
+            try {
+                String[] customerName = customerRepository.getCustomerNameById(sale.getCustomer());
+                currentSale[1] = customerName[0] + " " + customerName[1];
+            } catch (DBException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+
+            List<String> saleProducts = getFinalSaleInfo(salesList, saleId);
+
+            updateSalesTable(salesList, currentSale, saleId, saleProducts);
+
+            processedSaleIds.add(saleId);
+        }
+    }
+
+    // Obtains and concatenates products names for this Sale
+    private List<String> getFinalSaleInfo(List<Sale> salesList, int saleId) {
+        List<String> saleProducts = new ArrayList<>();
+        for (Sale saleEntry : salesList) {
+            if (saleEntry.getId() == saleId) {
+                try {
+                    Product product = productRepository.getProductById(saleEntry.getProduct());
+                    String productName = product.getName();
+                    double productPrice = product.getSellingPrice();
+                    int productQuantity = saleEntry.getQuantity();
+                    String productInfo = productName + " x " + productQuantity + " ($" + productPrice + " c/u)";
+                    saleProducts.add(productInfo);
+                } catch (DBException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+            }
+        }
+        return saleProducts;
+    }
+
+    // Updates table only if there are products for this Sale 
+    private void updateSalesTable(List<Sale> salesList, Object[] currentSale, int saleId, List<String> saleProducts) {
+        currentSale[0] = saleId;
+        currentSale[2] = String.join(" + \n", saleProducts);
+        currentSale[3] = getFinalSaleTotal(salesList, saleId);
+        currentSale[4] = "23-5-2023";
+        salesTable.addRow(currentSale);
+    }
+
+    private double getFinalSaleTotal(List<Sale> salesList, int id) {
+        double total = 0;
+        for (Sale sale : salesList) {
+            if (sale.getId() == id) {
+                total += sale.getTotal();
+            }
+        }
+        return total;
+    }
+
     private void setupFinalSale() {
         setFinalSaleId();
-
         setFinalSaleCustomerId();
 
         EPaymentMethod paymentMethod = EPaymentMethod.nameForUserToConstant(adminView.cbxNewSalePaymentMethod.getSelectedItem().toString());
@@ -268,6 +358,8 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         ButtonUtils.setUpdateButtonVisible(value, UPDATE_BTN, REGISTER_BTN);
         adminView.cbxNewSaleProduct.setEnabled(value);
         adminView.inputNewSaleQty.setEnabled(value);
+        adminView.btnRegisterProductInNewSale.setEnabled(value);
+        adminView.btnDeleteProductFromNewSale.setEnabled(value);
     }
 
     private void clearSalesInput() {
