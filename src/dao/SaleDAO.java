@@ -42,7 +42,7 @@ public class SaleDAO {
             throw new DBException();
         }
     }
-    
+
     public void update(Sale sale) throws DBException {
         String sql = "UPDATE sales SET product = ?, quantity = ?, customer = ?, payment_method = ?, total = ? WHERE id = ?";
 
@@ -67,7 +67,7 @@ public class SaleDAO {
     public int retrieveLastId() throws DBException {
         int lastId = 0;
         String sql = "SELECT MAX(id) FROM sales";
-        
+
         try {
             conn = connector.getConn();
             ps = conn.prepareStatement(sql);
@@ -79,29 +79,26 @@ public class SaleDAO {
         } catch (SQLException ex) {
             throw new DBException();
         }
-        
+
         return lastId;
     }
 
     public List<Sale> retrieveSalesList(String value) throws DBException {
-        List<Sale> salesList = new ArrayList();
+        List<Sale> salesList = new ArrayList<>();
 
-        String sql = "SELECT * FROM sales ORDER BY id ASC";
-        String valueToSearch = "SELECT * FROM sales WHERE product LIKE ? or customer LIKE ?";
+        String sql = "SELECT * FROM sales";
+        String valueToSearch = "SELECT * FROM sales WHERE product LIKE ? OR customer LIKE ?";
 
         try {
             conn = connector.getConn();
+            ps = value.equalsIgnoreCase("") ? conn.prepareStatement(sql) : conn.prepareStatement(valueToSearch);
 
-            if (value.equalsIgnoreCase("")) {
-                ps = conn.prepareStatement(sql);
-                rs = ps.executeQuery();
-            } else {
-                ps = conn.prepareStatement(valueToSearch);
+            if (!value.equalsIgnoreCase("")) {
                 ps.setString(1, "%" + value + "%");
                 ps.setString(2, "%" + value + "%");
-                rs = ps.executeQuery();
             }
 
+            rs = ps.executeQuery();
             while (rs.next()) {
                 Sale currentSale = new Sale();
                 currentSale.setId(rs.getInt("id"));
@@ -125,7 +122,7 @@ public class SaleDAO {
     
     public int retrieveSaleCustomer(int saleId) throws DBException{
         int customerId = -1;
-        
+
         String sql = "SELECT DISTINCT customer FROM sales WHERE id = ?";
         try {
             conn = connector.getConn();
@@ -140,5 +137,25 @@ public class SaleDAO {
             throw new DBException();
         }
         return customerId;
+    }
+
+    public int retrieveProductQty(int saleId, int productId) throws DBException {
+        int productQty = -1;
+
+        String sql = "SELECT quantity FROM sales WHERE id = ? AND product = ?";
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, saleId);
+            ps.setInt(2, productId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                productQty = rs.getInt("quantity");
+            }
+        } catch (SQLException ex) {
+            throw new DBException();
+        }
+        return productQty;
     }
 }

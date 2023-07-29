@@ -55,4 +55,14 @@ public class SaleRepository {
         }
         return customerId;
     }
+    
+    public int getProductQtyFromSale(int saleId, int productId) throws DBException {
+        int productQty = -1;
+        try {
+            productQty = saleDAO.retrieveProductQty(saleId, productId);
+        } catch (DBException ex) {
+            throw new DBException();
+        }
+        return productQty;
+    }
 }
