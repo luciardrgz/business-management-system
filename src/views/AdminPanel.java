@@ -1100,16 +1100,26 @@ public class AdminPanel extends JFrame {
         salesTable.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         salesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Id", "Cliente", "Total", "Fecha"
+                "Id", "Cliente", "Productos", "Total", "Fecha"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane7.setViewportView(salesTable);
+        if (salesTable.getColumnModel().getColumnCount() > 0) {
+            salesTable.getColumnModel().getColumn(0).setMinWidth(30);
+            salesTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+            salesTable.getColumnModel().getColumn(0).setMaxWidth(30);
+        }
 
         jTabSales.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 1030, 390));
 
@@ -2286,7 +2296,7 @@ public class AdminPanel extends JFrame {
     public javax.swing.JTable productsTable;
     public javax.swing.JTable purchasesTable;
     private javax.swing.JPanel salesPagination;
-    private javax.swing.JTable salesTable;
+    public javax.swing.JTable salesTable;
     private javax.swing.JPanel searchPurchasePanel;
     private javax.swing.JPanel sideMenu;
     public javax.swing.JTable suppliersTable;
