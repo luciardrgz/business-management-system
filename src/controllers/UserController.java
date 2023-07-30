@@ -215,11 +215,19 @@ public class UserController implements ActionListener, MouseListener, KeyListene
 
             adminView.inputUserPass.setEnabled(false);
             ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
-
+            adminView.extendedTableInformation.setText(adminView.productsTable.getValueAt(row, 1).toString() + ": " + adminView.productsTable.getValueAt(row, 2).toString());
         }
-        if (e.getSource() == adminView.btnNewUser) {
+        if (e.getSource()
+                == adminView.btnNewUser) {
             adminView.inputUserPass.setEnabled(true);
             ButtonUtils.setUpdateButtonVisible(false, UPDATE_BTN, REGISTER_BTN);
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == adminView.usersTable) {
+            adminView.extendedTableInformation.setText("");
         }
     }
 
@@ -241,11 +249,13 @@ public class UserController implements ActionListener, MouseListener, KeyListene
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == adminView.inputUserSearch) {
             resetView();
+
         }
     }
 
     private void loadRolesComboBox() {
-        ERole[] roles = ERole.class.getEnumConstants();
+        ERole[] roles = ERole.class
+                .getEnumConstants();
         adminView.cbxUserRole.removeAllItems();
 
         for (ERole role : roles) {
@@ -263,10 +273,6 @@ public class UserController implements ActionListener, MouseListener, KeyListene
 
     @Override
     public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 
     @Override

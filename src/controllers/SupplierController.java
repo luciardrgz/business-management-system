@@ -198,6 +198,19 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
             adminView.inputSupplierPhone.setText(adminView.suppliersTable.getValueAt(row, 5).toString());
             adminView.inputSupplierAddress.setText(adminView.suppliersTable.getValueAt(row, 6).toString());
             ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+            adminView.extendedTableInformation.setText(
+                    adminView.suppliersTable.getValueAt(row, 1).toString()
+                    + ": " + adminView.suppliersTable.getValueAt(row, 2).toString()
+                    + adminView.suppliersTable.getValueAt(row, 3).toString()
+            );
+
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == adminView.suppliersTable) {
+            adminView.extendedTableInformation.setText("");
         }
     }
 
@@ -218,10 +231,6 @@ public class SupplierController implements ActionListener, MouseListener, KeyLis
 
     @Override
     public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 
     @Override

@@ -60,6 +60,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         this.adminView.btnUpdateNewSaleInfo.addActionListener(this);
         this.adminView.btnGenerateNewSale.addActionListener(this);
         this.adminView.newSaleTable.addMouseListener(this);
+        this.adminView.salesTable.addMouseListener(this);
         this.UPDATE_BTN = adminView.btnUpdateNewSaleInfo;
         this.REGISTER_BTN = adminView.btnSaveNewSaleInfo;
 
@@ -452,7 +453,19 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
             setProductIndex(row);
             adminView.inputNewSaleQty.setText(adminView.newSaleTable.getValueAt(row, 1).toString());
             ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+        } else if (e.getSource() == adminView.salesTable) {
+            int row = adminView.salesTable.rowAtPoint(e.getPoint());
+            adminView.extendedTableInformation.setText(adminView.salesTable.getValueAt(row, 1).toString()
+                    + ": " + adminView.salesTable.getValueAt(row, 2).toString());
+        }
+    }
 
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == adminView.newSaleTable) {
+            adminView.extendedTableInformation.setText("");
+        } else if (e.getSource() == adminView.salesTable) {
+            adminView.extendedTableInformation.setText("");
         }
     }
 
@@ -466,10 +479,6 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
 
     @Override
     public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 
     @Override

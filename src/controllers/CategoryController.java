@@ -151,6 +151,14 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
             adminView.inputCategoryId.setText(adminView.categoriesTable.getValueAt(row, 0).toString());
             adminView.inputCategoryName.setText(adminView.categoriesTable.getValueAt(row, 1).toString());
             ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+            adminView.extendedTableInformation.setText(adminView.productsTable.getValueAt(row, 1).toString() + ": " + adminView.productsTable.getValueAt(row, 2).toString());
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == adminView.categoriesTable) {
+            adminView.extendedTableInformation.setText("");
         }
     }
 
@@ -171,10 +179,6 @@ public class CategoryController implements ActionListener, MouseListener, KeyLis
 
     @Override
     public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 
     @Override

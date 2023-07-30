@@ -168,7 +168,7 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
     }
 
     private void listPurchases() {
-        adminView.purchasesTable.setDefaultRenderer(adminView.purchasesTable.getColumnClass(0),  new TableUtils());
+        adminView.purchasesTable.setDefaultRenderer(adminView.purchasesTable.getColumnClass(0), new TableUtils());
 
         try {
             List<Purchase> purchasesList = purchaseRepository.getPurchasesList(adminView.inputPurchaseSearch.getText());
@@ -245,6 +245,18 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
             setPaymentMethodIndex(adminView.purchasesTable.getValueAt(row, 7).toString());
             setStatusIndex(adminView.purchasesTable.getValueAt(row, 8).toString());
             ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+            adminView.extendedTableInformation.setText(
+                    adminView.purchasesTable.getValueAt(row, 1).toString() + " x"
+                    + adminView.purchasesTable.getValueAt(row, 2).toString() + " "
+                    + adminView.purchasesTable.getValueAt(row, 3).toString()
+            );
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == adminView.purchasesTable) {
+            adminView.extendedTableInformation.setText("");
         }
     }
 
@@ -374,10 +386,6 @@ public class PurchaseController implements ActionListener, MouseListener, KeyLis
 
     @Override
     public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 
     @Override
