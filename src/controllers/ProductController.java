@@ -246,6 +246,16 @@ public class ProductController implements ActionListener, MouseListener, KeyList
             adminView.inputProductSellPrice.setText(adminView.productsTable.getValueAt(row, 5).toString());
             setProductCategoryIndex(row);
             ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+            adminView.extendedTableInformation.setText(adminView.productsTable.getValueAt(row, 1).toString() + ": " + adminView.productsTable.getValueAt(row, 2).toString());
+        } else {
+            adminView.extendedTableInformation.setText("");
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == adminView.productsTable) {
+            //adminView.extendedTableInformation.setText("");
         }
     }
 
@@ -315,10 +325,6 @@ public class ProductController implements ActionListener, MouseListener, KeyList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 
     @Override

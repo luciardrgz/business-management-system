@@ -211,6 +211,18 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
             adminView.inputCustomerPhone.setText(adminView.customersTable.getValueAt(row, 3).toString());
             adminView.inputCustomerAddress.setText(adminView.customersTable.getValueAt(row, 4).toString());
             ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+            adminView.extendedTableInformation.setText(adminView.customersTable.getValueAt(row, 1).toString()
+                    + " " + adminView.customersTable.getValueAt(row, 2).toString()
+                    + " - " + adminView.productsTable.getValueAt(row, 4).toString()
+                    + " - " + adminView.productsTable.getValueAt(row, 3).toString() 
+    );
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == adminView.customersTable) {
+            adminView.extendedTableInformation.setText("");
         }
     }
 
@@ -231,10 +243,6 @@ public class CustomerController implements ActionListener, MouseListener, KeyLis
 
     @Override
     public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 
     @Override

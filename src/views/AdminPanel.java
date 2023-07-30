@@ -141,6 +141,7 @@ public class AdminPanel extends JFrame {
         jPanelSales = new javax.swing.JPanel();
         lblSales = new javax.swing.JLabel();
         header = new javax.swing.JPanel();
+        extendedTableInformation = new javax.swing.JLabel();
         jTabs = new javax.swing.JTabbedPane();
         jTabProducts = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
@@ -360,6 +361,7 @@ public class AdminPanel extends JFrame {
         jMenuItemDeleteProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
         jMenuItemDeleteProduct.setText("Eliminar");
         jMenuItemDeleteProduct.setComponentPopupMenu(jPopupProducts);
+        jMenuItemDeleteProduct.setPreferredSize(new java.awt.Dimension(117, 35));
         jPopupProducts.add(jMenuItemDeleteProduct);
 
         jMenuItemReenterProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
@@ -372,10 +374,15 @@ public class AdminPanel extends JFrame {
         });
         jPopupProducts.add(jMenuItemReenterProduct);
 
+        jMenuItemDeleteCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminate.png"))); // NOI18N
         jMenuItemDeleteCategory.setText("Eliminar");
         jMenuItemDeleteCategory.setComponentPopupMenu(jPopupCategories);
+        jMenuItemDeleteCategory.setPreferredSize(new java.awt.Dimension(117, 35));
         jPopupCategories.add(jMenuItemDeleteCategory);
+        jMenuItemDeleteCategory.getAccessibleContext().setAccessibleName("Eliminar");
+        jMenuItemDeleteCategory.getAccessibleContext().setAccessibleParent(jPanelProducts);
 
+        jMenuItemReenterCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
         jMenuItemReenterCategory.setText("Reingresar");
         jMenuItemReenterCategory.setComponentPopupMenu(jPopupCategories);
         jMenuItemReenterCategory.addActionListener(new java.awt.event.ActionListener() {
@@ -689,6 +696,13 @@ public class AdminPanel extends JFrame {
 
         header.setBackground(new java.awt.Color(102, 255, 153));
         header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        extendedTableInformation.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        extendedTableInformation.setForeground(new java.awt.Color(0, 0, 0));
+        extendedTableInformation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        extendedTableInformation.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        header.add(extendedTableInformation, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 810, 110));
+
         getContentPane().add(header);
         header.setBounds(180, 0, 1370, 130);
 
@@ -2005,10 +2019,6 @@ public class AdminPanel extends JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnClearPurchaseActionPerformed
 
-    private void jMenuItemReenterCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReenterCategoryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemReenterCategoryActionPerformed
-
     private void btnUpdateNewSaleInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateNewSaleInfoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnUpdateNewSaleInfoActionPerformed
@@ -2040,6 +2050,10 @@ public class AdminPanel extends JFrame {
     private void btnRegisterCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterCustomerActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegisterCustomerActionPerformed
+
+    private void jMenuItemReenterCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReenterCategoryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemReenterCategoryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2117,6 +2131,7 @@ public class AdminPanel extends JFrame {
     public javax.swing.JComboBox<String> cbxUnit;
     public javax.swing.JComboBox<Object> cbxUserRole;
     public javax.swing.JTable customersTable;
+    public javax.swing.JLabel extendedTableInformation;
     private javax.swing.JPanel header;
     private javax.swing.JLabel iconCategorySearch;
     private javax.swing.JLabel iconCustomerSearch;
