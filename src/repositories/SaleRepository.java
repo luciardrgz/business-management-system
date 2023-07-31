@@ -35,6 +35,18 @@ public class SaleRepository {
         return id;
     }
 
+    
+    public Sale getSaleById(int id) throws DBException {
+        Sale sale = null;
+
+        try {
+            sale = saleDAO.retrieveSaleById(id);
+        } catch (DBException ex) {
+            throw new DBException();
+        }
+        return sale;
+    }
+    
     public List<Sale> getSales() throws DBException {
         List<Sale> sales = null;
 

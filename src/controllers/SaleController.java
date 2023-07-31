@@ -9,10 +9,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.swing.JButton;
 import utils.ComboBoxUtils;
@@ -59,6 +57,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
         this.adminView.btnSaveNewSaleInfo.addActionListener(this);
         this.adminView.btnUpdateNewSaleInfo.addActionListener(this);
         this.adminView.btnGenerateNewSale.addActionListener(this);
+        this.adminView.btnPrintSale.addMouseListener(this);
         this.adminView.newSaleTable.addMouseListener(this);
         this.adminView.salesTable.addMouseListener(this);
         this.UPDATE_BTN = adminView.btnUpdateNewSaleInfo;
@@ -69,6 +68,7 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
 
         dataFieldsEnabled(true);
         productFieldsEnabled(false);
+        handlePrintSaleButton(false, -1);
 
         loadProductsComboBox();
         loadCustomersComboBox();
@@ -448,20 +448,48 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == adminView.newSaleTable) {
-            int row = adminView.newSaleTable.rowAtPoint(e.getPoint());
-
-            setProductIndex(row);
-            adminView.inputNewSaleQty.setText(adminView.newSaleTable.getValueAt(row, 1).toString());
-            ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+            handleNewSaleTableClick(e);
         } else if (e.getSource() == adminView.salesTable) {
-            int row = adminView.salesTable.rowAtPoint(e.getPoint());
-            adminView.extendedTableInformation.setText(adminView.salesTable.getValueAt(row, 1).toString()
-                    + ": " + adminView.salesTable.getValueAt(row, 2).toString());
+            handleSalesTableClick(e);
+        } else if (e.getSource() == adminView.btnPrintSale) {
+            handlePrintSaleButtonClick(e);
+        } else {
+            adminView.btnPrintSale.setEnabled(false);
         }
     }
 
+    private void handleNewSaleTableClick(MouseEvent e) {
+        int row = adminView.newSaleTable.rowAtPoint(e.getPoint());
+        setProductIndex(row);
+        adminView.inputNewSaleQty.setText(adminView.newSaleTable.getValueAt(row, 1).toString());
+        ButtonUtils.setUpdateButtonVisible(true, UPDATE_BTN, REGISTER_BTN);
+    }
+
+    private void handleSalesTableClick(MouseEvent e) {
+        int row = adminView.salesTable.rowAtPoint(e.getPoint());
+        adminView.extendedTableInformation.setText(adminView.salesTable.getValueAt(row, 1).toString()
+                + ": " + adminView.salesTable.getValueAt(row, 2).toString());
+        handlePrintSaleButton(true, row);
+    }
+
+    private void handlePrintSaleButtonClick(MouseEvent e) {
+        int row = adminView.salesTable.rowAtPoint(e.getPoint());
+        try {
+            int saleId = Integer.parseInt(adminView.salesTable.getValueAt(row, 0).toString());
+            Print.showPrintScreen(saleRepository.getSaleById(saleId), this, adminView);
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    private void handlePrintSaleButton(boolean state, int row) {
+        adminView.btnPrintSale.setEnabled(state);
+        adminView.btnPrintSale.setText(state ? "Imprimir venta #" + salesTable.getValueAt(row, 0) : "Click en una venta para imprimirla");
+    }
+
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent e
+    ) {
         if (e.getSource() == adminView.newSaleTable) {
             adminView.extendedTableInformation.setText("");
         } else if (e.getSource() == adminView.salesTable) {
@@ -470,27 +498,33 @@ public class SaleController implements ActionListener, MouseListener, KeyListene
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(MouseEvent e
+    ) {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(MouseEvent e
+    ) {
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent e
+    ) {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e
+    ) {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(KeyEvent e
+    ) {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e
+    ) {
 
     }
 }

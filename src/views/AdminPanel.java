@@ -206,6 +206,7 @@ public class AdminPanel extends JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         salesTable = new javax.swing.JTable();
         salesPagination = new javax.swing.JPanel();
+        btnPrintSale = new javax.swing.JButton();
         jTabCustomers = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         lblCustomerFirstName = new javax.swing.JLabel();
@@ -379,7 +380,6 @@ public class AdminPanel extends JFrame {
         jMenuItemDeleteCategory.setComponentPopupMenu(jPopupCategories);
         jMenuItemDeleteCategory.setPreferredSize(new java.awt.Dimension(117, 35));
         jPopupCategories.add(jMenuItemDeleteCategory);
-        jMenuItemDeleteCategory.getAccessibleContext().setAccessibleName("Eliminar");
         jMenuItemDeleteCategory.getAccessibleContext().setAccessibleParent(jPanelProducts);
 
         jMenuItemReenterCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exchange.png"))); // NOI18N
@@ -1121,7 +1121,7 @@ public class AdminPanel extends JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1135,20 +1135,24 @@ public class AdminPanel extends JFrame {
             salesTable.getColumnModel().getColumn(0).setMaxWidth(30);
         }
 
-        jTabSales.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 1030, 390));
+        jTabSales.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 1320, 390));
 
         javax.swing.GroupLayout salesPaginationLayout = new javax.swing.GroupLayout(salesPagination);
         salesPagination.setLayout(salesPaginationLayout);
         salesPaginationLayout.setHorizontalGroup(
             salesPaginationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1030, Short.MAX_VALUE)
+            .addGap(0, 1320, Short.MAX_VALUE)
         );
         salesPaginationLayout.setVerticalGroup(
             salesPaginationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 80, Short.MAX_VALUE)
         );
 
-        jTabSales.add(salesPagination, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 1030, 80));
+        jTabSales.add(salesPagination, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 1320, 80));
+
+        btnPrintSale.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        btnPrintSale.setText("Imprimir venta #");
+        jTabSales.add(btnPrintSale, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 380, 40));
 
         jTabs.addTab("Mis Ventas", jTabSales);
 
@@ -2102,6 +2106,7 @@ public class AdminPanel extends JFrame {
     public javax.swing.JButton btnNewProduct;
     public javax.swing.JButton btnNewSupplier;
     public javax.swing.JButton btnNewUser;
+    public javax.swing.JButton btnPrintSale;
     public javax.swing.JButton btnRegisterBusiness;
     public javax.swing.JButton btnRegisterCategory;
     public javax.swing.JButton btnRegisterCustomer;

@@ -83,6 +83,48 @@ public class SaleDAO {
         return lastId;
     }
 
+    public Sale retrieveSaleById(int id) throws DBException {
+        Sale sale = null;
+
+        String sql = "SELECT * FROM sales WHERE id = ?"; // Select all columns using "*"
+        try {
+            conn = connector.getConn();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id); // Use the input parameter "id"
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                sale = new Sale();
+                sale.setId(rs.getInt("id"));
+                sale.setProduct(rs.getInt("product"));
+                sale.setQuantity(rs.getInt("quantity"));
+                sale.setCustomer(rs.getInt("customer"));
+
+                EPaymentMethod paymentMethod = EPaymentMethod.valueOf(rs.getString("payment_method"));
+                sale.setPaymentMethod(paymentMethod);
+
+                sale.setTotal(rs.getInt("total"));
+            }
+        } catch (SQLException ex) {
+            throw new DBException();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                throw new DBException();
+            }
+        }
+        return sale;
+    }
+
     public List<Sale> retrieveSalesList(String value) throws DBException {
         List<Sale> salesList = new ArrayList<>();
 
@@ -119,8 +161,8 @@ public class SaleDAO {
 
         return salesList;
     }
-    
-    public int retrieveSaleCustomer(int saleId) throws DBException{
+
+    public int retrieveSaleCustomer(int saleId) throws DBException {
         int customerId = -1;
 
         String sql = "SELECT DISTINCT customer FROM sales WHERE id = ?";
